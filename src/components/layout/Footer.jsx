@@ -4,51 +4,78 @@ function Footer() {
       <div className="container footer-top">
         <div className="footer-brand">
           <div className="brand">
-            <div className="brand-icon">🌸</div>
+            <div className="brand-icon">🪷</div>
             <span className="brand-text">
-              Artisan<span>Suite</span>
+              Nirvana<span>Elevate</span>
             </span>
           </div>
-          <p>Business tools built with love for India’s handmade creator community.</p>
-          <small>Made in India, for Indian artisans</small>
+
+          <p>
+            Empowering growth through transformation, learning, and meaningful
+            opportunities for students and future professionals.
+          </p>
+
+          <small>Transforming potential into progress.</small>
         </div>
 
         <div className="footer-links">
           <div>
-            <h4>Product</h4>
-            <a href="/">Features</a>
-            <a href="/">Inventory</a>
-            <a href="/">Orders</a>
-            <a href="/">Payments</a>
-            <a href="/">Analytics</a>
+            <h4>Quick Links</h4>
+            <a href="/">Home</a>
+            <a href="/">About</a>
+            <a href="/">Contact</a>
           </div>
 
           <div>
-            <h4>Crafts We Serve</h4>
-            <a href="/">Crochet & Yarn</a>
-            <a href="/">Candle Making</a>
-            <a href="/">Embroidery</a>
-            <a href="/">Clay & Pottery</a>
-            <a href="/">Handmade Jewellery</a>
-          </div>
-
-          <div>
-            <h4>Company</h4>
-            <a href="/">About Us</a>
-            <a href="/">Blog</a>
-            <a href="/">Artisan Stories</a>
-            <a href="/">Help Centre</a>
-            <a href="/">Contact Us</a>
+            <h4>Connect</h4>
+            <a href="mailto:nirvana.acad@gmail.com">nirvana.acad@gmail.com</a>
+            <a
+              href="https://sites.google.com/view/nirvanaelevate"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Website
+            </a>
+            <a
+              href="https://www.linkedin.com/company/nirvana-transformation-academy/posts/?feedView=all"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LinkedIn
+            </a>
+            <a
+              href="https://www.youtube.com/@nirvanaSpeaks_Elevate"
+              target="_blank"
+              rel="noreferrer"
+            >
+              YouTube
+            </a>
           </div>
         </div>
       </div>
 
       <div className="container footer-bottom">
-        <p>© 2025 ArtisanSuite. All rights reserved. Built with ❤️ for Indian craft entrepreneurs.</p>
+        <p>
+          © 2026 Nirvana Elevate. All rights reserved. Built to inspire growth,
+          learning, and transformation.
+        </p>
+
         <div className="footer-socials">
-          <span>Instagram</span>
-          <span>WhatsApp</span>
-          <span>YouTube</span>
+          <a
+            href="https://www.linkedin.com/company/nirvana-transformation-academy/posts/?feedView=all"
+            target="_blank"
+            rel="noreferrer"
+          >
+            LinkedIn
+          </a>
+          <a
+            href="https://www.youtube.com/@nirvanaSpeaks_Elevate"
+            target="_blank"
+            rel="noreferrer"
+          >
+            YouTube
+          </a>
+          <a href="mailto:nirvana.acad@gmail.com">Email</a>
         </div>
       </div>
     </footer>
