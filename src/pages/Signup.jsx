@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Login.css";
 
-function Login() {
+function Signup() {
   const [showPassword, setShowPassword] = useState(false);
 
   const features = [
@@ -55,16 +55,16 @@ function Login() {
           </div>
 
           <h1 className="login-headline">
-            Your craft, your
+            Start your artisan
             <br />
-            business — beautifully
+            business journey
             <br />
-            managed.
+            with confidence.
           </h1>
 
           <p className="login-subtext">
-            Everything an Indian artisan business owner needs, in one calm
-            and powerful platform.
+            Create your ArtisanSuite account and manage inventory, orders,
+            payments, and growth — all in one place.
           </p>
         </div>
 
@@ -107,7 +107,7 @@ function Login() {
         </div>
       </div>
 
-      {/* RIGHT — form panel */}
+      {/* RIGHT — signup form */}
       <div className="login-form-panel">
         <div className="login-form-wrap">
           <div className="login-mobile-logo">
@@ -118,18 +118,45 @@ function Login() {
           </div>
 
           <div className="login-card">
-            <h2 className="login-title">Welcome back</h2>
+            <h2 className="login-title">Create account</h2>
             <p className="login-subtitle">
-              Enter your app password to continue.
+              Join ArtisanSuite and start managing your business beautifully.
             </p>
 
             <form className="login-form" onSubmit={(e) => e.preventDefault()}>
               <div>
-                <label className="login-label">APP PASSWORD</label>
+                <label className="login-label">FULL NAME</label>
+                <input
+                  type="text"
+                  placeholder="Enter your full name"
+                  className="login-input"
+                />
+              </div>
+
+              <div>
+                <label className="login-label">PHONE NUMBER</label>
+                <input
+                  type="tel"
+                  placeholder="Enter your phone number"
+                  className="login-input"
+                />
+              </div>
+
+              <div>
+                <label className="login-label">EMAIL ADDRESS</label>
+                <input
+                  type="email"
+                  placeholder="you@yourbusiness.in"
+                  className="login-input"
+                />
+              </div>
+
+              <div>
+                <label className="login-label">PASSWORD</label>
                 <div className="login-password-wrap">
                   <input
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
+                    placeholder="Create a password"
                     className="login-input"
                   />
                   <button
@@ -155,11 +182,11 @@ function Login() {
 
               <label className="login-checkbox-row">
                 <input type="checkbox" />
-                Keep me signed in
+                I agree to the Terms & Privacy Policy
               </label>
 
               <button type="submit" className="login-submit">
-                Sign in
+                Create account
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -176,15 +203,15 @@ function Login() {
             <hr className="login-divider" />
 
             <p className="login-signup-text">
-              New to ArtisanSuite?{" "}
-              <Link to="/signup" className="login-signup-link">
-                Create a free account
+              Already have an account?{" "}
+              <Link to="/login" className="login-signup-link">
+                Login
               </Link>
             </p>
           </div>
 
           <p className="login-fineprint">
-            By signing in, you agree to our <a href="#">Terms</a> &{" "}
+            By creating an account, you agree to our <a href="#">Terms</a> &{" "}
             <a href="#">Privacy Policy</a>.
           </p>
         </div>
@@ -193,4 +220,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;

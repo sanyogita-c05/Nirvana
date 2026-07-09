@@ -7,7 +7,7 @@ import Orders from "./pages/Orders";
 import AddProduct from "./pages/AddProduct";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
-
+import Signup from "./pages/Signup";
 function App() {
   return (
     <BrowserRouter>
@@ -20,6 +20,7 @@ function App() {
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
     </BrowserRouter>
   );

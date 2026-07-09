@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Navbar() {
   return (
     <header className="navbar">
@@ -17,8 +19,9 @@ function Navbar() {
         </nav>
 
         <div className="nav-actions">
-          <button className="btn btn-link">Sign In</button>
-          <button className="btn btn-primary">Start Free →</button>
+          <Link to="/login" className="btn btn-primary">
+            Login →
+          </Link>
         </div>
       </div>
     </header>
