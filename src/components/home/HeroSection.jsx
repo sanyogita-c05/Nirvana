@@ -121,8 +121,6 @@ function HeroSection() {
                       <span className="tag shipped">Shipped</span>
                     </div>
                   </div>
-
-                  
                 </div>
               </div>
             </div>

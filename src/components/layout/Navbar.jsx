@@ -19,6 +19,10 @@ function Navbar() {
         </nav>
 
         <div className="nav-actions">
+          <Link to="/dashboard" className="btn btn-outline">
+            Dashboard →
+          </Link>
+
           <Link to="/login" className="btn btn-primary">
             Login →
           </Link>
