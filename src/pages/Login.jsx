@@ -1,9 +1,17 @@
+
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../api/auth.js";
 import "./Login.css";
 
 function Login() {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
   const features = [
     {
@@ -40,6 +48,37 @@ function Login() {
       icon: <path d="M3 3v18h18M7 15l4-4 3 3 5-6" />,
     },
   ];
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await loginUser(formData);
+
+      const token = res.data?.data?.token;
+      const user = res.data?.data?.user;
+
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+
+      if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+
+      alert(res.data?.message || "Login successful");
+      navigate("/dashboard");
+    } catch (err) {
+      alert(err.response?.data?.message || "Login failed");
+    }
+  };
 
   return (
     <div className="login-page">
@@ -120,17 +159,34 @@ function Login() {
           <div className="login-card">
             <h2 className="login-title">Welcome back</h2>
             <p className="login-subtitle">
-              Enter your app password to continue.
+              Enter your email and app password to continue.
             </p>
 
-            <form className="login-form" onSubmit={(e) => e.preventDefault()}>
+            <form className="login-form" onSubmit={handleSubmit}>
+              <div>
+                <label className="login-label">EMAIL ADDRESS</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="you@yourbusiness.in"
+                  className="login-input"
+                  required
+                />
+              </div>
+
               <div>
                 <label className="login-label">APP PASSWORD</label>
                 <div className="login-password-wrap">
                   <input
                     type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
                     placeholder="Enter your password"
                     className="login-input"
+                    required
                   />
                   <button
                     type="button"

@@ -1,9 +1,19 @@
+
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../api/auth.js";
 import "./Login.css";
 
 function Signup() {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    phone: "",
+    email: "",
+    password: "",
+  });
 
   const features = [
     {
@@ -40,6 +50,37 @@ function Signup() {
       icon: <path d="M3 3v18h18M7 15l4-4 3 3 5-6" />,
     },
   ];
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await registerUser(formData);
+
+      const token = res.data?.data?.token;
+      const user = res.data?.data?.user;
+
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+
+      if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+
+      alert(res.data?.message || "Registration successful");
+      navigate("/dashboard");
+    } catch (err) {
+      alert(err.response?.data?.message || "Registration failed");
+    }
+  };
 
   return (
     <div className="login-page">
@@ -123,13 +164,17 @@ function Signup() {
               Join ArtisanSuite and start managing your business beautifully.
             </p>
 
-            <form className="login-form" onSubmit={(e) => e.preventDefault()}>
+            <form className="login-form" onSubmit={handleSubmit}>
               <div>
                 <label className="login-label">FULL NAME</label>
                 <input
                   type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
                   placeholder="Enter your full name"
                   className="login-input"
+                  required
                 />
               </div>
 
@@ -137,8 +182,12 @@ function Signup() {
                 <label className="login-label">PHONE NUMBER</label>
                 <input
                   type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                   placeholder="Enter your phone number"
                   className="login-input"
+                  required
                 />
               </div>
 
@@ -146,8 +195,12 @@ function Signup() {
                 <label className="login-label">EMAIL ADDRESS</label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="you@yourbusiness.in"
                   className="login-input"
+                  required
                 />
               </div>
 
@@ -156,8 +209,12 @@ function Signup() {
                 <div className="login-password-wrap">
                   <input
                     type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
                     placeholder="Create a password"
                     className="login-input"
+                    required
                   />
                   <button
                     type="button"
@@ -181,7 +238,7 @@ function Signup() {
               </div>
 
               <label className="login-checkbox-row">
-                <input type="checkbox" />
+                <input type="checkbox" required />
                 I agree to the Terms & Privacy Policy
               </label>
 
