@@ -1,10 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CustomerTopbar from "../components/customer/CustomerTopbar";
 import CustomerHero from "../components/customer/CustomerHero";
 import CategoryChips from "../components/customer/CategoryChips";
 import SearchSortBar from "../components/customer/SearchSortBar";
 import ProductCard from "../components/customer/ProductCard";
-import { products } from "../data/products";
+import { getProducts } from "../api/product";
 import categories from "../data/categories";
 import "../styles/customer.css";
 
@@ -12,6 +12,20 @@ function CustomerView() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("featured");
+  const [products, setProducts] = useState([]);
+
+  const loadProducts = async () => {
+    try {
+      const res = await getProducts();
+      setProducts(res.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
 
   const filteredProducts = useMemo(() => {
     let filtered = [...products];
@@ -32,14 +46,19 @@ function CustomerView() {
 
     switch (sortBy) {
       case "price-low":
-        filtered.sort((a, b) => a.price - b.price);
-        break;
+        filtered.sort(
+        (a, b) => a.sellingPrice - b.sellingPrice
+        );
+      break;
+
       case "price-high":
-        filtered.sort((a, b) => b.price - a.price);
-        break;
+        filtered.sort(
+        (a, b) => b.sellingPrice - a.sellingPrice
+        );
+      break;
+
       case "rating":
-        filtered.sort((a, b) => b.rating - a.rating);
-        break;
+      break;
       case "name":
         filtered.sort((a, b) => a.name.localeCompare(b.name));
         break;
@@ -48,7 +67,7 @@ function CustomerView() {
     }
 
     return filtered;
-  }, [activeCategory, searchTerm, sortBy]);
+  }, [products, activeCategory, searchTerm, sortBy]);
 
   return (
     <div className="customer-page">
@@ -82,7 +101,10 @@ function CustomerView() {
         <section className="products-grid">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product._id}
+                product={product}
+              />
             ))
           ) : (
             <div className="empty-state">
