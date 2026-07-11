@@ -1,0 +1,48 @@
+import express from "express";
+import cors from "cors";
+import authRoutes from "./routes/auth.routes.js";
+import productRoutes from "./routes/product.routes.js";
+
+const app = express();
+
+/*
+------------------------------------
+Middleware
+------------------------------------
+*/
+
+// Enable CORS
+app.use(cors());
+
+// Parse incoming JSON
+app.use(express.json());
+
+// Parse URL-encoded data
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files (for uploaded images later)
+app.use("/uploads", express.static("public/uploads"));
+
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+/*
+------------------------------------
+Test Route
+------------------------------------
+*/
+
+app.get("/", (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "ArtisanSuite Backend is Running "
+    });
+});
+
+app.get("/api/health", (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "Backend is running"
+    });
+});
+
+export default app;

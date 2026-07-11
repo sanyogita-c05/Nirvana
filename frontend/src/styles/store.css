@@ -1,0 +1,136 @@
+.store-page {
+  padding: 60px 0 90px;
+  background: var(--bg);
+}
+
+.store-header {
+  text-align: center;
+  max-width: 850px;
+  margin: 0 auto 48px;
+}
+
+.store-label {
+  color: var(--pink);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  margin-bottom: 14px;
+}
+
+.store-header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 5vw, 4.4rem);
+  line-height: 1;
+  margin-bottom: 18px;
+}
+
+.store-header p {
+  color: #6d4a3b;
+  font-size: 1.15rem;
+  line-height: 1.8;
+}
+
+.store-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+}
+
+.store-card {
+  background: #fff8f1;
+  border: 1px solid rgba(86, 45, 27, 0.08);
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 14px 30px rgba(89, 44, 22, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.store-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 40px rgba(89, 44, 22, 0.12);
+}
+
+.store-image-wrap {
+  height: 250px;
+  background: #f7eadf;
+  overflow: hidden;
+}
+
+.store-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.store-card-body {
+  padding: 22px;
+}
+
+.store-category {
+  display: inline-block;
+  background: #fde2ee;
+  color: var(--pink);
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.store-card-body h3 {
+  font-size: 1.35rem;
+  margin-bottom: 10px;
+}
+
+.store-card-body p {
+  color: #6d4a3b;
+  line-height: 1.7;
+  margin-bottom: 18px;
+  min-height: 72px;
+}
+
+.store-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.store-meta strong {
+  font-size: 1.25rem;
+  color: var(--brown);
+}
+
+.store-meta span {
+  color: #8c6858;
+  font-size: 0.95rem;
+}
+
+.store-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #d64f8a, #bc3d75);
+  color: white;
+  padding: 14px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .store-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .store-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .store-grid {
+    grid-template-columns: 1fr;
+  }
+}
