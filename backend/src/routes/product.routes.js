@@ -1,10 +1,11 @@
 import express from "express";
 
 import protect from "../middleware/auth.middleware.js";
+import upload from "../middleware/upload.middleware.js";
 
 import {
     createProduct,
-    getProducts,
+    getAllProducts,
     getProductById,
     updateProduct,
     deleteProduct,
@@ -12,13 +13,32 @@ import {
 
 const router = express.Router();
 
-router.route("/")
-    .post(protect, createProduct)
-    .get(protect, getProducts);
+router
+    .route("/")
+    .post(
+        protect,
+        upload.single("image"),
+        createProduct
+    )
+    .get(
+        protect,
+        getAllProducts
+    );
 
-router.route("/:id")
-    .get(protect, getProductById)
-    .put(protect, updateProduct)
-    .delete(protect, deleteProduct);
+router
+    .route("/:id")
+    .get(
+        protect,
+        getProductById
+    )
+    .put(
+        protect,
+        upload.single("image"),
+        updateProduct
+    )
+    .delete(
+        protect,
+        deleteProduct
+    );
 
 export default router;

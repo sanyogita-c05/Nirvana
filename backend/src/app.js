@@ -1,7 +1,9 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
+import errorHandler from "./middleware/error.middleware.js";
 import productRoutes from "./routes/product.routes.js";
+
 
 const app = express();
 
@@ -22,7 +24,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files (for uploaded images later)
 app.use("/uploads", express.static("public/uploads"));
-
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 /*
@@ -44,5 +45,13 @@ app.get("/api/health", (req, res) => {
         message: "Backend is running"
     });
 });
+
+/*
+------------------------------------
+Global Error Handler
+------------------------------------
+*/
+
+app.use(errorHandler);
 
 export default app;

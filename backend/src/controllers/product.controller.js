@@ -19,7 +19,6 @@ export const createProduct = asyncHandler(async (req, res) => {
         costPrice,
         sellingPrice,
         stockQuantity,
-        imagePath
     } = req.body;
 
     if (
@@ -27,8 +26,7 @@ export const createProduct = asyncHandler(async (req, res) => {
         !category ||
         costPrice === undefined ||
         sellingPrice === undefined ||
-        stockQuantity === undefined ||
-        !imagePath
+        stockQuantity === undefined
     ) {
         throw new ApiError(400, "Please fill all required fields.");
     }
@@ -48,8 +46,19 @@ export const createProduct = asyncHandler(async (req, res) => {
             "Selling price cannot be less than cost price."
         );
 
+    // Image uploaded by Multer
+    const imagePath = req.file
+        ? `/uploads/products/${req.file.filename}`
+        : "";
+
+    if (!imagePath) {
+        throw new ApiError(400, "Product image is required.");
+    }
+
+    // Generate SKU
     const sku = await generateSequence("product", "PRD");
 
+    // Create Product
     const product = await Product.create({
         owner: req.user._id,
         sku,
@@ -77,7 +86,7 @@ Get All Products
 ----------------------------------------
 */
 
-export const getProducts = asyncHandler(async (req, res) => {
+export const getAllProducts = asyncHandler(async (req, res) => {
 
     const products = await Product.find({
         owner: req.user._id,
@@ -107,8 +116,9 @@ export const getProductById = asyncHandler(async (req, res) => {
         isActive: true,
     });
 
-    if (!product)
+    if (!product) {
         throw new ApiError(404, "Product not found.");
+    }
 
     return res.status(200).json(
         new ApiResponse(
@@ -133,10 +143,50 @@ export const updateProduct = asyncHandler(async (req, res) => {
         isActive: true,
     });
 
-    if (!product)
+    if (!product) {
         throw new ApiError(404, "Product not found.");
+    }
 
-    Object.assign(product, req.body);
+    // Only these fields are allowed to update
+    const allowedFields = [
+        "name",
+        "description",
+        "category",
+        "costPrice",
+        "sellingPrice",
+        "stockQuantity",
+    ];
+
+    allowedFields.forEach((field) => {
+        if (req.body[field] !== undefined) {
+            product[field] = req.body[field];
+        }
+    });
+
+    // Validations
+    if (product.costPrice < 0) {
+        throw new ApiError(400, "Cost price cannot be negative.");
+    }
+
+    if (product.sellingPrice < 0) {
+        throw new ApiError(400, "Selling price cannot be negative.");
+    }
+
+    if (product.stockQuantity < 0) {
+        throw new ApiError(400, "Stock cannot be negative.");
+    }
+
+    if (product.sellingPrice < product.costPrice) {
+        throw new ApiError(
+            400,
+            "Selling price cannot be less than cost price."
+        );
+    }
+
+    // Replace image if a new image is uploaded
+    if (req.file) {
+        product.imagePath = `/uploads/products/${req.file.filename}`;
+    }
 
     await product.save();
 
@@ -163,8 +213,9 @@ export const deleteProduct = asyncHandler(async (req, res) => {
         isActive: true,
     });
 
-    if (!product)
+    if (!product) {
         throw new ApiError(404, "Product not found.");
+    }
 
     product.isActive = false;
 
