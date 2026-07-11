@@ -1,0 +1,105 @@
+import { deleteProduct } from "../../api/productApi";
+import StatusBadge from "./StatusBadge";
+
+function ProductRow({
+  product,
+  refreshProducts,
+}) {
+
+  const handleDelete = async () => {
+
+    const confirmDelete = window.confirm(
+      "Delete this product?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+
+      await deleteProduct(product._id);
+
+      refreshProducts();
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert("Unable to delete product.");
+
+    }
+  };
+
+  const getStatus = () => {
+
+    if (product.stockQuantity === 0)
+      return "Out of Stock";
+
+    if (product.stockQuantity <= 5)
+      return "Low Stock";
+
+    return "In Stock";
+  };
+
+  return (
+
+    <tr>
+
+      <td>
+
+        <img
+          src={`http://localhost:5000${product.imagePath}`}
+          alt={product.name}
+          className="product-avatar"
+        />
+
+      </td>
+
+      <td>{product.name}</td>
+
+      <td>{product.sku}</td>
+
+      <td>{product.category}</td>
+
+      <td>{product.stockQuantity}</td>
+
+      <td>₹{product.sellingPrice}</td>
+
+      <td>
+
+        <StatusBadge
+          status={getStatus()}
+        />
+
+      </td>
+
+      <td>
+
+        {new Date(
+          product.updatedAt
+        ).toLocaleDateString()}
+
+      </td>
+
+      <td>
+
+        <div className="inventory-actions">
+
+          <button>
+            Edit
+          </button>
+
+          <button
+            onClick={handleDelete}
+          >
+            Delete
+          </button>
+
+        </div>
+
+      </td>
+
+    </tr>
+  );
+}
+
+export default ProductRow;
