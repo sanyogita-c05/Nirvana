@@ -1,47 +1,122 @@
+import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   Package,
-  ShoppingBag,
-  PlusCircle,
+  ShoppingCart,
   BarChart3,
   Settings,
+  Users,
+  LogOut,
+  X,
 } from "lucide-react";
 
-const navItems = [
-  { label: "Dashboard", icon: LayoutDashboard, active: true },
-  { label: "Inventory", icon: Package },
-  { label: "Orders", icon: ShoppingBag },
-  { label: "Add Product", icon: PlusCircle },
-  { label: "Analytics", icon: BarChart3 },
-  { label: "Settings", icon: Settings },
-];
+function MobileSidebar({ open, onClose }) {
+  const menuItems = [
+    {
+      title: "Dashboard",
+      path: "/dashboard",
+      icon: <LayoutDashboard size={20} />,
+    },
+    {
+      title: "Inventory",
+      path: "/inventory",
+      icon: <Package size={20} />,
+    },
+    {
+      title: "Orders",
+      path: "/orders",
+      icon: <ShoppingCart size={20} />,
+    },
+    {
+      title: "Analytics",
+      path: "/analytics",
+      icon: <BarChart3 size={20} />,
+    },
+    {
+      title: "Settings",
+      path: "/settings",
+      icon: <Settings size={20} />,
+    },
+  ];
 
-function Sidebar() {
   return (
-    <aside className="dashboard-sidebar desktop-sidebar">
-      <div className="studio-card">
-        <p className="studio-label">YOUR STUDIO</p>
-        <h3>Meera's Craft Studio</h3>
-        <p className="studio-location">Jaipur, Rajasthan</p>
-        <span className="studio-status">● Shop is open</span>
-      </div>
+    <div
+      className={`mobile-sidebar-overlay ${open ? "show" : ""}`}
+      onClick={onClose}
+    >
+      <aside
+        className={`mobile-sidebar ${open ? "open" : ""}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mobile-sidebar-header">
+          <div>
+            <h2>ArtisanSuite</h2>
+            <p>Craft Business</p>
+          </div>
 
-      <nav className="sidebar-nav">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          return (
-            <button
-              key={item.label}
-              className={`sidebar-nav-item ${item.active ? "active" : ""}`}
+          <button
+            className="icon-btn"
+            onClick={onClose}
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="studio-card">
+          <p className="studio-label">
+            YOUR STUDIO
+          </p>
+
+          <h3>Meera's Craft</h3>
+
+          <p className="studio-location">
+            Jaipur, Rajasthan
+          </p>
+
+          <span className="studio-status">
+            ● Shop Open
+          </span>
+        </div>
+
+        <nav className="sidebar-nav">
+
+          {menuItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={onClose}
+              className={({ isActive }) =>
+                isActive
+                  ? "sidebar-nav-item active"
+                  : "sidebar-nav-item"
+              }
             >
-              <Icon size={18} />
-              <span>{item.label}</span>
-            </button>
-          );
-        })}
-      </nav>
-    </aside>
+              {item.icon}
+
+              <span>{item.title}</span>
+
+            </NavLink>
+          ))}
+
+        </nav>
+
+        <div className="sidebar-footer">
+
+          <button className="customer-mode-btn">
+            <Users size={20} />
+            <span>Customer Mode</span>
+          </button>
+
+          <button className="logout-btn">
+            <LogOut size={20} />
+            <span>Logout</span>
+          </button>
+
+        </div>
+
+      </aside>
+    </div>
   );
 }
 
-export default Sidebar;
+export default MobileSidebar;
