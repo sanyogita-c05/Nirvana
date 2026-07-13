@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import ProductRow from "./ProductRow";
 import AddProductModal from "./AddProductModal";
+import EditProductModal from "./EditProductModal";
 import ProductForm from "./ProductForm";
 
 function ProductInventoryTable({
@@ -9,7 +10,16 @@ function ProductInventoryTable({
   loading,
   refreshProducts,
 }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const handleEdit = (product) => {
+    setSelectedProduct(product);
+    setIsEditModalOpen(true);
+  };
 
   if (loading) {
     return (
@@ -30,7 +40,9 @@ function ProductInventoryTable({
             <p>Manage all handcrafted products</p>
           </div>
 
-          <button onClick={() => setIsModalOpen(true)}>
+          <button
+            onClick={() => setIsAddModalOpen(true)}
+          >
             + Add Product
           </button>
 
@@ -74,6 +86,7 @@ function ProductInventoryTable({
                     key={product._id}
                     product={product}
                     refreshProducts={refreshProducts}
+                    onEdit={handleEdit}
                   />
                 ))
               )}
@@ -86,15 +99,38 @@ function ProductInventoryTable({
 
       </section>
 
+      {/* Add Product */}
+
       <AddProductModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
       >
         <ProductForm
           refreshProducts={refreshProducts}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => setIsAddModalOpen(false)}
         />
       </AddProductModal>
+
+      {/* Edit Product */}
+
+      <EditProductModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setSelectedProduct(null);
+        }}
+      >
+        <ProductForm
+          product={selectedProduct}
+          isEdit={true}
+          refreshProducts={refreshProducts}
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setSelectedProduct(null);
+          }}
+        />
+      </EditProductModal>
+
     </>
   );
 }

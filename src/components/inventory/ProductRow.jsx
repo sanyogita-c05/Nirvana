@@ -4,6 +4,7 @@ import StatusBadge from "./StatusBadge";
 function ProductRow({
   product,
   refreshProducts,
+  onEdit,
 }) {
 
   const handleDelete = async () => {
@@ -41,17 +42,14 @@ function ProductRow({
   };
 
   return (
-
     <tr>
 
       <td>
-
         <img
           src={`http://localhost:5000${product.imagePath}`}
           alt={product.name}
           className="product-avatar"
         />
-
       </td>
 
       <td>{product.name}</td>
@@ -65,26 +63,24 @@ function ProductRow({
       <td>₹{product.sellingPrice}</td>
 
       <td>
-
         <StatusBadge
           status={getStatus()}
         />
-
       </td>
 
       <td>
-
         {new Date(
           product.updatedAt
         ).toLocaleDateString()}
-
       </td>
 
       <td>
 
         <div className="inventory-actions">
 
-          <button>
+          <button
+            onClick={() => onEdit(product)}
+          >
             Edit
           </button>
 
