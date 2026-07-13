@@ -87,13 +87,13 @@ function Sidebar() {
 
       <div className="sidebar-footer">
 
-        <button className="customer-mode-btn">
-
-          <Users size={20} />
-
-          <span>Customer Mode</span>
-
-        </button>
+        <NavLink
+  to="/customer-view"
+  className="customer-mode-btn"
+>
+  <Users size={20} />
+  <span>Customer Mode</span>
+</NavLink>
 
         <button className="logout-btn">
 
