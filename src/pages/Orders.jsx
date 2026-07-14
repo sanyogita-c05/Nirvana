@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import DashboardLayout from "../components/layout/DashBoardLayout";
 
 import OrderHero from "../components/orders/OrderHero";
@@ -11,6 +13,8 @@ import CreateOrderModal from "../components/orders/CreateOrderModal";
 import "../styles/orders.css";
 
 function Orders() {
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+
   return (
     <DashboardLayout>
       <div className="orders-page">
@@ -19,7 +23,7 @@ function Orders() {
 
         <OrderStats />
 
-        <OrderSearch />
+        <OrderSearch onNewOrder={() => setIsCreateOpen(true)} />
 
         <OrderFilters />
 
@@ -33,7 +37,10 @@ function Orders() {
           <MobileOrderList />
         </div>
 
-        <CreateOrderModal />
+        <CreateOrderModal
+          open={isCreateOpen}
+          onClose={() => setIsCreateOpen(false)}
+        />
 
       </div>
     </DashboardLayout>

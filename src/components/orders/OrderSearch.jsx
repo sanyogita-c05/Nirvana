@@ -6,7 +6,7 @@ import {
   Plus,
 } from "lucide-react";
 
-function OrderSearch() {
+function OrderSearch({ onNewOrder }) {
   return (
     <section className="order-search-section">
 
@@ -38,7 +38,7 @@ function OrderSearch() {
           Filters
         </button>
 
-        <button className="new-order-btn">
+        <button className="new-order-btn" onClick={onNewOrder}>
           <Plus size={18} />
           New Order
         </button>

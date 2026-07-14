@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import DashboardLayout from "../../components/layout/DashboardLayout";
+import DashboardLayout from "../../components/layout/DashBoardLayout";
 
 import InventoryBanner from "../../components/inventory/InventoryBanner";
 import InventoryStatsGrid from "../../components/inventory/InventoryStatsGrid";

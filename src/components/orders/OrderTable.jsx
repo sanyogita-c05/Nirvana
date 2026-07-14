@@ -11,14 +11,14 @@ function OrderTable() {
       <table className="orders-table">
 
         <colgroup>
-          <col style={{ width: "130px" }} />   {/* Order ID */}
-          <col style={{ width: "220px" }} />   {/* Customer */}
-          <col style={{ width: "180px" }} />   {/* Product */}
-          <col style={{ width: "120px" }} />   {/* Date */}
-          <col style={{ width: "110px" }} />   {/* Amount */}
-          <col style={{ width: "110px" }} />   {/* Payment */}
-          <col style={{ width: "110px" }} />   {/* Status */}
-          <col style={{ width: "130px" }} />   {/* Actions */}
+          <col style={{ width: "130px" }} />
+          <col style={{ width: "220px" }} />
+          <col style={{ width: "180px" }} />
+          <col style={{ width: "120px" }} />
+          <col style={{ width: "110px" }} />
+          <col style={{ width: "110px" }} />
+          <col style={{ width: "110px" }} />
+          <col style={{ width: "130px" }} />
         </colgroup>
 
         <thead>

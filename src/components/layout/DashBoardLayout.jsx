@@ -1,18 +1,25 @@
+import { useState } from "react";
+
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import MobileSidebar from "./MobileSidebar";
 import "../../styles/layout.css";
 
-function DashboardLayout({ children }) {
+function DashBoardLayout({ children }) {
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
   return (
     <div className="dashboard-layout">
       <Sidebar />
 
-      <MobileSidebar />
+      <MobileSidebar
+        open={isMobileSidebarOpen}
+        onClose={() => setIsMobileSidebarOpen(false)}
+      />
 
       <div className="dashboard-content-area">
 
-        <Topbar />
+        <Topbar onMenuClick={() => setIsMobileSidebarOpen(true)} />
 
         <main className="dashboard-main-content">
           {children}
@@ -23,4 +30,4 @@ function DashboardLayout({ children }) {
   );
 }
 
-export default DashboardLayout;
+export default DashBoardLayout;
