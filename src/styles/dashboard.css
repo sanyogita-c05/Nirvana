@@ -493,73 +493,86 @@
   padding: 0;
 }
 
-.orders-table-wrap {
+/* ==========================================
+   RECENT ORDERS TABLE (dashboard-scoped)
+   Renamed with a dash- prefix so these rules
+   never collide with the Orders page's own
+   .orders-table / .status-pill / .customer-cell
+   classes, which caused the Items/Total columns
+   to overlap when both stylesheets were loaded.
+========================================== */
+
+.dash-orders-table-wrap {
   overflow-x: auto;
 }
 
-.orders-table {
+.dash-orders-table {
   width: 100%;
   border-collapse: collapse;
   min-width: 760px;
+  table-layout: fixed;
 }
 
-.orders-table th,
-.orders-table td {
+.dash-orders-table th,
+.dash-orders-table td {
   padding: 18px 12px;
   text-align: left;
   border-bottom: 1px solid #f0dfd2;
   vertical-align: top;
+  white-space: normal;
+  word-break: break-word;
 }
 
-.orders-table th {
+.dash-orders-table th {
   color: #946f5d;
   font-weight: 700;
 }
 
-.customer-cell {
+.dash-customer-cell {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.customer-cell span {
+.dash-customer-cell span {
   color: #a17c69;
 }
 
-.orders-table__items {
+.dash-orders-table__items {
   color: #8f6f61;
-  max-width: 320px;
 }
 
-.orders-table__total {
+.dash-orders-table__total {
   font-weight: 800;
+  white-space: nowrap;
 }
 
-.status-pill {
+.dash-status-pill {
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
   padding: 8px 14px;
   font-size: 0.88rem;
   font-weight: 700;
+  white-space: nowrap;
 }
 
-.status-pill.delivered {
+.dash-status-pill.delivered {
   background: #dcf8e9;
   color: #0f9b61;
 }
 
-.status-pill.shipped {
+.dash-status-pill.shipped {
   background: #dfe8ff;
   color: #2e64df;
 }
 
-.status-pill.processing {
+.dash-status-pill.processing {
   background: #fff0c7;
   color: #d47b00;
 }
 
-.status-pill.pending {
+.dash-status-pill.pending {
   background: #ffe0e5;
   color: #d73864;
 }

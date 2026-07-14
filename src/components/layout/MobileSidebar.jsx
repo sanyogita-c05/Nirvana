@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Package,
@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 
 function MobileSidebar({ open, onClose }) {
+  const navigate = useNavigate();
+
   const menuItems = [
     {
       title: "Dashboard",
@@ -38,6 +40,11 @@ function MobileSidebar({ open, onClose }) {
       icon: <Settings size={20} />,
     },
   ];
+
+  const handleLogout = () => {
+    onClose();
+    navigate("/");
+  };
 
   return (
     <div
@@ -102,12 +109,16 @@ function MobileSidebar({ open, onClose }) {
 
         <div className="sidebar-footer">
 
-          <button className="customer-mode-btn">
+          <NavLink
+            to="/customer-view"
+            className="customer-mode-btn"
+            onClick={onClose}
+          >
             <Users size={20} />
             <span>Customer Mode</span>
-          </button>
+          </NavLink>
 
-          <button className="logout-btn">
+          <button className="logout-btn" onClick={handleLogout}>
             <LogOut size={20} />
             <span>Logout</span>
           </button>

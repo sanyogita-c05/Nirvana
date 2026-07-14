@@ -1,0 +1,343 @@
+/* ======================================================
+   ANALYTICS PAGE
+====================================================== */
+
+.analytics-page{
+    width:100%;
+    max-width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+}
+
+/* ======================================================
+   HERO BANNER
+====================================================== */
+
+.analytics-banner{
+    width:100%;
+    min-width:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:28px;
+    flex-wrap:wrap;
+    padding:clamp(26px,3vw,42px);
+    border-radius:28px;
+    overflow:hidden;
+    position:relative;
+    color:white;
+    background:linear-gradient(135deg,#e0316b,#ff7a3d 55%,#ffa63d);
+    box-shadow:0 22px 50px rgba(224,49,107,.18);
+}
+
+.analytics-banner-left{
+    position:relative;
+    z-index:2;
+    flex:1 1 340px;
+    min-width:0;
+}
+
+.analytics-banner-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 16px;
+    border-radius:999px;
+    background:rgba(255,255,255,.16);
+    backdrop-filter:blur(10px);
+    font-size:.85rem;
+    font-weight:700;
+    margin-bottom:18px;
+}
+
+.analytics-banner-left h1{
+    margin:0 0 16px;
+    font-size:clamp(2rem,3.6vw,3.2rem);
+    line-height:1.1;
+    font-weight:800;
+}
+
+.analytics-banner-desc{
+    max-width:560px;
+    margin-bottom:28px;
+    line-height:1.75;
+    font-size:1rem;
+    opacity:.95;
+}
+
+.analytics-banner-actions{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.analytics-highlight-card{
+    position:relative;
+    z-index:2;
+    flex:1 1 280px;
+    max-width:320px;
+    min-width:0;
+    padding:26px;
+    border-radius:22px;
+    background:rgba(255,255,255,.16);
+    backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.25);
+}
+
+.analytics-highlight-card span{
+    display:block;
+    font-size:.95rem;
+    font-weight:700;
+    margin-bottom:14px;
+}
+
+.analytics-highlight-card h2{
+    font-size:2.2rem;
+    margin-bottom:14px;
+}
+
+.analytics-highlight-card p{
+    font-size:.9rem;
+    line-height:1.7;
+    opacity:.95;
+}
+
+@media(max-width:992px){
+
+.analytics-banner{
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+.analytics-highlight-card{
+    max-width:100%;
+    flex:1 1 100%;
+}
+
+}
+
+@media(max-width:480px){
+
+.analytics-banner-actions{
+    width:100%;
+    flex-direction:column;
+}
+
+}
+
+/* ======================================================
+   STAT CARDS
+====================================================== */
+
+.analytics-stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:20px;
+}
+
+.analytics-stat-card{
+    position:relative;
+    overflow:hidden;
+    border-radius:24px;
+    padding:24px;
+    color:white;
+    min-width:0;
+    box-shadow:0 16px 36px rgba(0,0,0,.1);
+}
+
+.stat-gradient-pink{
+    background:linear-gradient(135deg,#ff5f8f,#ff7a3d);
+}
+
+.stat-gradient-blue{
+    background:linear-gradient(135deg,#4f6bf6,#8a5cf7);
+}
+
+.stat-gradient-green{
+    background:linear-gradient(135deg,#22c1a4,#34a853);
+}
+
+.analytics-stat-decor{
+    position:absolute;
+    width:150px;
+    height:150px;
+    right:-50px;
+    top:-60px;
+    border-radius:50%;
+    background:rgba(255,255,255,.14);
+    pointer-events:none;
+}
+
+.analytics-stat-top{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:22px;
+}
+
+.analytics-stat-label{
+    font-size:.9rem;
+    font-weight:600;
+    opacity:.95;
+}
+
+.analytics-stat-icon{
+    width:38px;
+    height:38px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    background:rgba(255,255,255,.2);
+}
+
+.analytics-stat-value{
+    position:relative;
+    font-size:2rem;
+    font-weight:800;
+    margin-bottom:8px;
+}
+
+.analytics-stat-change{
+    position:relative;
+    font-size:.82rem;
+    font-weight:600;
+    opacity:.9;
+}
+
+/* ======================================================
+   CHARTS
+====================================================== */
+
+.analytics-charts-grid{
+    display:grid;
+    grid-template-columns:1.6fr 1fr;
+    gap:20px;
+    align-items:start;
+}
+
+.chart-card{
+    background:white;
+    border-radius:24px;
+    padding:26px;
+    box-shadow:0 12px 35px rgba(0,0,0,.06);
+    min-width:0;
+}
+
+.chart-card-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.chart-card-header h3{
+    font-size:1.05rem;
+    font-weight:700;
+    color:#2d160f;
+}
+
+.chart-legend{
+    display:flex;
+    gap:16px;
+}
+
+.legend-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:.85rem;
+    color:#8a5b44;
+    font-weight:600;
+}
+
+.legend-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    display:inline-block;
+}
+
+.dot-orange{
+    background:#ff7a3d;
+}
+
+.dot-purple{
+    background:#b56cf0;
+}
+
+.chart-area{
+    width:100%;
+}
+
+/* ======================================================
+   TRAFFIC / DONUT CARD
+====================================================== */
+
+.traffic-card{
+    display:flex;
+    flex-direction:column;
+}
+
+.donut-chart-wrap{
+    display:flex;
+    justify-content:center;
+}
+
+.donut-legend{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-top:18px;
+}
+
+.donut-legend-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:.88rem;
+    color:#5b3528;
+}
+
+.donut-legend-label{
+    flex:1;
+    font-weight:600;
+}
+
+.donut-legend-value{
+    font-weight:700;
+    color:#2d160f;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media(max-width:1100px){
+
+.analytics-stats-grid{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.analytics-charts-grid{
+    grid-template-columns:1fr;
+}
+
+}
+
+@media(max-width:600px){
+
+.analytics-stats-grid{
+    grid-template-columns:1fr;
+}
+
+.chart-card{
+    padding:20px;
+}
+
+}

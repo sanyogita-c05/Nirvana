@@ -8,9 +8,11 @@ import {
   Users,
 } from "lucide-react";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Sidebar() {
+  const navigate = useNavigate();
+
   const menuItems = [
     {
       title: "Dashboard",
@@ -88,19 +90,19 @@ function Sidebar() {
       <div className="sidebar-footer">
 
         <NavLink
-  to="/customer-view"
-  className="customer-mode-btn"
->
-  <Users size={20} />
-  <span>Customer Mode</span>
-</NavLink>
+          to="/customer-view"
+          className="customer-mode-btn"
+        >
+          <Users size={20} />
+          <span>Customer Mode</span>
+        </NavLink>
 
-        <button className="logout-btn">
-
+        <button
+          className="logout-btn"
+          onClick={() => navigate("/")}
+        >
           <LogOut size={20} />
-
           <span>Logout</span>
-
         </button>
 
       </div>

@@ -10,6 +10,7 @@ import Settings from "./pages/Settings";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import CustomerView from "./pages/CustomerView";
 import ProductDetails from "./pages/ProductDetails";
+import SettingsPage from "./pages/SettingsPage";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-
+        <Route path="/settings" element={<SettingsPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/inventory" element={<InventoryPage />} />
         <Route path="/orders" element={<Orders />} />
