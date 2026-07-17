@@ -1,4 +1,4 @@
-import DashboardLayout from "../../components/layout/DashboardLayout";
+import DashboardLayout from "../../components/layout/DashBoardLayout";
 import DashboardBanner from "../../components/dashboard/DashboardBanner";
 import StatsGrid from "../../components/dashboard/StatsGrid";
 import RevenueChartCard from "../../components/dashboard/RevenueChartCard";

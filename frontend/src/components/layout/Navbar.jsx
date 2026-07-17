@@ -13,16 +13,11 @@ function Navbar() {
 
         <nav className="nav-links">
           <a href="#features">Features</a>
-          <a href="#dashboard">Dashboard</a>
           <a href="#stories">Stories</a>
           <a href="#pricing">Pricing</a>
         </nav>
 
         <div className="nav-actions">
-          <Link to="/dashboard" className="btn btn-outline">
-            Dashboard →
-          </Link>
-
           <Link to="/login" className="btn btn-primary">
             Login →
           </Link>

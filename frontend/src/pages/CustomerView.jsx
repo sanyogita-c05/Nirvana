@@ -4,7 +4,7 @@ import CustomerHero from "../components/customer/CustomerHero";
 import CategoryChips from "../components/customer/CategoryChips";
 import SearchSortBar from "../components/customer/SearchSortBar";
 import ProductCard from "../components/customer/ProductCard";
-import { getProducts } from "../api/product";
+import { getProducts } from "../api/productApi";
 import categories from "../data/categories";
 import "../styles/customer.css";
 

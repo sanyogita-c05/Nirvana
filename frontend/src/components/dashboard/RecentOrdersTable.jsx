@@ -38,8 +38,8 @@ function RecentOrdersTable() {
 
   return (
     <SectionCard title="Recent Orders" action="View all">
-      <div className="orders-table-wrap">
-        <table className="orders-table">
+      <div className="dash-orders-table-wrap">
+        <table className="dash-orders-table">
           <thead>
             <tr>
               <th>Order</th>
@@ -55,16 +55,16 @@ function RecentOrdersTable() {
               <tr key={row.order}>
                 <td>{row.order}</td>
                 <td>
-                  <div className="customer-cell">
+                  <div className="dash-customer-cell">
                     <strong>{row.customer}</strong>
                     <span>{row.city}</span>
                   </div>
                 </td>
-                <td className="orders-table__items">{row.items}</td>
-                <td className="orders-table__total">{row.total}</td>
+                <td className="dash-orders-table__items">{row.items}</td>
+                <td className="dash-orders-table__total">{row.total}</td>
                 <td>
                   <span
-                    className={`status-pill ${row.status.toLowerCase().replace(/\s+/g, "-")}`}
+                    className={`dash-status-pill ${row.status.toLowerCase().replace(/\s+/g, "-")}`}
                   >
                     {row.status}
                   </span>

@@ -477,6 +477,14 @@ button {
   font-size: 1.2rem;
 }
 
+.stats-section .stat-card {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+ 
+
 /* SECTION HEADING */
 .section-heading {
   text-align: center;
