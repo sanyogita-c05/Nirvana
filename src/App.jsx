@@ -11,7 +11,8 @@ import DashboardPage from "./pages/dashboard/DashboardPage";
 import CustomerView from "./pages/CustomerView";
 import ProductDetails from "./pages/ProductDetails";
 import SettingsPage from "./pages/SettingsPage";
-
+import Profile from "./pages/Profile";
+  
 function App() {
   return (
     <BrowserRouter>
@@ -26,6 +27,7 @@ function App() {
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/profile" element={<Profile />} />
 
         <Route path="/customer-view" element={<CustomerView />} />
         <Route path="/product/:id" element={<ProductDetails />} />

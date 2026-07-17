@@ -44,7 +44,13 @@ function Topbar({ onMenuClick }) {
           <Bell size={20} />
         </button>
 
-        <div className="profile-avatar">M</div>
+        <button
+          className="profile-avatar"
+          onClick={() => navigate("/profile")}
+          title="View profile"
+        >
+          M
+        </button>
       </div>
     </header>
   );
