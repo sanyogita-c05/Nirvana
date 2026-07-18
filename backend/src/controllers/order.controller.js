@@ -73,7 +73,8 @@ const buildOrderItemsAndReduceStock = async (items, ownerId) => {
         for (const reduced of reducedSoFar) {
             await Product.findOneAndUpdate(
                 { _id: reduced.productId, owner: ownerId },
-                { $inc: { stockQuantity: reduced.quantity } }
+                { $inc: { stockQuantity: reduced.quantity } },
+                { returnDocument: "after" }
             );
         }
         throw error;
@@ -96,7 +97,8 @@ const restoreStock = async (items, ownerId) => {
             },
             {
                 $inc: { stockQuantity: item.quantity },
-            }
+            },
+            { returnDocument: "after" }
         );
     }
 };
