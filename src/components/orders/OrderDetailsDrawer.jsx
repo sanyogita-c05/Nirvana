@@ -9,8 +9,12 @@ import {
   MapPin,
 } from "lucide-react";
 
-function OrderDetailsDrawer() {
+function OrderDetailsDrawer({ order }) {
   const [open, setOpen] = useState(false);
+
+  const date = new Date(order.orderDate).toLocaleDateString("en-IN", {
+    day: "2-digit", month: "short", year: "numeric",
+  });
 
   return (
     <>
@@ -23,138 +27,94 @@ function OrderDetailsDrawer() {
 
       {open && (
         <>
-          <div
-            className="drawer-overlay"
-            onClick={() => setOpen(false)}
-          />
+          <div className="drawer-overlay" onClick={() => setOpen(false)} />
 
           <aside className="order-drawer">
 
             <div className="drawer-header">
-
               <div>
                 <h2>Order Details</h2>
-                <p>#ORD-1024</p>
+                <p>{order.orderNumber}</p>
               </div>
-
-              <button
-                className="drawer-close"
-                onClick={() => setOpen(false)}
-              >
+              <button className="drawer-close" onClick={() => setOpen(false)}>
                 <X size={20} />
               </button>
-
             </div>
 
             <div className="drawer-section">
-
-              <h4>
-                <User size={18} />
-                Customer
-              </h4>
-
+              <h4><User size={18} /> Customer</h4>
               <div className="drawer-card">
-
-                <h3>Emma Watson</h3>
-
-                <p>emma@email.com</p>
-
-                <p>+91 9876543210</p>
-
+                <h3>{order.customer.name}</h3>
+                <p>{order.customer.email}</p>
+                <p>{order.customer.phone}</p>
               </div>
-
             </div>
 
             <div className="drawer-section">
-
-              <h4>
-                <Package size={18} />
-                Product
-              </h4>
-
-              <div className="drawer-card">
-
-                <div className="drawer-row">
-                  <span>Handmade Vase</span>
-                  <strong>₹2450</strong>
+              <h4><Package size={18} /> Products</h4>
+              {order.items.map((item, i) => (
+                <div className="drawer-card" key={i}>
+                  <div className="drawer-row">
+                    <span>{item.name}</span>
+                    <strong>₹{item.priceAtSale.toLocaleString("en-IN")}</strong>
+                  </div>
+                  <div className="drawer-row">
+                    <span>Quantity</span>
+                    <strong>{item.quantity}</strong>
+                  </div>
                 </div>
-
-                <div className="drawer-row">
-                  <span>Quantity</span>
-                  <strong>2</strong>
-                </div>
-
-              </div>
-
+              ))}
             </div>
 
             <div className="drawer-section">
-
-              <h4>
-                <Truck size={18} />
-                Shipping
-              </h4>
-
+              <h4><Truck size={18} /> Shipping</h4>
               <div className="drawer-card">
-
-                <p>Processing</p>
-
-                <p>Expected Delivery</p>
-
-                <strong>15 July 2026</strong>
-
+                <p>Status: {order.orderStatus}</p>
+                {order.deliveryDate && (
+                  <><p>Expected Delivery</p><strong>{new Date(order.deliveryDate).toLocaleDateString("en-IN")}</strong></>
+                )}
+                {order.shipmentDetails?.address && <p>{order.shipmentDetails.address}</p>}
+                {order.shipmentDetails?.courierName && <p>Courier: {order.shipmentDetails.courierName}</p>}
+                {order.shipmentDetails?.trackingNumber && <p>Tracking: {order.shipmentDetails.trackingNumber}</p>}
               </div>
-
             </div>
 
             <div className="drawer-section">
-
-              <h4>
-                <CreditCard size={18} />
-                Payment
-              </h4>
-
+              <h4><CreditCard size={18} /> Payment</h4>
               <div className="drawer-card">
-
                 <div className="drawer-row">
                   <span>Method</span>
-                  <strong>UPI</strong>
+                  <strong>{order.payment.method}</strong>
                 </div>
-
                 <div className="drawer-row">
                   <span>Status</span>
-                  <span className="paid">
-                    Paid
+                  <span className={order.payment.status === "Fully Settled" ? "paid" : "pending"}>
+                    {order.payment.status}
                   </span>
                 </div>
-
+                <div className="drawer-row">
+                  <span>Paid</span>
+                  <strong>₹{order.payment.amountPaid.toLocaleString("en-IN")}</strong>
+                </div>
+                <div className="drawer-row">
+                  <span>Remaining</span>
+                  <strong>₹{order.payment.remainingAmount.toLocaleString("en-IN")}</strong>
+                </div>
+                <div className="drawer-row">
+                  <span>Total</span>
+                  <strong>₹{order.totalAmount.toLocaleString("en-IN")}</strong>
+                </div>
               </div>
-
             </div>
 
-            <div className="drawer-section">
-
-              <h4>
-                <MapPin size={18} />
-                Address
-              </h4>
-
-              <div className="drawer-card">
-
-                <p>
-                  12 MG Road,
-                  <br />
-                  Pune,
-                  <br />
-                  Maharashtra
-                </p>
-
+            {order.notes && (
+              <div className="drawer-section">
+                <h4><MapPin size={18} /> Notes</h4>
+                <div className="drawer-card"><p>{order.notes}</p></div>
               </div>
-
-            </div>
+            )}
 
           </aside>
-
         </>
       )}
     </>

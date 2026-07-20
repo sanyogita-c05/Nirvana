@@ -13,9 +13,9 @@ import {
   LogOut,
 } from "lucide-react";
 
-import DashBoardLayout from "../../components/layout/DashBoardLayout";
-import StatCard from "../../components/dashboard/StatCard";
-import "./ProfilePage.css";
+import DashBoardLayout from "../components/layout/DashBoardLayout";
+import StatCard from "../components/dashboard/StatCard";
+import "./Profile.css";
 
 // Frontend-only placeholder data — swap for real user/account
 // data once a backend is connected.

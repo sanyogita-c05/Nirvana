@@ -1,60 +1,27 @@
 import { useState } from "react";
 
-const filters = [
-  {
-    id: 1,
-    label: "All Orders",
-    count: 1248,
-  },
-  {
-    id: 2,
-    label: "Pending",
-    count: 46,
-  },
-  {
-    id: 3,
-    label: "Processing",
-    count: 82,
-  },
-  {
-    id: 4,
-    label: "Shipped",
-    count: 173,
-  },
-  {
-    id: 5,
-    label: "Delivered",
-    count: 912,
-  },
-  {
-    id: 6,
-    label: "Cancelled",
-    count: 35,
-  },
-];
+function OrderFilters({ orders = [] }) {
+  const [active, setActive] = useState("All");
 
-function OrderFilters() {
-  const [active, setActive] = useState(1);
+  const filters = [
+    { label: "All Orders", key: "All", count: orders.length },
+    { label: "Active", key: "Active", count: orders.filter((o) => o.orderStatus === "Active").length },
+    { label: "Shipped", key: "Shipped", count: orders.filter((o) => o.orderStatus === "Shipped").length },
+    { label: "Closed", key: "Closed", count: orders.filter((o) => o.orderStatus === "Closed").length },
+  ];
 
   return (
     <section className="order-filters">
-
       {filters.map((filter) => (
         <button
-          key={filter.id}
-          className={`filter-chip ${
-            active === filter.id ? "active-filter" : ""
-          }`}
-          onClick={() => setActive(filter.id)}
+          key={filter.key}
+          className={`filter-chip ${active === filter.key ? "active-filter" : ""}`}
+          onClick={() => setActive(filter.key)}
         >
           <span>{filter.label}</span>
-
-          <div className="filter-count">
-            {filter.count}
-          </div>
+          <div className="filter-count">{filter.count}</div>
         </button>
       ))}
-
     </section>
   );
 }

@@ -5,61 +5,54 @@ import {
   IndianRupee,
 } from "lucide-react";
 
-const stats = [
-  {
-    title: "Total Orders",
-    value: "1,248",
-    change: "+12.5%",
-    icon: <ShoppingBag size={26} />,
-    color: "orange",
-  },
-  {
-    title: "Pending Orders",
-    value: "46",
-    change: "+4",
-    icon: <Clock3 size={26} />,
-    color: "yellow",
-  },
-  {
-    title: "Completed",
-    value: "1,170",
-    change: "+8.3%",
-    icon: <CheckCircle2 size={26} />,
-    color: "green",
-  },
-  {
-    title: "Revenue Today",
-    value: "₹18,750",
-    change: "+₹2,340",
-    icon: <IndianRupee size={26} />,
-    color: "purple",
-  },
-];
+function OrderStats({ orders = [] }) {
+  const today = new Date().toDateString();
 
-function OrderStats() {
+  const totalOrders = orders.length;
+  const activeOrders = orders.filter((o) => o.orderStatus === "Active").length;
+  const closedOrders = orders.filter((o) => o.orderStatus === "Closed").length;
+  const revenueToday = orders
+    .filter((o) => new Date(o.orderDate).toDateString() === today)
+    .reduce((sum, o) => sum + o.totalAmount, 0);
+
+  const stats = [
+    {
+      title: "Total Orders",
+      value: totalOrders,
+      icon: <ShoppingBag size={26} />,
+      color: "orange",
+    },
+    {
+      title: "Active Orders",
+      value: activeOrders,
+      icon: <Clock3 size={26} />,
+      color: "yellow",
+    },
+    {
+      title: "Closed Orders",
+      value: closedOrders,
+      icon: <CheckCircle2 size={26} />,
+      color: "green",
+    },
+    {
+      title: "Revenue Today",
+      value: `₹${revenueToday.toLocaleString("en-IN")}`,
+      icon: <IndianRupee size={26} />,
+      color: "purple",
+    },
+  ];
+
   return (
     <section className="order-stats">
-
       {stats.map((item, index) => (
         <div className="order-stat-card" key={index}>
-
-          <div className={`stat-icon ${item.color}`}>
-            {item.icon}
-          </div>
-
+          <div className={`stat-icon ${item.color}`}>{item.icon}</div>
           <div className="stat-content">
-
             <p>{item.title}</p>
-
             <h2>{item.value}</h2>
-
-            <span>{item.change}</span>
-
           </div>
-
         </div>
       ))}
-
     </section>
   );
 }
