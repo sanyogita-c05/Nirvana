@@ -73,7 +73,7 @@ function Login() {
         localStorage.setItem("user", JSON.stringify(user));
       }
 
-      alert(res.data?.message || "Login successful");
+      // alert(res.data?.message || "Login successful");
       navigate("/dashboard");
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");

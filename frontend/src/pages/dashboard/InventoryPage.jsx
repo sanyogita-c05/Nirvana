@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import DashboardLayout from "../../components/layout/DashBoardLayout";
 
 import InventoryBanner from "../../components/inventory/InventoryBanner";
@@ -17,7 +17,7 @@ function InventoryPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       const response = await getProducts();
       setProducts(response.data.data);
@@ -26,11 +26,11 @@ function InventoryPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
 
   return (
     <DashboardLayout>
