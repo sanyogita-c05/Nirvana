@@ -52,7 +52,7 @@ function OrderHero() {
           </div>
 
           <div className="summary-item">
-            <h2>$2,967</h2>
+            <h2>₹2,967</h2>
             <span>Revenue</span>
           </div>
 
