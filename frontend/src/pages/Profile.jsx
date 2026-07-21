@@ -37,7 +37,8 @@ function ProfilePage() {
   const handleLogout = () => {
     // Frontend-only: clear any local session state here later,
     // then redirect to login.
-    navigate("/login");
+    localStorage.removeItem("token");
+    navigate("/login", { replace: true });
   };
 
   return (

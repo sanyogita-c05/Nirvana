@@ -42,8 +42,9 @@ function MobileSidebar({ open, onClose }) {
   ];
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
     onClose();
-    navigate("/");
+    navigate("/login", { replace: true });
   };
 
   return (
