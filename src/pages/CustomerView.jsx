@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import CustomerTopbar from "../components/customer/CustomerTopbar";
 import CustomerHero from "../components/customer/CustomerHero";
 import CategoryChips from "../components/customer/CategoryChips";
@@ -14,18 +14,18 @@ function CustomerView() {
   const [sortBy, setSortBy] = useState("featured");
   const [products, setProducts] = useState([]);
 
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     try {
       const res = await getProducts();
       setProducts(res.data.data);
     } catch (error) {
       console.error(error);
     }
-  };
-
+  }, []);
+  
   useEffect(() => {
     loadProducts();
-  }, []);
+  }, [loadProducts]);
 
   const filteredProducts = useMemo(() => {
     let filtered = [...products];
@@ -47,18 +47,18 @@ function CustomerView() {
     switch (sortBy) {
       case "price-low":
         filtered.sort(
-        (a, b) => a.sellingPrice - b.sellingPrice
+          (a, b) => a.sellingPrice - b.sellingPrice
         );
-      break;
+        break;
 
       case "price-high":
         filtered.sort(
-        (a, b) => b.sellingPrice - a.sellingPrice
+          (a, b) => b.sellingPrice - a.sellingPrice
         );
-      break;
+        break;
 
       case "rating":
-      break;
+        break;
       case "name":
         filtered.sort((a, b) => a.name.localeCompare(b.name));
         break;

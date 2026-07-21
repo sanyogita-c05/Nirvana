@@ -6,7 +6,7 @@ import "../styles/customer.css";
 function ProductDetails() {
   const { id } = useParams();
 
-  const [product, sethtProduct] = useState(null);
+  const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

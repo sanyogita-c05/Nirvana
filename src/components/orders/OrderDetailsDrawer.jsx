@@ -12,9 +12,9 @@ import {
 function OrderDetailsDrawer({ order }) {
   const [open, setOpen] = useState(false);
 
-  const date = new Date(order.orderDate).toLocaleDateString("en-IN", {
-    day: "2-digit", month: "short", year: "numeric",
-  });
+  // const date = new Date(order.orderDate).toLocaleDateString("en-IN", {
+  //   day: "2-digit", month: "short", year: "numeric",
+  // });
 
   return (
     <>

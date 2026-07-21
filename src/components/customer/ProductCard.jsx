@@ -36,7 +36,7 @@ function ProductCard({ product }) {
           <strong>₹{product.sellingPrice}</strong>
 
           <Link
-            to={`/customer/product/${product._id}`}
+            to={`/product/${product._id}`}
             className={`view-btn ${outOfStock ? "disabled" : ""}`}
           >
             {outOfStock ? "Out of Stock" : "View Product"}

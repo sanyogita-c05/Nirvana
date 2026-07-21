@@ -2,7 +2,7 @@ import { Eye, Pencil, Trash2 } from "lucide-react";
 import { deleteOrder } from "../../api/orderApi";
 import OrderDetailsDrawer from "./OrderDetailsDrawer";
 
-function OrderRow({ order, refreshOrders }) {
+function OrderRow({ order, refreshOrders, onEdit }) {
   const productNames = order.items.map((i) => i.name).join(", ");
   const date = new Date(order.orderDate).toLocaleDateString("en-IN", {
     day: "2-digit", month: "short", year: "numeric",
@@ -37,9 +37,8 @@ function OrderRow({ order, refreshOrders }) {
       <td className="order-amount">₹{order.totalAmount.toLocaleString("en-IN")}</td>
 
       <td>
-        <span className={`payment-badge ${
-          order.payment.status === "Fully Settled" ? "paid" : "pending"
-        }`}>
+        <span className={`payment-badge ${order.payment.status === "Fully Settled" ? "paid" : "pending"
+          }`}>
           {order.payment.status}
         </span>
       </td>
@@ -53,7 +52,10 @@ function OrderRow({ order, refreshOrders }) {
       <td>
         <div className="row-actions">
           <OrderDetailsDrawer order={order} />
-          <button><Pencil size={18} /></button>
+          <button onClick={() => onEdit(order)}>
+            <Pencil size={18} />
+          </button>
+          
           <button className="delete-btn" onClick={handleDelete}>
             <Trash2 size={18} />
           </button>

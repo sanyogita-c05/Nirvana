@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { getMe } from "../api/auth";
 import {
   Package,
   ShoppingBag,
@@ -36,7 +37,8 @@ function ProfilePage() {
   const handleLogout = () => {
     // Frontend-only: clear any local session state here later,
     // then redirect to login.
-    navigate("/login");
+    localStorage.removeItem("token");
+    navigate("/login", { replace: true });
   };
 
   return (

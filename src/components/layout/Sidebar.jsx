@@ -12,7 +12,10 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 function Sidebar() {
   const navigate = useNavigate();
-
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login", { replace: true });
+  };
   const menuItems = [
     {
       title: "Dashboard",
@@ -99,7 +102,7 @@ function Sidebar() {
 
         <button
           className="logout-btn"
-          onClick={() => navigate("/")}
+          onClick={handleLogout}
         >
           <LogOut size={20} />
           <span>Logout</span>
