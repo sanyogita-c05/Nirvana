@@ -3,7 +3,7 @@ import {
   Download,
 } from "lucide-react";
 
-function OrderHero() {
+function OrderHero({ onNewOrder }) {
   return (
     <section className="order-hero">
 
@@ -26,7 +26,7 @@ function OrderHero() {
 
         <div className="hero-buttons">
 
-          <button className="primary-btn">
+          <button className="primary-btn" onClick={onNewOrder}>
             <Plus size={18} />
             Create Order
           </button>

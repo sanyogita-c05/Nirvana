@@ -1,6 +1,6 @@
 import OrderRow from "./OrderRow";
 
-function OrderTable({ orders = [], loading, refreshOrders }) {
+function OrderTable({ orders = [], loading, refreshOrders, onEdit }) {
   return (
     <section className="orders-table-container">
 
@@ -37,7 +37,12 @@ function OrderTable({ orders = [], loading, refreshOrders }) {
             <tr><td colSpan="8" style={{ textAlign: "center", padding: "40px" }}>No orders found</td></tr>
           ) : (
             orders.map((order) => (
-              <OrderRow key={order._id} order={order} refreshOrders={refreshOrders} />
+              <OrderRow
+                key={order._id}
+                order={order}
+                refreshOrders={refreshOrders}
+                onEdit={onEdit}
+              />
             ))
           )}
         </tbody>

@@ -1,7 +1,7 @@
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import { deleteOrder } from "../../api/orderApi";
 
-function OrderCard({ order, refreshOrders }) {
+function OrderCard({ order, refreshOrders, onEdit }) {
   const productNames = order.items.map((i) => i.name).join(", ");
   const date = new Date(order.orderDate).toLocaleDateString("en-IN", {
     day: "2-digit", month: "short", year: "numeric",
@@ -47,9 +47,8 @@ function OrderCard({ order, refreshOrders }) {
         </div>
         <div>
           <span className="card-label">Payment</span>
-          <span className={`payment-badge ${
-            order.payment.status === "Fully Settled" ? "paid" : "pending"
-          }`}>
+          <span className={`payment-badge ${order.payment.status === "Fully Settled" ? "paid" : "pending"
+            }`}>
             {order.payment.status}
           </span>
         </div>
@@ -57,7 +56,9 @@ function OrderCard({ order, refreshOrders }) {
 
       <div className="mobile-actions">
         <button><Eye size={18} /></button>
-        <button><Pencil size={18} /></button>
+        <button onClick={() => onEdit(order)}>
+          <Pencil size={18} />
+        </button>
         <button className="delete-btn" onClick={handleDelete}>
           <Trash2 size={18} />
         </button>

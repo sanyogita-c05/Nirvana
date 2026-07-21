@@ -9,7 +9,7 @@ import OrderFilters from "../components/orders/OrderFilters";
 import OrderTable from "../components/orders/OrderTable";
 import MobileOrderList from "../components/orders/MobileOrderList";
 import CreateOrderModal from "../components/orders/CreateOrderModal";
-
+import EditOrderModal from "../components/orders/EditOrderModal";
 import { getOrders } from "../api/orderApi";
 
 import "../styles/orders.css";
@@ -18,6 +18,7 @@ function Orders() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingOrder, setEditingOrder] = useState(null);
 
   const fetchOrders = useCallback(async () => {
     try {
@@ -38,7 +39,7 @@ function Orders() {
     <DashboardLayout>
       <div className="orders-page">
 
-        <OrderHero />
+        <OrderHero onNewOrder={() => setIsCreateOpen(true)}/>
 
         <OrderStats orders={orders} />
 
@@ -48,12 +49,21 @@ function Orders() {
 
         {/* Desktop & Tablet */}
         <div className="desktop-orders">
-          <OrderTable orders={orders} loading={loading} refreshOrders={fetchOrders} />
+          <OrderTable
+            orders={orders}
+            loading={loading}
+            refreshOrders={fetchOrders}
+            onEdit={setEditingOrder}
+          />
         </div>
 
         {/* Mobile */}
         <div className="mobile-orders">
-          <MobileOrderList orders={orders} refreshOrders={fetchOrders} />
+          <MobileOrderList
+            orders={orders}
+            refreshOrders={fetchOrders}
+            onEdit={setEditingOrder}
+          />
         </div>
 
         <CreateOrderModal
@@ -61,6 +71,14 @@ function Orders() {
           onClose={() => setIsCreateOpen(false)}
           refreshOrders={fetchOrders}
         />
+
+        {editingOrder && (
+          <EditOrderModal
+            order={editingOrder}
+            onClose={() => setEditingOrder(null)}
+            refreshOrders={fetchOrders}
+          />
+        )}
 
       </div>
     </DashboardLayout>
