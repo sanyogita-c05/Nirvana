@@ -16,6 +16,7 @@ import {
 import DashBoardLayout from "../components/layout/DashBoardLayout";
 import StatCard from "../components/dashboard/StatCard";
 import "./Profile.css";
+
 // Frontend-only placeholder data — swap for real user/account
 // data once a backend is connected.
 const currentUser = {
