@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageUpload from "./ImageUpload";
+import { updateProduct } from "../../api/productApi";
 
 function EditProductForm({
   product,
+  refreshProducts,
   onClose,
 }) {
   const [preview, setPreview] = useState(
@@ -22,6 +24,26 @@ function EditProductForm({
     stockQuantity: product.stockQuantity || "",
   });
 
+  useEffect(() => {
+    if (!product) return;
+
+    setPreview(
+      product.imagePath
+        ? `http://localhost:5000${product.imagePath}`
+        : ""
+    );
+
+    setFormData({
+      name: product.name || "",
+      description: product.description || "",
+      category: product.category || "",
+      costPrice: product.costPrice || "",
+      sellingPrice: product.sellingPrice || "",
+      stockQuantity: product.stockQuantity || "",
+    });
+  }, [product]);
+
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -29,18 +51,39 @@ function EditProductForm({
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Backend integration will be added later
-    console.log({
-      ...formData,
-      image,
-    });
+    try {
+      const data = new FormData();
 
-    alert("Update functionality will be connected later.");
+      data.append("name", formData.name);
+      data.append("description", formData.description);
+      data.append("category", formData.category);
+      data.append("costPrice", formData.costPrice);
+      data.append("sellingPrice", formData.sellingPrice);
+      data.append("stockQuantity", formData.stockQuantity);
 
-    onClose();
+      // Only send image if user selected a new one
+      if (image) {
+        data.append("image", image);
+      }
+
+      await updateProduct(product._id, data);
+      await refreshProducts();
+
+      alert("Product updated successfully!");
+
+      onClose();
+
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        error?.response?.data?.message ||
+        "Unable to update product."
+      );
+    }
   };
 
   return (

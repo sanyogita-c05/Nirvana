@@ -4,6 +4,7 @@ import ProductRow from "./ProductRow";
 import AddProductModal from "./AddProductModal";
 import EditProductModal from "./EditProductModal";
 import ProductForm from "./ProductForm";
+import EditProductForm from "./EditProductForm";
 
 function ProductInventoryTable({
   products,
@@ -120,9 +121,8 @@ function ProductInventoryTable({
           setSelectedProduct(null);
         }}
       >
-        <ProductForm
+        <EditProductForm
           product={selectedProduct}
-          isEdit={true}
           refreshProducts={refreshProducts}
           onClose={() => {
             setIsEditModalOpen(false);
