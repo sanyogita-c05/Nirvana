@@ -40,10 +40,13 @@ function Topbar({ onMenuClick }) {
           </button>
         </div>
 
-        <button className="icon-btn">
-          <Bell size={20} />
-        </button>
-
+        <button
+  className="icon-btn"
+  onClick={() => navigate("/notifications")}
+  title="Notifications"
+>
+  <Bell size={20} />
+</button>
         <button
           className="profile-avatar"
           onClick={() => navigate("/profile")}
