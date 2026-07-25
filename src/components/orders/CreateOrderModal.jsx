@@ -5,6 +5,15 @@ import { getProducts } from "../../api/productApi";
 
 function CreateOrderModal({ open, onClose, refreshOrders }) {
   const [products, setProducts] = useState([]);
+
+  const getLocalDateString = () => {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   const [form, setForm] = useState({
     customerName: "",
     customerPhone: "",
@@ -13,9 +22,10 @@ function CreateOrderModal({ open, onClose, refreshOrders }) {
     quantity: 1,
     paymentMethod: "N/A",
     amountPaid: 0,
-    orderDate: new Date().toISOString().split("T")[0],
+    orderDate: getLocalDateString(),
     notes: "",
   });
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +33,7 @@ function CreateOrderModal({ open, onClose, refreshOrders }) {
     if (open) {
       getProducts()
         .then((res) => setProducts(res.data.data))
-        .catch(() => {});
+        .catch(() => { });
     }
   }, [open]);
 
@@ -43,6 +53,7 @@ function CreateOrderModal({ open, onClose, refreshOrders }) {
           name: form.customerName,
           phone: form.customerPhone,
           email: form.customerEmail,
+          city: form.customerCity,
         },
         items: [{ productId: form.productId, quantity: Number(form.quantity) }],
         payment: {
@@ -96,6 +107,11 @@ function CreateOrderModal({ open, onClose, refreshOrders }) {
           <div className="form-group">
             <label>Customer Email</label>
             <input name="customerEmail" type="email" placeholder="customer@email.com" value={form.customerEmail} onChange={handleChange} required />
+          </div>
+
+          <div className="form-group">
+            <label>Customer City</label>
+            <input name="customerCity" type="text" placeholder="e.g. Mumbai" value={form.customerCity} onChange={handleChange} />
           </div>
 
           <div className="form-group">

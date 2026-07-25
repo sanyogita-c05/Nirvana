@@ -73,9 +73,9 @@ function OrderDetailsDrawer({ order }) {
                 {order.deliveryDate && (
                   <><p>Expected Delivery</p><strong>{new Date(order.deliveryDate).toLocaleDateString("en-IN")}</strong></>
                 )}
-                {order.shipmentDetails?.address && <p>{order.shipmentDetails.address}</p>}
-                {order.shipmentDetails?.courierName && <p>Courier: {order.shipmentDetails.courierName}</p>}
-                {order.shipmentDetails?.trackingNumber && <p>Tracking: {order.shipmentDetails.trackingNumber}</p>}
+                {order.shipment?.address && <p>{order.shipment.address}</p>}
+                {order.shipment?.courierName && <p>Courier: {order.shipment.courierName}</p>}
+                {order.shipment?.trackingNumber && <p>Tracking: {order.shipment.trackingNumber}</p>}
               </div>
             </div>
 
