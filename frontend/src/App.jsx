@@ -12,6 +12,7 @@ import ProductDetails from "./pages/ProductDetails";
 import SettingsPage from "./pages/SettingsPage";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
+import Notifications from "./pages/notifications/Notifications";
 
 function App() {
   return (
@@ -45,6 +46,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <Notifications />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/orders"
           element={

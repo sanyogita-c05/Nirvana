@@ -7,6 +7,7 @@ import {
   Settings,
   Users,
   LogOut,
+  Bell,
   X,
 } from "lucide-react";
 
@@ -14,32 +15,13 @@ function MobileSidebar({ open, onClose }) {
   const navigate = useNavigate();
 
   const menuItems = [
-    {
-      title: "Dashboard",
-      path: "/dashboard",
-      icon: <LayoutDashboard size={20} />,
-    },
-    {
-      title: "Inventory",
-      path: "/inventory",
-      icon: <Package size={20} />,
-    },
-    {
-      title: "Orders",
-      path: "/orders",
-      icon: <ShoppingCart size={20} />,
-    },
-    {
-      title: "Analytics",
-      path: "/analytics",
-      icon: <BarChart3 size={20} />,
-    },
-    {
-      title: "Settings",
-      path: "/settings",
-      icon: <Settings size={20} />,
-    },
-  ];
+  { title: "Dashboard", path: "/dashboard", icon: <LayoutDashboard size={20} /> },
+  { title: "Inventory", path: "/inventory", icon: <Package size={20} /> },
+  { title: "Orders", path: "/orders", icon: <ShoppingCart size={20} /> },
+  { title: "Analytics", path: "/analytics", icon: <BarChart3 size={20} /> },
+  { title: "Notifications", path: "/notifications", icon: <Bell size={20} /> },
+  { title: "Settings", path: "/settings", icon: <Settings size={20} /> },
+];
 
   const handleLogout = () => {
     localStorage.removeItem("token");
