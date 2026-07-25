@@ -8,6 +8,7 @@ import {
     getOrderById,
     updateOrder,
     deleteOrder,
+    getRecentOrders,
 } from "../controllers/order.controller.js";
 
 const router = express.Router();
@@ -23,6 +24,7 @@ router
         getAllOrders
     );
 
+router.get("/recent", protect, getRecentOrders);
 router
     .route("/:id")
     .get(
@@ -37,5 +39,6 @@ router
         protect,
         deleteOrder
     );
+
 
 export default router;

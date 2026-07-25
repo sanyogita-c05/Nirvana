@@ -1,7 +1,7 @@
-import { useState } from "react";
+// import { useState } from "react";
 
-function OrderFilters({ orders = [] }) {
-  const [active, setActive] = useState("All");
+function OrderFilters({ orders = [], active, onFilterChange }) {
+  // const [active, setActive] = useState("All");
 
   const filters = [
     { label: "All Orders", key: "All", count: orders.length },
@@ -16,7 +16,7 @@ function OrderFilters({ orders = [] }) {
         <button
           key={filter.key}
           className={`filter-chip ${active === filter.key ? "active-filter" : ""}`}
-          onClick={() => setActive(filter.key)}
+          onClick={() => onFilterChange(filter.key)}
         >
           <span>{filter.label}</span>
           <div className="filter-count">{filter.count}</div>

@@ -101,6 +101,11 @@ const orderSchema = new mongoose.Schema(
                 trim: true,
                 lowercase: true,
             },
+            city: {
+                type: String,
+                trim: true,
+                default: "",
+            },
         },
 
         items: {
@@ -164,7 +169,7 @@ const orderSchema = new mongoose.Schema(
             },
         },
 
-        shipmentDetails: {
+        shipment: {
             address: {
                 type: String,
                 trim: true,
@@ -181,6 +186,11 @@ const orderSchema = new mongoose.Schema(
                 type: String,
                 trim: true,
                 default: "",
+            },
+
+            shipmentDate: {
+                type: Date,
+                default: null,
             },
         },
 
@@ -231,15 +241,11 @@ orderSchema.pre("validate", function (next) {
     if (
         (this.orderStatus === "Shipped" ||
             this.orderStatus === "Closed") &&
-        (
-            !this.shipmentDetails.address ||
-            !this.shipmentDetails.courierName ||
-            !this.shipmentDetails.trackingNumber
-        )
+        !this.shipment.trackingNumber
     ) {
         return next(
             new Error(
-                "Address, courier name and tracking number are required for shipped or closed orders."
+                "Tracking number is required for shipped or closed orders."
             )
         );
     }

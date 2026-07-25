@@ -176,7 +176,7 @@ export const createOrder = asyncHandler(async (req, res) => {
         discount,
         tax,
         payment,
-        shipmentDetails,
+        shipment,
         orderDate,
         deliveryDate,
         orderStatus,
@@ -219,7 +219,7 @@ export const createOrder = asyncHandler(async (req, res) => {
                 amountPaid: financials.amountPaid,
                 remainingAmount: financials.remainingAmount,
             },
-            shipmentDetails: shipmentDetails || {},
+            shipment: shipment || {},
             orderDate,
             deliveryDate: deliveryDate || null,
             orderStatus: orderStatus || "Active",
@@ -304,7 +304,7 @@ export const updateOrder = asyncHandler(async (req, res) => {
         discount,
         tax,
         payment,
-        shipmentDetails,
+        shipment,
         orderDate,
         deliveryDate,
         orderStatus,
@@ -373,8 +373,8 @@ export const updateOrder = asyncHandler(async (req, res) => {
             remainingAmount: financials.remainingAmount,
         };
 
-        if (shipmentDetails) {
-            order.shipmentDetails = shipmentDetails;
+        if (shipment) {
+            order.shipment = shipment;
         }
 
         if (orderDate) {
@@ -484,4 +484,28 @@ export const deleteOrder = asyncHandler(async (req, res) => {
 
         throw error;
     }
+});
+
+/*
+----------------------------------------
+Get Recent Orders (latest 4)
+----------------------------------------
+*/
+
+export const getRecentOrders = asyncHandler(async (req, res) => {
+
+    const orders = await Order.find({
+        owner: req.user._id,
+        isActive: true,
+    })
+        .sort({ createdAt: -1 })
+        .limit(4);
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            orders,
+            "Recent orders fetched successfully."
+        )
+    );
 });

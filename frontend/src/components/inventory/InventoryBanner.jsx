@@ -1,4 +1,8 @@
-function InventoryBanner() {
+function InventoryBanner({ onExport }) {
+  const scrollToTable = () => {
+    document.getElementById("product-inventory-table")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section className="inventory-banner">
 
@@ -21,12 +25,11 @@ function InventoryBanner() {
         </p>
 
         <div className="inventory-banner-actions">
-
-          <button className="primary-btn">
+          <button className="primary-btn" onClick={scrollToTable}>
             View Inventory
           </button>
 
-          <button className="secondary-btn">
+         <button className="secondary-btn" onClick={onExport}>
             Export Products
           </button>
 
