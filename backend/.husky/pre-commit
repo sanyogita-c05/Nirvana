@@ -1,1 +1,6 @@
+#!/usr/bin/env sh
+
+echo "Running automated tests..."
+
+cd backend
 npm test
