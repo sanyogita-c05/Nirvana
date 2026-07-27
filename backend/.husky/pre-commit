@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+echo "Running automated tests..."
+
+npm test
+
+echo "All tests passed!"
