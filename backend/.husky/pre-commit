@@ -1,6 +1,22 @@
 #!/usr/bin/env sh
 
-echo "Running automated tests..."
+echo "Running ESLint..."
 
 cd backend
+npm run lint
+
+if [ $? -ne 0 ]; then
+    echo "Lint failed. Commit blocked."
+    exit 1
+fi
+
+echo "Running tests..."
+
 npm test
+
+if [ $? -ne 0 ]; then
+    echo "Tests failed. Commit blocked."
+    exit 1
+fi
+
+echo "All checks passed. Commit allowed."

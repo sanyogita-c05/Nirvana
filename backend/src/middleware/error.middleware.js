@@ -1,5 +1,6 @@
 import ApiError from "../utils/api-error.js";
 
+// eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
 
     console.error(err);
