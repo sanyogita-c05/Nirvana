@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
-echo "Running ESLint..."
-
 cd backend
+
+echo "Running ESLint..."
 npm run lint
 
 if [ $? -ne 0 ]; then
@@ -10,13 +10,22 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "Running tests..."
 
+echo "Running tests..."
 npm test
 
 if [ $? -ne 0 ]; then
     echo "Tests failed. Commit blocked."
     exit 1
 fi
+
+
+echo "Running security audit..."
+npm audit --audit-level=high
+
+if [ $? -ne 0 ]; then
+    echo "Security vulnerabilities found. Review before release."
+fi
+
 
 echo "All checks passed. Commit allowed."
