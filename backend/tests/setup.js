@@ -4,6 +4,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import connectDB from "../src/config/db.js";
 
 let mongoServer;
+let consoleErrorSpy;
 
 beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
@@ -16,11 +17,13 @@ beforeAll(async () => {
 
     await connectDB();
 
-    jest.spyOn(console, "error").mockImplementation(() => {});
+    consoleErrorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
 });
 
 afterAll(async () => {
-    console.error.mockRestore();
+    consoleErrorSpy.mockRestore();
 
     await mongoose.connection.close();
 

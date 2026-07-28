@@ -1,0 +1,21 @@
+[33mbc250f5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mpre-commit-hooks[m[33m)[m Verify husky hook
+[33m7ed8e15[m Verify husky hook
+[33m217038e[m Verify husky hook
+[33m28644ad[m Verify husky hook
+[33m5cf2ab3[m Test pre commit hook
+[33m9b43a83[m Add Husky pre-commit hook
+[33m0f9b13b[m[33m ([m[1;31morigin/frontend-backend-merged[m[33m, [m[1;32mfrontend-backend-merged[m[33m)[m Pulled latest updates from frontend branch
+[33m42a0486[m dashboard, inventory, order working features
+[33m36231bf[m Pulled latest updates from frontend branch into frontend/
+[33m30847c9[m updated order edit
+[33med5b620[m protected route corrections
+[33m3de2ba4[m change password settings updations
+[33m3681cb4[m protected route and wroking edit option for inventory
+[33mbf03cc5[m Merged latest updates from frontend branch into frontend/
+[33mba2ff15[m feat: connect orders CRUD to backend, password change
+[33m31681df[m Merge frontend and backend working state
+[33m5746036[m Completed Orders CRUD and database backend connection
+[33m417fd08[m Completed dynamic customer view
+[33meab5dd3[m Completed product image upload and inventory updates
+[33mbd810da[m Complete Product CRUD module with postman check
+[33md99fd56[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Initial commit
