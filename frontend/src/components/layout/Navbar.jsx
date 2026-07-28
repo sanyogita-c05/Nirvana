@@ -4,9 +4,33 @@ function Navbar() {
   return (
     <header className="navbar">
       <div className="container navbar-inner">
-        <div className="brand">
-          <div className="brand-icon">🌸</div>
-          <span className="brand-text">
+        <div
+          className="brand"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+          }}
+        >
+          <img
+            src="/nirvana_transformation_academy_logo.jpg"
+            alt="ArtisanSuite Logo"
+            style={{
+              width: "clamp(42px, 5vw, 60px)",
+              height: "clamp(42px, 5vw, 60px)",
+              objectFit: "contain",
+              borderRadius: "50%",
+            }}
+          />
+
+          <span
+            className="brand-text"
+            style={{
+              fontSize: "clamp(1.5rem, 2vw, 2rem)",
+              fontWeight: "700",
+              lineHeight: "1",
+            }}
+          >
             Artisan<span>Suite</span>
           </span>
         </div>
@@ -19,7 +43,7 @@ function Navbar() {
 
         <div className="nav-actions">
           <Link to="/login" className="btn btn-primary">
-            Login →
+            Login 
           </Link>
         </div>
       </div>
