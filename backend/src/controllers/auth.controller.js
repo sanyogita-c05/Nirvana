@@ -5,6 +5,13 @@ import ApiError from "../utils/api-error.js";
 import ApiResponse from "../utils/api-response.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
+// Requires: 8+ chars, at least one uppercase, one lowercase, one digit,
+// one special character. Checked here (not in the schema) because by the
+// time Mongoose sees `password` it's already the bcrypt hash, not what
+// the user typed — see the note on the schema's password field.
+const STRONG_PASSWORD_REGEX =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+
 // Register
 export const register = asyncHandler(async (req, res) => {
     const fullName = req.body.fullName?.trim();
@@ -14,6 +21,13 @@ export const register = asyncHandler(async (req, res) => {
 
     if (!fullName || !email || !phone || !password) {
         throw new ApiError(400, "All fields are required");
+    }
+
+    if (!STRONG_PASSWORD_REGEX.test(password)) {
+        throw new ApiError(
+            400,
+            "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number, and a special character"
+        );
     }
 
     const existingUser = await User.findOne({
@@ -136,6 +150,7 @@ const EDITABLE_PROFILE_FIELDS = [
     "gender",
     "taxIdNumber",
     "taxIdCountry",
+    "studio",
     "address",
     "notificationPrefs",
 ];
