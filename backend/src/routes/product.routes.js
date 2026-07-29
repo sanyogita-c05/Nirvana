@@ -9,6 +9,8 @@ import {
     getProductById,
     updateProduct,
     deleteProduct,
+    getLowStockProducts,
+    getTopSellingProducts,
 } from "../controllers/product.controller.js";
 
 const router = express.Router();
@@ -25,20 +27,21 @@ router
         getAllProducts
     );
 
-router
-    .route("/:id")
-    .get(
-        protect,
-        getProductById
-    )
-    .put(
-        protect,
-        upload.single("image"),
-        updateProduct
-    )
+    router.get("/low-stock", protect, getLowStockProducts);
+    router.get("/top-selling", protect, getTopSellingProducts);
+router.route("/:id").get(protect, getProductById).put(
+    protect,
+    upload.single("image"),
+    updateProduct
+)
     .delete(
         protect,
         deleteProduct
     );
+
+
+
+
+
 
 export default router;

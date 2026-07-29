@@ -3,14 +3,30 @@ import {
   Download,
 } from "lucide-react";
 
-function OrderHero({ onNewOrder }) {
+function OrderHero({ onNewOrder, onExport, orders = [] }) {
+
+  const today = new Date();
+  const monthYear = today
+    .toLocaleDateString("en-IN", { month: "long", year: "numeric" })
+    .toUpperCase();
+
+  const todayStr = today.toDateString();
+  const todaysOrders = orders.filter(
+    (o) => new Date(o.orderDate).toDateString() === todayStr
+  );
+
+  const ordersToday = todaysOrders.length;
+  const revenueToday = todaysOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+  const pendingOrders = orders.filter((o) => o.orderStatus === "Active").length;
+
+
   return (
     <section className="order-hero">
 
       <div className="order-hero-left">
 
         <p className="hero-tag">
-          ORDERS • JULY 2026
+          ORDERS • {monthYear}
         </p>
 
         <h1 className="hero-title">
@@ -31,7 +47,7 @@ function OrderHero({ onNewOrder }) {
             Create Order
           </button>
 
-          <button className="secondary-btn">
+          <button className="secondary-btn" onClick={onExport}>
             <Download size={18} />
             Export Orders
           </button>
@@ -47,17 +63,17 @@ function OrderHero({ onNewOrder }) {
         <div className="summary-grid">
 
           <div className="summary-item">
-            <h2>34</h2>
+            <h2>{ordersToday}</h2>
             <span>Orders</span>
           </div>
 
           <div className="summary-item">
-            <h2>₹2,967</h2>
+            <h2>₹{revenueToday.toLocaleString("en-IN")}</h2>
             <span>Revenue</span>
           </div>
 
           <div className="summary-item">
-            <h2>8</h2>
+            <h2>{pendingOrders}</h2>
             <span>Pending</span>
           </div>
 

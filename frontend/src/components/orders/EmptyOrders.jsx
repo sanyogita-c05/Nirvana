@@ -1,6 +1,8 @@
 import { PackageOpen } from "lucide-react";
 
-function EmptyOrders() {
+function EmptyOrders({ onCreate }) {
+
+  
   return (
     <div className="empty-orders">
 

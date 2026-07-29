@@ -46,15 +46,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/notifications"
-          element={
-            <ProtectedRoute>
-              <Notifications />
-            </ProtectedRoute>
-          }
-        />
-
+        <Route path="/notifications" element={<Notifications />} />
+        
         <Route
           path="/orders"
           element={

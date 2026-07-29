@@ -3,6 +3,7 @@ import ApiResponse from "../utils/api-response.js";
 import ApiError from "../utils/api-error.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import generateSequence from "../utils/generateSequence.js";
+import Order from "../models/Order.js";
 
 /*
 ----------------------------------------
@@ -12,6 +13,8 @@ Create Product
 
 export const createProduct = asyncHandler(async (req, res) => {
 
+    console.log("Body:", req.body);
+    console.log("File:", req.file);
     const {
         name,
         description,
@@ -226,6 +229,61 @@ export const deleteProduct = asyncHandler(async (req, res) => {
             200,
             null,
             "Product deleted successfully."
+        )
+    );
+});
+
+/*
+----------------------------------------
+Get Low Stock Products (stock < 5)
+----------------------------------------
+*/
+
+export const getLowStockProducts = asyncHandler(async (req, res) => {
+
+    const products = await Product.find({
+        owner: req.user._id,
+        isActive: true,
+        stockQuantity: { $lt: 5 },
+    }).sort({ stockQuantity: 1 });
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            products,
+            "Low stock products fetched successfully."
+        )
+    );
+});
+
+/*
+----------------------------------------
+Get Top 4 Selling Products (by units sold)
+----------------------------------------
+*/
+
+export const getTopSellingProducts = asyncHandler(async (req, res) => {
+
+    const topProducts = await Order.aggregate([
+        { $match: { owner: req.user._id, isActive: true } },
+        { $unwind: "$items" },
+        {
+            $group: {
+                _id: "$items.productId",
+                name: { $first: "$items.name" },
+                totalSold: { $sum: "$items.quantity" },
+                totalRevenue: { $sum: "$items.lineTotal" },
+            },
+        },
+        { $sort: { totalSold: -1 } },
+        { $limit: 4 },
+    ]);
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            topProducts,
+            "Top selling products fetched successfully."
         )
     );
 });

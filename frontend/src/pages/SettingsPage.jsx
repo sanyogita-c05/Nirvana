@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DashboardLayout from "../components/layout/DashboardLayout";
+import DashBoardLayout from "../components/layout/DashBoardLayout";
 
 import SettingsSidebar from "../components/settings/SettingsSidebar";
 import ProfileSettingsForm from "../components/settings/ProfileSettingsForm";
@@ -28,7 +28,7 @@ function SettingsPage() {
   };
 
   return (
-    <DashboardLayout>
+    <DashBoardLayout>
       <div className="settings-page">
 
         <div className="settings-header">
@@ -50,7 +50,7 @@ function SettingsPage() {
         </div>
 
       </div>
-    </DashboardLayout>
+    </DashBoardLayout>
   );
 }
 

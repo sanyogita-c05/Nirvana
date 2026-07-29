@@ -1,4 +1,3 @@
-
 import axios from "axios";
 
 const API = axios.create({
@@ -16,5 +15,7 @@ export const loginUser = (data) => API.post("/login", data);
 export const getMe = (token) => API.get("/me", authHeader(token));
 export const changePassword = (data, token) =>
   API.put("/change-password", data, authHeader(token));
+export const updateProfile = (data, token) =>
+  API.put("/profile", data, authHeader(token));
 
 export default API;

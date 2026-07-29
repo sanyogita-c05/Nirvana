@@ -125,3 +125,59 @@ export const changePassword = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new ApiResponse(200, {}, "Password changed successfully"));
 });
+
+// Fields the profile form is allowed to set directly.
+// Anything else sent in the body is stored dynamically in additionalInfo
+// instead of being silently dropped — that's what makes this "dynamic".
+const EDITABLE_PROFILE_FIELDS = [
+    "firstName",
+    "lastName",
+    "avatar",
+    "gender",
+    "taxIdNumber",
+    "taxIdCountry",
+    "address",
+    "notificationPrefs",
+];
+
+// Fields that must NEVER be changed through this endpoint, even if sent.
+// (fullName/email/phone/password are signup-only; isVerified is
+// admin/verification-flow controlled, not user-editable.)
+const PROTECTED_FIELDS = [
+    "fullName",
+    "email",
+    "phone",
+    "password",
+    "isVerified",
+    "_id",
+    "__v",
+];
+
+export const updateProfile = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    for (const [key, value] of Object.entries(req.body)) {
+        if (PROTECTED_FIELDS.includes(key)) {
+            continue; // silently ignore attempts to edit protected fields
+        }
+
+        if (EDITABLE_PROFILE_FIELDS.includes(key)) {
+            user[key] = value;
+        } else {
+            // Unknown field -> goes into the dynamic bucket, no schema change needed
+            user.additionalInfo.set(key, value);
+        }
+    }
+
+    await user.save();
+
+    const { password, ...safeUser } = user.toObject();
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, safeUser, "Profile updated successfully"));
+});
