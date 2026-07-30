@@ -27,10 +27,10 @@ const orderItemSchema = new mongoose.Schema(
             trim: true,
         },
 
-        imagePath: {
-            type: String,
-            required: true,
+        imageUrl: {
+            type: String, // snapshot of the product's first image at time of sale
             trim: true,
+            default: "",
         },
 
         quantity: {
@@ -250,7 +250,7 @@ orderSchema.pre("validate", function (next) {
         );
     }
 
-
+    next();
 });
 
 const Order = mongoose.model("Order", orderSchema);

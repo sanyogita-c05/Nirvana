@@ -61,10 +61,22 @@ const productSchema = new mongoose.Schema(
             default: 0,
         },
 
-        imagePath: {
-            type: String,
-            required: true,
-            trim: true,
+        images: {
+            type: [
+                {
+                    url: { type: String, required: true, trim: true },
+                    originalName: { type: String, trim: true },
+                },
+            ],
+            validate: {
+                validator: (arr) => Array.isArray(arr) && arr.length > 0,
+                message: "At least one product image is required",
+            },
+        },
+
+        video: {
+            url: { type: String, trim: true },
+            originalName: { type: String, trim: true },
         },
 
         isActive: {

@@ -3,8 +3,11 @@ import { createProduct } from "../../api/productApi";
 import ImageUpload from "./ImageUpload";
 
 function ProductForm({ onClose, refreshProducts }) {
-  const [preview, setPreview] = useState("");
-  const [image, setImage] = useState(null);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
+
+  const [videoPreview, setVideoPreview] = useState("");
+  const [videoFile, setVideoFile] = useState(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -27,8 +30,8 @@ function ProductForm({ onClose, refreshProducts }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!image) {
-      alert("Please upload a product image.");
+    if (imageFiles.length === 0) {
+      alert("Please upload at least one product image.");
       return;
     }
 
@@ -43,7 +46,16 @@ function ProductForm({ onClose, refreshProducts }) {
       data.append("costPrice", formData.costPrice);
       data.append("sellingPrice", formData.sellingPrice);
       data.append("stockQuantity", formData.stockQuantity);
-      data.append("image", image);
+
+      // Same key ("images") appended once per file — this is what lets
+      // Multer's upload.fields([{ name: "images" }]) collect them as an array.
+      imageFiles.forEach((file) => {
+        data.append("images", file);
+      });
+
+      if (videoFile) {
+        data.append("video", videoFile);
+      }
 
       await createProduct(data);
 
@@ -68,9 +80,12 @@ function ProductForm({ onClose, refreshProducts }) {
     <form className="product-form" onSubmit={handleSubmit}>
 
       <ImageUpload
-        preview={preview}
-        setPreview={setPreview}
-        setImage={setImage}
+        imagePreviews={imagePreviews}
+        setImageFiles={setImageFiles}
+        setImagePreviews={setImagePreviews}
+        videoPreview={videoPreview}
+        setVideoFile={setVideoFile}
+        setVideoPreview={setVideoPreview}
       />
 
       <div className="form-grid">

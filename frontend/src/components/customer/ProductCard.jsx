@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 
 function ProductCard({ product }) {
-  const imageUrl = `http://localhost:5000${product.imagePath}`;
+  // Falls back to a placeholder if a product somehow has no images —
+  // shouldn't happen given the "at least one image" backend validation,
+  // but this avoids a broken <img> if older data or an edge case slips through.
+  const imageUrl = product.images?.[0]?.url
+    ? `http://localhost:5000${product.images[0].url}`
+    : "/placeholder-product.png";
 
   const outOfStock = product.stockQuantity === 0;
 

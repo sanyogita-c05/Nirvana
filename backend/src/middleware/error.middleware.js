@@ -20,6 +20,31 @@ const errorHandler = (err, req, res, next) => {
         });
     }
 
+    // Multer's own errors (file too large, too many files, unexpected
+    // field name, etc.) come through as err.name === "MulterError".
+    if (err.name === "MulterError") {
+        return res.status(400).json({
+            success: false,
+            statusCode: 400,
+            message: err.message,
+        });
+    }
+
+    // Our fileFilter in upload.middleware.js throws plain Error objects
+    // (not ApiError) for unsupported file types — surface the real
+    // message instead of masking it as a generic 500.
+    if (
+        typeof err.message === "string" &&
+        (err.message.includes("images are allowed") ||
+            err.message.includes("videos are allowed"))
+    ) {
+        return res.status(400).json({
+            success: false,
+            statusCode: 400,
+            message: err.message,
+        });
+    }
+
     if (err instanceof ApiError) {
         return res.status(err.statusCode).json({
             success: false,

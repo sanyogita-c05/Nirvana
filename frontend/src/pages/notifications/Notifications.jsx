@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import {
   Package,
   CheckCircle2,
@@ -11,6 +11,13 @@ import {
   MoreVertical,
   Check,
 } from "lucide-react";
+import {
+  getNotifications,
+  markNotificationRead,
+  markAllNotificationsRead,
+  deleteNotification,
+  clearAllNotifications,
+} from "../../api/notificationApi";
 import "./Notifications.css";
 
 const ICONS = {
@@ -36,72 +43,24 @@ const TAG_CLASS = {
   Info: "notif-tag info",
 };
 
-const INITIAL_NOTIFICATIONS = [
-  {
-    id: 1,
-    icon: "Package",
-    title: "New order received",
-    tag: "Urgent",
-    category: "Orders",
-    message:
-      "Sanyogita Vijayrao Chavan placed an order for Hand-Painted Tote Bag (\u20b9499). Order #ORD0005 is awaiting confirmation.",
-    time: "2 minutes ago",
-    read: false,
-  },
-  {
-    id: 2,
-    icon: "CheckCircle2",
-    title: "Payment confirmed",
-    tag: "New",
-    category: "Payments",
-    message:
-      "\u20b9499 received for Hand-Painted Tote Bag \u2014 order ORD0004. Transaction TXN-9912873 processed successfully.",
-    time: "18 minutes ago",
-    read: false,
-  },
-  {
-    id: 3,
-    icon: "Star",
-    title: "New 5-star review",
-    tag: "New",
-    category: "Reviews",
-    message:
-      "Sai Patil left a 5-star review on Hand-Painted Tote Bag: \u201cBeautiful craftsmanship, exactly as pictured.\u201d",
-    time: "1 hour ago",
-    read: false,
-  },
-  {
-    id: 4,
-    icon: "AlertTriangle",
-    title: "Low stock alert",
-    tag: "Info",
-    category: "Inventory",
-    message: "Rajasthani Blue Pottery Set has only 2 units left. Restock soon to avoid missed orders.",
-    time: "3 hours ago",
-    read: true,
-  },
-  {
-    id: 5,
-    icon: "Truck",
-    title: "Order shipped",
-    tag: "Info",
-    category: "Shipping",
-    message: "Order #ORD0003 for Madhubani Painting \u2014 'Tree of Life' has been handed to the courier.",
-    time: "Yesterday",
-    read: true,
-  },
-  {
-    id: 6,
-    icon: "CheckCircle2",
-    title: "Payment confirmed",
-    tag: "Info",
-    category: "Payments",
-    message:
-      "\u20b91,200 received for Terracotta Wall Hanging \u2014 order ORD0002. Transaction TXN-9911204 processed successfully.",
-    time: "2 days ago",
-    read: true,
-  },
-];
+// Backend stores createdAt as a real timestamp, not a "2 minutes ago"
+// string — this converts on render so it stays accurate as time passes
+// (well, accurate as of each re-render; it won't tick live on its own).
+function timeAgo(dateString) {
+  const diffMs = Date.now() - new Date(dateString).getTime();
+  const diffMin = Math.floor(diffMs / 60000);
+
+  if (diffMin < 1) return "Just now";
+  if (diffMin < 60) return `${diffMin} minute${diffMin === 1 ? "" : "s"} ago`;
+
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return `${diffHr} hour${diffHr === 1 ? "" : "s"} ago`;
+
+  const diffDay = Math.floor(diffHr / 24);
+  if (diffDay === 1) return "Yesterday";
+
+  return `${diffDay} days ago`;
+}
 
 function EmptyState({ filter }) {
   const copy =
@@ -144,22 +103,44 @@ function EmptyState({ filter }) {
 }
 
 export default function NotificationsPage() {
-  const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [filter, setFilter] = useState("All");
   const [query, setQuery] = useState("");
+
+  const fetchNotifications = useCallback(async () => {
+    try {
+      const res = await getNotifications();
+      setNotifications(res.data.data);
+    } catch (err) {
+      console.error("Failed to load notifications:", err);
+      setError("Could not load notifications. Please refresh.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    // fetchNotifications is async and only calls setState after its
+    // internal await resolves — this rule's static analysis can't see
+    // that timing and flags the call site anyway.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchNotifications();
+  }, [fetchNotifications]);
 
   const counts = useMemo(
     () => ({
       All: notifications.length,
-      Unread: notifications.filter((n) => !n.read).length,
-      Read: notifications.filter((n) => n.read).length,
+      Unread: notifications.filter((n) => !n.isRead).length,
+      Read: notifications.filter((n) => n.isRead).length,
     }),
     [notifications]
   );
 
   const visible = useMemo(() => {
     return notifications
-      .filter((n) => (filter === "All" ? true : filter === "Unread" ? !n.read : n.read))
+      .filter((n) => (filter === "All" ? true : filter === "Unread" ? !n.isRead : n.isRead))
       .filter((n) => {
         const q = query.trim().toLowerCase();
         if (!q) return true;
@@ -167,14 +148,66 @@ export default function NotificationsPage() {
       });
   }, [notifications, filter, query]);
 
-  const markAsRead = (id) =>
-    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
+  // Optimistic updates (change local state immediately) so the UI feels
+  // instant, with the real API call following — if it fails, we just
+  // log it; a full page refresh will re-sync from the server either way.
+  const markAsRead = async (id) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n._id === id ? { ...n, isRead: true } : n))
+    );
 
-  const markAllRead = () => setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    try {
+      await markNotificationRead(id);
+    } catch (err) {
+      console.error("Failed to mark notification as read:", err);
+    }
+  };
 
-  const remove = (id) => setNotifications((prev) => prev.filter((n) => n.id !== id));
+  const markAllRead = async () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
 
-  const clearAll = () => setNotifications([]);
+    try {
+      await markAllNotificationsRead();
+    } catch (err) {
+      console.error("Failed to mark all notifications as read:", err);
+    }
+  };
+
+  const remove = async (id) => {
+    setNotifications((prev) => prev.filter((n) => n._id !== id));
+
+    try {
+      await deleteNotification(id);
+    } catch (err) {
+      console.error("Failed to delete notification:", err);
+    }
+  };
+
+  const clearAll = async () => {
+    const confirmClear = window.confirm(
+      "Clear all notifications? This can't be undone."
+    );
+
+    if (!confirmClear) return;
+
+    setNotifications([]);
+
+    try {
+      await clearAllNotifications();
+    } catch (err) {
+      console.error("Failed to clear notifications:", err);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="notif-page">
+        <div className="notif-container">
+          <p>Loading notifications...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="notif-page">
@@ -199,6 +232,8 @@ export default function NotificationsPage() {
             </button>
           </div>
         </div>
+
+        {error && <p className="notif-error">{error}</p>}
 
         {/* Search */}
         <div className="notif-search">
@@ -231,10 +266,10 @@ export default function NotificationsPage() {
         ) : (
           <div className="notif-list">
             {visible.map((n) => {
-              const Icon = ICONS[n.icon];
-              const color = CATEGORY_COLOR[n.category];
+              const Icon = ICONS[n.icon] || Bell;
+              const color = CATEGORY_COLOR[n.category] || "orange";
               return (
-                <div key={n.id} className={`notif-card${!n.read ? " unread" : ""}`}>
+                <div key={n._id} className={`notif-card${!n.isRead ? " unread" : ""}`}>
                   <div className={`notif-icon-badge ${color}`}>
                     <Icon size={19} color="#fff" />
                   </div>
@@ -247,10 +282,10 @@ export default function NotificationsPage() {
                         <span className={`notif-tag category ${color}`}>{n.category}</span>
                       </div>
                       <div className="notif-row-icons">
-                        {!n.read && <span className="notif-dot" />}
+                        {!n.isRead && <span className="notif-dot" />}
                         <button
                           className="notif-icon-btn"
-                          onClick={() => remove(n.id)}
+                          onClick={() => remove(n._id)}
                           aria-label="Delete notification"
                         >
                           <Trash2 size={15} />
@@ -264,9 +299,9 @@ export default function NotificationsPage() {
                     <p className="notif-message">{n.message}</p>
 
                     <div className="notif-row-bottom">
-                      <span className="notif-time">{n.time}</span>
-                      {!n.read && (
-                        <button className="notif-mark-read" onClick={() => markAsRead(n.id)}>
+                      <span className="notif-time">{timeAgo(n.createdAt)}</span>
+                      {!n.isRead && (
+                        <button className="notif-mark-read" onClick={() => markAsRead(n._id)}>
                           <Check size={13} /> Mark as read
                         </button>
                       )}
