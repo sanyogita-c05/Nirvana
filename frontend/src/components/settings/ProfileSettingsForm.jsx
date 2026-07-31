@@ -1,12 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Camera, Trash2 } from "lucide-react";
-import { getMe, updateProfile } from "../../api/auth";
+import { getMe, updateProfile, uploadAvatar, deleteAvatar } from "../../api/auth";
 
 function ProfileSettingsForm() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const [avatarPath, setAvatarPath] = useState("");
+  const [avatarBusy, setAvatarBusy] = useState(false);
+  const fileInputRef = useRef(null);
 
   const [form, setForm] = useState({
     firstName: "",
@@ -16,34 +20,38 @@ function ProfileSettingsForm() {
     gender: "",
     taxIdNumber: "",
     taxIdCountry: "India",
+    studio: "",
     address: "",
   });
 
+  const fetchUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await getMe(token);
+      const user = res.data.data;
+
+      setForm({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        gender: user.gender || "",
+        taxIdNumber: user.taxIdNumber || "",
+        taxIdCountry: user.taxIdCountry || "India",
+        studio: user.studio || "",
+        address: user.address || "",
+      });
+
+      setAvatarPath(user.avatar || "");
+    } catch (err) {
+      console.error("Failed to load profile:", err);
+      setError("Could not load your profile. Please refresh.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const res = await getMe(token);
-        const user = res.data.data;
-
-        setForm({
-          firstName: user.firstName || "",
-          lastName: user.lastName || "",
-          email: user.email || "",
-          phone: user.phone || "",
-          gender: user.gender || "",
-          taxIdNumber: user.taxIdNumber || "",
-          taxIdCountry: user.taxIdCountry || "India",
-          address: user.address || "",
-        });
-      } catch (err) {
-        console.error("Failed to load profile:", err);
-        setError("Could not load your profile. Please refresh.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUser();
   }, []);
 
@@ -61,15 +69,13 @@ function ProfileSettingsForm() {
     try {
       const token = localStorage.getItem("token");
 
-      // Built explicitly (not by destructuring form and excluding
-      // email/phone) so it's clear exactly what's sent, and so the
-      // linter doesn't flag unused destructured vars.
       const editableFields = {
         firstName: form.firstName,
         lastName: form.lastName,
         gender: form.gender,
         taxIdNumber: form.taxIdNumber,
         taxIdCountry: form.taxIdCountry,
+        studio: form.studio,
         address: form.address,
       };
 
@@ -85,6 +91,41 @@ function ProfileSettingsForm() {
     }
   };
 
+  const handleAvatarFileSelected = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setAvatarBusy(true);
+    setError("");
+    try {
+      const token = localStorage.getItem("token");
+      const formData = new FormData();
+      formData.append("avatar", file);
+      const res = await uploadAvatar(formData, token);
+      setAvatarPath(res.data.data.avatar);
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to upload photo.");
+    } finally {
+      setAvatarBusy(false);
+      e.target.value = "";
+    }
+  };
+
+
+  const handleDeleteAvatar = async () => {
+    setAvatarBusy(true);
+    setError("");
+    try {
+      const token = localStorage.getItem("token");
+      await deleteAvatar(token);
+      setAvatarPath("");
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to remove photo.");
+    } finally {
+      setAvatarBusy(false);
+    }
+  };
+
   if (loading) {
     return <div className="settings-card">Loading...</div>;
   }
@@ -95,23 +136,62 @@ function ProfileSettingsForm() {
       <div className="profile-avatar-row">
 
         <div className="avatar-upload-wrap">
-          <div className="avatar-circle">
-            {form.firstName?.charAt(0).toUpperCase() || "U"}
-          </div>
-          <button type="button" className="avatar-camera-btn">
+          {avatarPath ? (
+            <img
+              src={`http://localhost:5000${avatarPath}`}
+              alt="Profile avatar"
+              className="avatar-circle"
+              style={{ objectFit: "cover" }}
+            />
+          ) : (
+            <div className="avatar-circle">
+              {form.firstName?.charAt(0).toUpperCase() || "U"}
+            </div>
+          )}
+
+          <button
+            type="button"
+            className="avatar-camera-btn"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={avatarBusy}
+          >
             <Camera size={14} />
           </button>
         </div>
 
+
+
+
         <div className="avatar-actions">
-          <button type="button" className="upload-btn">Upload New</button>
-          <button type="button" className="delete-btn-outline">
+          <button
+            type="button"
+            className="upload-btn"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={avatarBusy}
+          >
+            {avatarBusy ? "Working..." : "Upload New"}
+          </button>
+          <button
+            type="button"
+            className="delete-btn-outline"
+            onClick={handleDeleteAvatar}
+            disabled={avatarBusy || !avatarPath}
+          >
             <Trash2 size={16} />
             Delete avatar
           </button>
         </div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={handleAvatarFileSelected}
+        />
 
       </div>
+
+
 
       {error && <p className="form-error">{error}</p>}
       {success && <p className="form-success">{success}</p>}
@@ -195,6 +275,17 @@ function ProfileSettingsForm() {
             </label>
 
           </div>
+        </div>
+
+        <div className="form-group">
+          <label>Studio Name</label>
+          <input
+            type="text"
+            name="studio"
+            placeholder="e.g. Meera's Craft"
+            value={form.studio}
+            onChange={handleChange}
+          />
         </div>
 
         <div className="settings-form-grid">

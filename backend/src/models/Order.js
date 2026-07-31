@@ -236,21 +236,16 @@ const orderSchema = new mongoose.Schema(
 | Shipment Validation
 |--------------------------------------------------------------------------
 */
-
-orderSchema.pre("validate", function (next) {
+orderSchema.pre("validate", function () {
     if (
         (this.orderStatus === "Shipped" ||
             this.orderStatus === "Closed") &&
         !this.shipment.trackingNumber
     ) {
-        return next(
-            new Error(
-                "Tracking number is required for shipped or closed orders."
-            )
+        throw new Error(
+            "Tracking number is required for shipped or closed orders."
         );
     }
-
-    next();
 });
 
 const Order = mongoose.model("Order", orderSchema);

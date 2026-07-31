@@ -148,18 +148,76 @@ export const getRevenueChart = asyncHandler(async (req, res) => {
     const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     const data = months.map((m) => {
-        const monthTotal = orders
-            .filter(
-                (o) =>
-                    o.orderDate.getFullYear() === m.getFullYear() &&
-                    o.orderDate.getMonth() === m.getMonth()
-            )
-            .reduce((sum, o) => sum + o.totalAmount, 0);
+        const monthOrders = orders.filter(
+            (o) =>
+                o.orderDate.getFullYear() === m.getFullYear() &&
+                o.orderDate.getMonth() === m.getMonth()
+        );
 
-        return { month: monthLabels[m.getMonth()], value: monthTotal };
+        const monthTotal = monthOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+
+        return {
+            month: monthLabels[m.getMonth()],
+            value: monthTotal,
+            orders: monthOrders.length,
+        };
     });
 
     return res.status(200).json(
         new ApiResponse(200, data, "Revenue chart data fetched successfully.")
+    );
+});
+
+const getWeekRange = (date) => {
+    const d = new Date(date);
+    const day = d.getDay(); // 0 = Sunday ... 6 = Saturday
+    const diffToMonday = day === 0 ? -6 : 1 - day;
+    const monday = new Date(d.getFullYear(), d.getMonth(), d.getDate() + diffToMonday);
+    const nextMonday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + 7);
+    return { start: monday, end: nextMonday };
+};
+
+/*
+----------------------------------------
+Get Weekly Stats (this week vs last week)
+----------------------------------------
+*/
+
+export const getWeeklyStats = asyncHandler(async (req, res) => {
+    const ownerId = req.user._id;
+    const now = new Date();
+
+    const { start: thisWeekStart, end: thisWeekEnd } = getWeekRange(now);
+    const lastWeekDate = new Date(thisWeekStart);
+    lastWeekDate.setDate(lastWeekDate.getDate() - 7);
+    const { start: lastWeekStart, end: lastWeekEnd } = getWeekRange(lastWeekDate);
+
+    const orders = await Order.find({
+        owner: ownerId,
+        isActive: true,
+        orderDate: { $gte: lastWeekStart, $lt: thisWeekEnd },
+    }).select("totalAmount orderDate");
+
+    const thisWeekOrders = orders.filter(
+        (o) => o.orderDate >= thisWeekStart && o.orderDate < thisWeekEnd
+    );
+    const lastWeekOrders = orders.filter(
+        (o) => o.orderDate >= lastWeekStart && o.orderDate < lastWeekEnd
+    );
+
+    const thisWeekRevenue = thisWeekOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+    const lastWeekRevenue = lastWeekOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+
+    return res.status(200).json(
+        new ApiResponse(200, {
+            revenue: {
+                total: thisWeekRevenue,
+                growth: calcGrowth(thisWeekRevenue, lastWeekRevenue),
+            },
+            orders: {
+                total: thisWeekOrders.length,
+                growth: calcGrowth(thisWeekOrders.length, lastWeekOrders.length),
+            },
+        }, "Weekly stats fetched successfully.")
     );
 });

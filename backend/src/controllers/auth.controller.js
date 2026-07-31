@@ -196,3 +196,51 @@ export const updateProfile = asyncHandler(async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, safeUser, "Profile updated successfully"));
 });
+
+/*
+----------------------------------------
+Upload Avatar
+----------------------------------------
+*/
+
+export const uploadAvatar = asyncHandler(async (req, res) => {
+
+    if (!req.file) {
+        throw new ApiError(400, "No image file provided");
+    }
+
+    const user = await User.findById(req.user._id);
+
+    user.avatar = `/uploads/avatars/${req.file.filename}`;
+    await user.save();
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            { avatar: user.avatar },
+            "Avatar updated successfully"
+        )
+    );
+});
+
+/*
+----------------------------------------
+Delete Avatar
+----------------------------------------
+*/
+
+export const deleteAvatar = asyncHandler(async (req, res) => {
+
+    const user = await User.findById(req.user._id);
+
+    user.avatar = "";
+    await user.save();
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            { avatar: user.avatar },
+            "Avatar removed successfully"
+        )
+    );
+});

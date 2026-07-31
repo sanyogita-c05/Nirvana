@@ -18,4 +18,14 @@ export const changePassword = (data, token) =>
 export const updateProfile = (data, token) =>
   API.put("/profile", data, authHeader(token));
 
+export const uploadAvatar = (formData, token) =>
+  API.post("/avatar", formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+export const deleteAvatar = (token) => API.delete("/avatar", authHeader(token));
+
 export default API;
