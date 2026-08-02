@@ -9,7 +9,7 @@ function OrderTable({ orders = [], loading, refreshOrders, onEdit }) {
         <colgroup>
           <col style={{ width: "130px" }} />
           <col style={{ width: "220px" }} />
-          <col style={{ width: "180px" }} />
+          <col style={{ width: "220px" }} />
           <col style={{ width: "120px" }} />
           <col style={{ width: "110px" }} />
           <col style={{ width: "110px" }} />

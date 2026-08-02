@@ -59,10 +59,11 @@ button {
 }
 
 /* NAVBAR */
+
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 1000;
   background: rgba(253, 244, 234, 0.95);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(214, 79, 138, 0.12);
@@ -82,23 +83,21 @@ button {
   gap: 12px;
 }
 
-.brand-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #f08f43, #d53f81);
-  display: grid;
-  place-items: center;
-  color: #fff;
-  font-size: 18px;
-  box-shadow: 0 8px 18px rgba(214, 79, 138, 0.25);
+/* Logo sizing fix — previously undefined for desktop/tablet,
+   causing the raw image to render at native resolution */
+.brand img,
+.logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .brand-text {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 2rem;
   font-weight: 700;
-  line-height: 1;
 }
 
 .brand-text span {
@@ -109,39 +108,106 @@ button {
   display: flex;
   align-items: center;
   gap: 36px;
-  font-weight: 500;
+}
+
+.nav-links a {
+  font-size: 1rem;
+  font-weight: 600;
   color: #6b4536;
+  transition: 0.3s;
 }
 
 .nav-links a:hover {
-  color: var(--pink-dark);
+  color: var(--pink);
 }
 
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 14px;
-}
-
-.btn {
-  transition: 0.25s ease;
-}
-
-.btn-link {
-  background: transparent;
-  color: #6b4536;
-  font-size: 1rem;
 }
 
 .btn-primary {
   background: linear-gradient(135deg, #d64f8a, #bc3d75);
-  color: white;
-  padding: 15px 28px;
+  color: #fff;
+  padding: 14px 28px;
   border-radius: 999px;
   font-weight: 700;
-  box-shadow: 0 14px 28px rgba(214, 79, 138, 0.24);
+  transition: .3s;
 }
 
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+/* ------------------------ */
+/* Tablet */
+/* ------------------------ */
+
+@media (max-width:992px){
+
+  .navbar-inner{
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:18px;
+      padding:16px 0;
+  }
+
+  .brand{
+      width:100%;
+      justify-content:center;
+  }
+
+  .nav-links{
+      width:100%;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:22px;
+  }
+
+  .nav-actions{
+      width:100%;
+      justify-content:center;
+  }
+
+}
+
+/* ------------------------ */
+/* Mobile */
+/* ------------------------ */
+
+@media (max-width:576px){
+
+  .navbar-inner{
+      gap:14px;
+  }
+
+  .logo{
+      width:40px;
+      height:40px;
+  }
+
+  .brand-text{
+      font-size:1.5rem;
+  }
+
+  .nav-links{
+      gap:16px;
+      font-size:14px;
+  }
+
+  .nav-links a{
+      font-size:14px;
+  }
+
+  .btn-primary{
+      width:100%;
+      max-width:220px;
+      text-align:center;
+      padding:12px 24px;
+      font-size:15px;
+  }
+
+}
 .btn-primary:hover {
   transform: translateY(-2px);
 }
@@ -1145,4 +1211,72 @@ button {
   .window-url {
     display: none;
   }
+}
+/* Hide menu button on desktop */
+.menu-btn{
+    display:none;
+    background:none;
+    border:none;
+    cursor:pointer;
+    color:#5b2b1e;
+}
+
+/* Mobile menu hidden by default */
+.mobile-menu{
+    display:none;
+}
+
+@media(max-width:768px){
+
+    .nav-links,
+    .nav-actions{
+        display:none;
+    }
+
+    .menu-btn{
+        display:block;
+    }
+
+    .navbar-inner{
+        flex-wrap:nowrap;
+        justify-content:space-between;
+        padding:12px 0;
+    }
+
+    .brand{
+        width:auto;
+        justify-content:flex-start;
+    }
+
+    .mobile-menu{
+        display:flex;
+        flex-direction:column;
+        gap:18px;
+        padding:20px;
+        background:#fff7ef;
+        border-top:1px solid #eee;
+        animation:slideDown .3s ease;
+    }
+
+    .mobile-menu a{
+        font-size:17px;
+        font-weight:600;
+        color:#5b2b1e;
+    }
+
+    .mobile-menu .btn-primary{
+        width:100%;
+        text-align:center;
+    }
+}
+
+@keyframes slideDown{
+    from{
+        opacity:0;
+        transform:translateY(-10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }

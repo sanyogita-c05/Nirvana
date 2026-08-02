@@ -1,4 +1,4 @@
-function AnalyticsBanner() {
+function AnalyticsBanner({ onExport, onViewReport }) {
   return (
     <section className="analytics-banner">
 
@@ -22,11 +22,11 @@ function AnalyticsBanner() {
 
         <div className="analytics-banner-actions">
 
-          <button className="primary-btn">
+          <button className="primary-btn" onClick={onViewReport}>
             View Full Report
           </button>
 
-          <button className="secondary-btn">
+          <button className="secondary-btn" onClick={onExport}>
             Export Data
           </button>
 

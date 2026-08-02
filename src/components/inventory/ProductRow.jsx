@@ -46,7 +46,11 @@ function ProductRow({
 
       <td>
         <img
-          src={`http://localhost:5000${product.imagePath}`}
+          src={
+            product.images?.[0]?.url
+              ? `http://localhost:5000${product.images[0].url}`
+              : "/placeholder-product.png"
+          }
           alt={product.name}
           className="product-avatar"
         />

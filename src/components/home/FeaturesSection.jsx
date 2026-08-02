@@ -1,3 +1,4 @@
+import "./FeaturesSection.css";
 import MandalaPattern from "./MandalaPattern";
 
 function FeaturesSection() {
@@ -39,7 +40,9 @@ function FeaturesSection() {
       <div className="container">
         <div className="section-heading">
           <span>EVERYTHING YOU NEED</span>
+
           <h2>Run your craft business with confidence</h2>
+
           <p>
             Designed specifically for handmade product sellers — not a generic
             tool adapted to fit.
@@ -48,10 +51,17 @@ function FeaturesSection() {
 
         <div className="feature-grid">
           {features.map((feature, index) => (
-            <div className="feature-card" key={index}>
-              <div className={`feature-icon ${feature.tone}`}>{feature.icon}</div>
-              <div className={`feature-badge ${feature.tone}`}>{feature.badge}</div>
+            <div className={`feature-card ${feature.tone}`} key={index}>
+              <div className={`feature-icon ${feature.tone}`}>
+                {feature.icon}
+              </div>
+
+              <div className={`feature-badge ${feature.tone}`}>
+                {feature.badge}
+              </div>
+
               <h3>{feature.title}</h3>
+
               <p>{feature.desc}</p>
             </div>
           ))}
