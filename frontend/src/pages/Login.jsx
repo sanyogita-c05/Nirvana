@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../api/auth.js";
@@ -89,7 +88,13 @@ function Login() {
 
         <div className="login-brand-content">
           <div className="login-logo-row">
-            <div className="login-logo-badge">🌸</div>
+            <div className="login-logo-badge">
+              <img
+                src="/nirvana_transformation_academy_logo.jpg"
+                alt="ArtisanSuite Logo"
+                className="login-logo-img"
+              />
+            </div>
             <span className="login-wordmark">ARTISANSUITE</span>
           </div>
 
@@ -150,7 +155,13 @@ function Login() {
       <div className="login-form-panel">
         <div className="login-form-wrap">
           <div className="login-mobile-logo">
-            <div className="login-logo-badge login-logo-badge--small">🌸</div>
+            <div className="login-logo-badge login-logo-badge--small">
+              <img
+                src="/nirvana_transformation_academy_logo.jpg"
+                alt="ArtisanSuite Logo"
+                className="login-logo-img"
+              />
+            </div>
             <span className="login-mobile-wordmark">
               Artisan<span>Suite</span>
             </span>

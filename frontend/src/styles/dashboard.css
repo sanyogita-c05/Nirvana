@@ -1,3 +1,12 @@
+.dashboard-layout{
+
+    display:flex;
+    width:100%;
+    min-height:100vh;
+    background:#f8efe4;
+    overflow:hidden;
+
+}
 .dashboard-shell {
   min-height: 100vh;
   display: grid;
@@ -80,7 +89,19 @@
   flex-direction: column;
   gap: 10px;
 }
+.dashboard-main-content{
 
+    flex:1;
+
+    min-width:0;
+
+    overflow-x:auto;
+
+    overflow-y:auto;
+
+    padding:28px;
+
+}
 .dashboard-sidebar__link {
   display: flex;
   align-items: center;
@@ -119,12 +140,18 @@
   font-weight: 600;
 }
 
-.dashboard-content-area {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
+.dashboard-content-area{
 
+    flex:1;
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+    width:0;
+
+    overflow:hidden;
+
+}
 .dashboard-topbar {
   display: flex;
   justify-content: space-between;
