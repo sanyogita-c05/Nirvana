@@ -6,6 +6,7 @@ function DashboardBanner() {
 
   const navigate = useNavigate();
   const [fullName, setFullName] = useState("");
+  const [studioName, setStudioName] = useState("");
   const [revenue, setRevenue] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,6 +20,8 @@ function DashboardBanner() {
         ]);
 
         setFullName(meRes.data.data.fullName);
+        
+        setStudioName(meRes.data.data.studio);
         setRevenue(statsRes.data.data.revenue);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to load dashboard info.");
@@ -52,14 +55,11 @@ function DashboardBanner() {
           {/* <h1 className="dashboard-banner__title">Meera&apos;s Craft Studio ✦</h1> */}
           {/* <p className="dashboard-banner__date">Thursday, 10 July 2026</p> */}
           <h1 className="dashboard-banner__title">
-            {loading ? "..." : fullName || "there"} ✦
+            {loading ? "..." : studioName || fullName || "there"} ✦
           </h1>
           <p className="dashboard-banner__date">{formattedDate}</p>
 
           <div className="dashboard-banner__actions">
-            {/* <button className="banner-btn banner-btn--primary">+ New Order</button>
-            <button className="banner-btn banner-btn--secondary">+ Add Product</button>
-            <button className="banner-btn banner-btn--secondary">View Reports</button> */}
             <button
               className="banner-btn banner-btn--primary"
               onClick={() => navigate("/orders", { state: { openCreate: true } })}
@@ -100,8 +100,7 @@ function DashboardBanner() {
               )}
             </>
           )}
-          {/* <h2 className="dashboard-banner__revenue-value">₹38,400</h2>
-          <span className="dashboard-banner__revenue-growth">↑ 43% vs June</span> */}
+
         </div>
       </div>
     </section>

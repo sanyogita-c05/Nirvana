@@ -1,6 +1,12 @@
+import { Link } from "react-router-dom";
 import MandalaPattern from "./MandalaPattern";
 
 function HeroSection() {
+
+  const scrollToHowItWorks = () => {
+    document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section className="hero-section">
       <MandalaPattern className="hero-pattern hero-pattern-left" />
@@ -25,8 +31,14 @@ function HeroSection() {
           </p>
 
           <div className="hero-actions">
-            <button className="btn btn-primary large">Start for Free →</button>
-            <button className="btn btn-outline large">See How It Works →</button>
+            <Link to="/signup" className="btn btn-primary large">
+              Start for Free →
+            </Link>
+            <button className="btn btn-outline large" onClick={scrollToHowItWorks}>
+              See How It Works →
+            </button>
+            {/* <button className="btn btn-primary large">Start for Free →</button>
+            <button className="btn btn-outline large">See How It Works →</button> */}
           </div>
 
           <div className="hero-points">

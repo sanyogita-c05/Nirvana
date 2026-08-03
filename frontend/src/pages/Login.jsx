@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { loginUser } from "../api/auth.js";
+import { setStoredUser } from "../utils/userStore.js";
 import "./Login.css";
 
 function Login() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -67,12 +71,12 @@ function Login() {
       if (token) {
         localStorage.setItem("token", token);
       }
-
       if (user) {
-        localStorage.setItem("user", JSON.stringify(user));
+        setStoredUser(user);
       }
 
       // alert(res.data?.message || "Login successful");
+      toast.success(res.data?.message || "Login successful");
       navigate("/dashboard");
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");

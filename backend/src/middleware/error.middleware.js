@@ -30,6 +30,44 @@ const errorHandler = (err, req, res, next) => {
         });
     }
 
+    if (err.code === 11000) {
+        const field = Object.keys(err.keyPattern || {})[0] || "field";
+        return res.status(409).json({
+            success: false,
+            statusCode: 409,
+            message: `This ${field} is already in use.`,
+        });
+    }
+
+    if (err.name === "ValidationError") {
+        const messages = Object.values(err.errors).map((e) => e.message);
+        return res.status(400).json({
+            success: false,
+            statusCode: 400,
+            message: messages.join(" "),
+        });
+    }
+
+    if (err.name === "CastError") {
+        return res.status(400).json({
+            success: false,
+            statusCode: 400,
+            message: `Invalid value for "${err.path}".`,
+        });
+    }
+
+
+
+
+    // if (err.name === "ValidationError") {
+    //     const messages = Object.values(err.errors).map((e) => e.message);
+    //     return res.status(400).json({
+    //         success: false,
+    //         statusCode: 400,
+    //         message: messages.join(" "),
+    //     });
+    // }
+
     // Our fileFilter in upload.middleware.js throws plain Error objects
     // (not ApiError) for unsupported file types — surface the real
     // message instead of masking it as a generic 500.

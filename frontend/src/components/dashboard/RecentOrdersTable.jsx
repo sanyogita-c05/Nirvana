@@ -50,42 +50,6 @@ function RecentOrdersTable() {
     );
   }
 
-
-  // const orders = [
-  //   {
-  //     order: "AS-1042",
-  //     customer: "Priya Sharma",
-  //     city: "Mumbai",
-  //     items: "Hand-crocheted Boho Bag, Clay Lotus Diya Set",
-  //     total: "₹1,230",
-  //     status: "Delivered",
-  //   },
-  //   {
-  //     order: "AS-1041",
-  //     customer: "Kavya Nair",
-  //     city: "Bangalore",
-  //     items: "Kalamkari Embroidered Dupatta",
-  //     total: "₹1,650",
-  //     status: "Shipped",
-  //   },
-  //   {
-  //     order: "AS-1040",
-  //     customer: "Anita Mehta",
-  //     city: "Delhi",
-  //     items: "Lavender Soy Candle, Macramé Wall Hanging",
-  //     total: "₹1,620",
-  //     status: "Processing",
-  //   },
-  //   {
-  //     order: "AS-1039",
-  //     customer: "Deepa Krishnan",
-  //     city: "Chennai",
-  //     items: "Resin Floral Coaster Set",
-  //     total: "₹650",
-  //     status: "Pending",
-  //   },
-  // ];
-
   return (
     <SectionCard title="Recent Orders" action="View all">
       <div className="dash-orders-table-wrap">

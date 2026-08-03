@@ -30,9 +30,8 @@ const maybeCreateLowStockNotification = async (product, ownerId) => {
         title: "Low stock alert",
         tag: "Info",
         category: "Inventory",
-        message: `${product.name} has only ${product.stockQuantity} unit${
-            product.stockQuantity === 1 ? "" : "s"
-        } left. Restock soon to avoid missed orders.`,
+        message: `${product.name} has only ${product.stockQuantity} unit${product.stockQuantity === 1 ? "" : "s"
+            } left. Restock soon to avoid missed orders.`,
         relatedProduct: product._id,
     });
 };
@@ -54,9 +53,12 @@ export const createProduct = asyncHandler(async (req, res) => {
         stockQuantity,
     } = req.body;
 
+    const trimmedName = name?.trim();
+    const trimmedCategory = category?.trim();
+
     if (
-        !name ||
-        !category ||
+        !trimmedName ||
+        !trimmedCategory ||
         costPrice === undefined ||
         sellingPrice === undefined ||
         stockQuantity === undefined
@@ -94,9 +96,9 @@ export const createProduct = asyncHandler(async (req, res) => {
 
     const video = videoFiles[0]
         ? {
-              url: `/uploads/products/${req.productId}/${videoFiles[0].filename}`,
-              originalName: videoFiles[0].originalname,
-          }
+            url: `/uploads/products/${req.productId}/${videoFiles[0].filename}`,
+            originalName: videoFiles[0].originalname,
+        }
         : undefined;
 
     // Generate SKU
@@ -208,9 +210,21 @@ export const updateProduct = asyncHandler(async (req, res) => {
 
     allowedFields.forEach((field) => {
         if (req.body[field] !== undefined) {
-            product[field] = req.body[field];
+
+            product[field] =
+                typeof req.body[field] === "string"
+                    ? req.body[field].trim()
+                    : req.body[field];
         }
     });
+
+    if (!product.name) {
+        throw new ApiError(400, "Product name is required.");
+    }
+
+    if (!product.category) {
+        throw new ApiError(400, "Category is required.");
+    }
 
     // Validations
     if (product.costPrice < 0) {
