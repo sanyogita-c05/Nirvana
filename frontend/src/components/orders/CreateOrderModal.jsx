@@ -18,6 +18,7 @@ function CreateOrderModal({ open, onClose, refreshOrders }) {
     customerName: "",
     customerPhone: "",
     customerEmail: "",
+    customerCity: "",
     productId: "",
     quantity: 1,
     paymentMethod: "N/A",

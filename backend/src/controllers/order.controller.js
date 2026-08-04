@@ -25,7 +25,10 @@ const buildOrderItemsAndReduceStock = async (items, ownerId) => {
 
             const { productId, quantity } = item;
 
-            if (!productId || !quantity || Number(quantity) < 1) {
+            const numericQuantity = Number(quantity);
+
+
+            if (!productId || !quantity || isNaN(numericQuantity) || numericQuantity < 1) {
                 throw new ApiError(400, "Invalid product or quantity provided.");
             }
 
