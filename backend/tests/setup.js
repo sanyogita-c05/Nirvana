@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import connectDB from "../src/config/db.js";
 
+jest.setTimeout(30000);
+
 let mongoServer;
 let consoleErrorSpy;
 
