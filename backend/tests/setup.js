@@ -19,7 +19,9 @@ beforeAll(async () => {
 
     consoleErrorSpy = jest
         .spyOn(console, "error")
-        .mockImplementation(() => {});
+        .mockImplementation((...args) => {
+            console.log(...args);
+        });
 });
 
 afterAll(async () => {

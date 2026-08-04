@@ -83,6 +83,9 @@ describe("Product API",()=>{
             fixturePath
         );
 
+        console.log("PRODUCT CREATE STATUS:", response.status);
+console.log("PRODUCT CREATE BODY:", response.body);
+
 
         expect(response.status).toBe(201);
 
