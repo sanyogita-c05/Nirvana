@@ -1,16 +1,15 @@
 import request from "supertest";
 import app from "../src/app.js";
-
+import { fixturePath } from "./helpers.js";
 
 let token;
 let productId;
-
 
 const testUser = {
     fullName: "Product Tester",
     phone: "8888888888",
     email: "producttester@gmail.com",
-    password: "1234"
+    password: "Test@1234"
 };
 
 
@@ -80,8 +79,8 @@ describe("Product API",()=>{
         .field("sellingPrice",800)
         .field("stockQuantity",10)
         .attach(
-            "image",
-            "C:\\Users\\ISHWARI\\Downloads\\test-image.jpg"
+            "images",
+            fixturePath
         );
 
 
@@ -249,8 +248,8 @@ describe("Product API",()=>{
         .field("sellingPrice",200)
         .field("stockQuantity",-5)
         .attach(
-            "image",
-            "C:\\Users\\ISHWARI\\Downloads\\test-image.jpg"
+            "images",
+            fixturePath
         );
 
 

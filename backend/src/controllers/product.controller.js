@@ -1,9 +1,36 @@
 import Product from "../models/Product.js";
+import Notification from "../models/Notification.js";
 import ApiResponse from "../utils/api-response.js";
 import ApiError from "../utils/api-error.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import generateSequence from "../utils/generateSequence.js";
 import Order from "../models/Order.js";
+
+const LOW_STOCK_THRESHOLD = 5;
+
+const maybeCreateLowStockNotification = async (product, ownerId) => {
+    if (product.stockQuantity >= LOW_STOCK_THRESHOLD) return;
+
+    const existing = await Notification.findOne({
+        owner: ownerId,
+        type: "low_stock",
+        relatedProduct: product._id,
+        isRead: false,
+    });
+
+    if (existing) return;
+
+    await Notification.create({
+        owner: ownerId,
+        type: "low_stock",
+        icon: "AlertTriangle",
+        title: "Low stock alert",
+        tag: "Info",
+        category: "Inventory",
+        message: `${product.name} has only ${product.stockQuantity} unit${product.stockQuantity === 1 ? "" : "s"} left. Restock soon.`,
+        relatedProduct: product._id,
+    });
+};
 
 /*
 ----------------------------------------
@@ -12,9 +39,6 @@ Create Product
 */
 
 export const createProduct = asyncHandler(async (req, res) => {
-
-    console.log("Body:", req.body);
-    console.log("File:", req.file);
     const {
         name,
         description,
@@ -49,9 +73,14 @@ export const createProduct = asyncHandler(async (req, res) => {
             "Selling price cannot be less than cost price."
         );
 
-    // Image uploaded by Multer
-    const imagePath = req.file
-        ? `/uploads/products/${req.file.filename}`
+    const imageFiles = Array.isArray(req.files)
+        ? req.files
+        : req.file
+            ? [req.file]
+            : [];
+
+    const imagePath = imageFiles.length
+        ? `/uploads/products/${imageFiles[0].filename}`
         : "";
 
     if (!imagePath) {
@@ -73,6 +102,8 @@ export const createProduct = asyncHandler(async (req, res) => {
         stockQuantity,
         imagePath,
     });
+
+    await maybeCreateLowStockNotification(product, req.user._id);
 
     return res.status(201).json(
         new ApiResponse(
@@ -186,9 +217,14 @@ export const updateProduct = asyncHandler(async (req, res) => {
         );
     }
 
-    // Replace image if a new image is uploaded
-    if (req.file) {
-        product.imagePath = `/uploads/products/${req.file.filename}`;
+    const imageFiles = Array.isArray(req.files)
+        ? req.files
+        : req.file
+            ? [req.file]
+            : [];
+
+    if (imageFiles.length) {
+        product.imagePath = `/uploads/products/${imageFiles[0].filename}`;
     }
 
     await product.save();

@@ -7,7 +7,7 @@ const testUser = {
     fullName: "Automation User",
     phone: "9999999999",
     email: "automation@gmail.com",
-    password: "1234"
+    password: "Test@1234"
 };
 
 describe("Authentication API",()=>{
@@ -91,7 +91,7 @@ describe("Authentication API",()=>{
         const response = await request(app)
             .put("/api/auth/change-password")
             .set("Authorization", `Bearer ${token}`)
-            .send({ oldPassword: "wrong", newPassword: "9999" });
+            .send({ oldPassword: "wrong", newPassword: "Test@5678" });
 
         expect(response.status).toBe(400);
     });
@@ -100,7 +100,7 @@ describe("Authentication API",()=>{
         const response = await request(app)
             .put("/api/auth/change-password")
             .set("Authorization", `Bearer ${token}`)
-            .send({ oldPassword: "1234", newPassword: "5678" });
+            .send({ oldPassword: "Test@1234", newPassword: "Test@5678" });
 
         expect(response.status).toBe(200);
     });

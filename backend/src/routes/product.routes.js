@@ -19,7 +19,7 @@ router
     .route("/")
     .post(
         protect,
-        upload.single("image"),
+        upload.array("images", 1),
         createProduct
     )
     .get(
@@ -31,7 +31,7 @@ router
     router.get("/top-selling", protect, getTopSellingProducts);
 router.route("/:id").get(protect, getProductById).put(
     protect,
-    upload.single("image"),
+    upload.array("images", 1),
     updateProduct
 )
     .delete(

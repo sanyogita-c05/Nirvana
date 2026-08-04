@@ -163,3 +163,38 @@ export const getRevenueChart = asyncHandler(async (req, res) => {
         new ApiResponse(200, data, "Revenue chart data fetched successfully.")
     );
 });
+
+export const getWeeklyStats = asyncHandler(async (req, res) => {
+    const ownerId = req.user._id;
+    const now = new Date();
+    const startDate = new Date(now);
+    startDate.setHours(0, 0, 0, 0);
+    startDate.setDate(startDate.getDate() - 6);
+
+    const orders = await Order.find({
+        owner: ownerId,
+        isActive: true,
+        orderDate: { $gte: startDate, $lte: now },
+    }).select("totalAmount orderDate");
+
+    const revenue = orders.reduce((sum, order) => sum + order.totalAmount, 0);
+
+    const ordersByDay = [];
+    for (let i = 0; i < 7; i++) {
+        const dayStart = new Date(startDate);
+        dayStart.setDate(startDate.getDate() + i);
+        const dayEnd = new Date(dayStart);
+        dayEnd.setDate(dayStart.getDate() + 1);
+
+        ordersByDay.push({
+            date: dayStart.toISOString().slice(0, 10),
+            count: orders.filter(
+                (order) => order.orderDate >= dayStart && order.orderDate < dayEnd
+            ).length,
+        });
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, { revenue, orders: ordersByDay }, "Weekly stats fetched successfully.")
+    );
+});
