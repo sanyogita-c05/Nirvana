@@ -209,15 +209,34 @@
 }
 
 /* ======================================================
-   CHARTS
+   SECTION HEADINGS
 ====================================================== */
 
-.analytics-charts-grid{
-    display:grid;
-    grid-template-columns:1.6fr 1fr;
-    gap:20px;
-    align-items:start;
+.analytics-section-heading{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-bottom:18px;
 }
+
+.analytics-section-heading h2{
+    margin:0 0 6px;
+    font-size:1.3rem;
+    font-weight:800;
+    color:#2d160f;
+}
+
+.analytics-section-heading p{
+    margin:0;
+    font-size:.9rem;
+    color:#8a5b44;
+}
+
+/* ======================================================
+   CHARTS
+====================================================== */
 
 .chart-card{
     background:white;
@@ -229,7 +248,7 @@
 
 .chart-card-header{
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     justify-content:space-between;
     flex-wrap:wrap;
     gap:12px;
@@ -237,9 +256,16 @@
 }
 
 .chart-card-header h3{
+    margin:0;
     font-size:1.05rem;
     font-weight:700;
     color:#2d160f;
+}
+
+.chart-subtitle{
+    margin:6px 0 0;
+    color:#9a8074;
+    font-size:13px;
 }
 
 .chart-legend{
@@ -273,6 +299,12 @@
 
 .chart-area{
     width:100%;
+    min-height:300px;
+}
+
+.chart-error{
+    color:#d9534f;
+    padding:20px 0;
 }
 
 /* ======================================================
@@ -315,6 +347,161 @@
 }
 
 /* ======================================================
+   MAIN CHARTS GRID (Revenue + Traffic)
+====================================================== */
+
+.analytics-charts-grid{
+    display:grid;
+    grid-template-columns:1.6fr 1fr;
+    gap:20px;
+    align-items:start;
+}
+
+/* ======================================================
+   PRODUCT PERFORMANCE GRID
+   (Top Selling + Least Ordered)
+====================================================== */
+
+.analytics-product-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:24px;
+}
+
+.analytics-product-card{
+    min-width:0;
+}
+
+/* ======================================================
+   REVENUE TREND CARD
+====================================================== */
+
+.revenue-trend-card{
+    width:100%;
+    background:#ffffff;
+    border:1px solid #f1ece8;
+    border-radius:20px;
+    padding:24px;
+    box-sizing:border-box;
+    box-shadow:0 8px 30px rgba(72,45,32,.06);
+}
+
+.revenue-trend-header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-bottom:18px;
+}
+
+.revenue-trend-header h3{
+    margin:0;
+    font-size:18px;
+    font-weight:700;
+    color:#3d2b24;
+}
+
+.revenue-trend-header p{
+    margin:6px 0 0;
+    font-size:13px;
+    color:#9a8074;
+}
+
+/* Revenue period buttons */
+
+.revenue-period-buttons{
+    display:flex;
+    gap:6px;
+    background:#faf6f3;
+    padding:4px;
+    border-radius:10px;
+}
+
+.revenue-period-buttons button{
+    border:none;
+    background:transparent;
+    padding:7px 12px;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:600;
+    color:#8a5b44;
+    transition:all .2s ease;
+}
+
+.revenue-period-buttons button:hover{
+    background:#ffffff;
+}
+
+.revenue-period-buttons button.active{
+    background:#ff7a3d;
+    color:#ffffff;
+}
+
+/* ======================================================
+   TOP SELLING PRODUCT CARD
+====================================================== */
+
+.top-selling-product-card{
+    width:100%;
+    background:#ffffff;
+    border:1px solid #f1ece8;
+    border-radius:20px;
+    padding:22px;
+    box-sizing:border-box;
+    box-shadow:0 8px 30px rgba(72,45,32,.06);
+}
+
+.top-selling-product-card .chart-card-header h3{
+    color:#3f2d27;
+}
+
+.top-selling-product-card .chart-area{
+    width:100%;
+    min-height:300px;
+}
+
+.top-selling-product-card .recharts-wrapper{
+    max-width:100%;
+}
+
+.top-selling-product-card .recharts-tooltip-wrapper{
+    outline:none;
+}
+
+/* ======================================================
+   LEAST ORDERED PRODUCT CARD
+====================================================== */
+
+.least-ordered-product-card{
+    width:100%;
+    background:#ffffff;
+    border:1px solid #f1ece8;
+    border-radius:20px;
+    padding:22px;
+    box-sizing:border-box;
+    box-shadow:0 8px 30px rgba(72,45,32,.06);
+}
+
+.least-ordered-product-card .chart-card-header h3{
+    color:#3f2d27;
+}
+
+.least-ordered-product-card .chart-area{
+    width:100%;
+    min-height:300px;
+}
+
+.least-ordered-product-card .recharts-wrapper{
+    max-width:100%;
+}
+
+.least-ordered-product-card .recharts-tooltip-wrapper{
+    outline:none;
+}
+
+/* ======================================================
    RESPONSIVE
 ====================================================== */
 
@@ -328,16 +515,64 @@
     grid-template-columns:1fr;
 }
 
+.analytics-product-grid{
+    grid-template-columns:1fr;
+}
+
+}
+
+@media(max-width:700px){
+
+.revenue-trend-card{
+    padding:16px;
+    border-radius:16px;
+}
+
+.revenue-trend-header{
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+.top-selling-product-card,
+.least-ordered-product-card{
+    padding:16px;
+    border-radius:16px;
+}
+
+.top-selling-product-card .chart-card-header,
+.least-ordered-product-card .chart-card-header{
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+.top-selling-product-card .chart-card-header h3,
+.least-ordered-product-card .chart-card-header h3{
+    font-size:16px;
+}
+
+.top-selling-product-card .chart-area,
+.least-ordered-product-card .chart-area{
+    min-height:280px;
+}
+
+.chart-card{
+    padding:20px;
+}
+
+.revenue-period-buttons{
+    width:100%;
+}
+
+.revenue-period-buttons button{
+    flex:1;
+}
+
 }
 
 @media(max-width:600px){
 
 .analytics-stats-grid{
     grid-template-columns:1fr;
-}
-
-.chart-card{
-    padding:20px;
 }
 
 }

@@ -38,17 +38,6 @@ function RevenueChartCard() {
     );
   }
 
-  // const points = [
-  //   { month: "Jan", value: 18 },
-  //   { month: "Feb", value: 22 },
-  //   { month: "Mar", value: 20 },
-  //   { month: "Apr", value: 29 },
-  //   { month: "May", value: 31 },
-  //   { month: "Jun", value: 27 },
-  //   { month: "Jul", value: 39 },
-  // ];
-
-  // const max = Math.max(...points.map((p) => p.value));
   const max = Math.max(...points.map((p) => p.value), 1);
   
   return (
