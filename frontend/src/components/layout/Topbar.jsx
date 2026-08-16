@@ -1,26 +1,11 @@
-import { useState, useEffect } from "react";
 import { Bell, Menu } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
-// CHANGED: use the shared store instead of a plain localStorage read
-import { getStoredUser, onUserUpdated } from "../../utils/userStore";
-
 
 function Topbar({ onMenuClick }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [user, setUser] = useState(() => getStoredUser() || {});
-
-  useEffect(() => {
-    return onUserUpdated((updated) => setUser(updated || {}));
-  }, []);
-
-  // const user = JSON.parse(localStorage.getItem("user") || "{}");
-
   const isCustomerView = location.pathname.startsWith("/customer");
-
-  const initial =
-    (user?.firstName?.charAt(0) || user?.fullName?.charAt(0) || "U").toUpperCase();
 
   return (
     <header className="dashboard-topbar">
@@ -56,31 +41,18 @@ function Topbar({ onMenuClick }) {
         </div>
 
         <button
-          className="icon-btn"
-          onClick={() => navigate("/notifications")}
-          title="Notifications"
-        >
-          <Bell size={20} />
-        </button>
+  className="icon-btn"
+  onClick={() => navigate("/notifications")}
+  title="Notifications"
+>
+  <Bell size={20} />
+</button>
         <button
           className="profile-avatar"
           onClick={() => navigate("/profile")}
           title="View profile"
         >
-          {user?.avatar ? (
-            <img
-              src={`http://localhost:5000${user.avatar}`}
-              alt="Profile"
-              style={{
-                width: "100%",
-                height: "100%",
-                borderRadius: "50%",
-                objectFit: "cover",
-              }}
-            />
-          ) : (
-            initial
-          )}
+          M
         </button>
       </div>
     </header>

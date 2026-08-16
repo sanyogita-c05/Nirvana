@@ -1,8 +1,5 @@
 import { Eye, Pencil, Trash2 } from "lucide-react";
-import toast from "react-hot-toast";
 import { deleteOrder } from "../../api/orderApi";
-
-import OrderDetailsDrawer from "./OrderDetailsDrawer";
 
 function OrderCard({ order, refreshOrders, onEdit }) {
   const productNames = order.items.map((i) => i.name).join(", ");
@@ -58,9 +55,7 @@ function OrderCard({ order, refreshOrders, onEdit }) {
       </div>
 
       <div className="mobile-actions">
-
-        <OrderDetailsDrawer order={order} />
-        {/* <button><Eye size={18} /></button> */}
+        <button><Eye size={18} /></button>
         <button onClick={() => onEdit(order)}>
           <Pencil size={18} />
         </button>

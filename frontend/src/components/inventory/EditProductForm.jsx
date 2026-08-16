@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import ImageUpload from "./ImageUpload";
 import { updateProduct } from "../../api/productApi";
 
@@ -92,14 +91,14 @@ function EditProductForm({
       await updateProduct(product._id, data);
       await refreshProducts();
 
-      toast.success("Product updated successfully!");
+      alert("Product updated successfully!");
 
       onClose();
 
     } catch (error) {
       console.error(error);
 
-      toast.error(
+      alert(
         error?.response?.data?.message ||
         "Unable to update product."
       );
@@ -159,7 +158,6 @@ function EditProductForm({
             name="name"
             value={formData.name}
             onChange={handleChange}
-            required
           />
         </div>
 
@@ -171,7 +169,6 @@ function EditProductForm({
             name="category"
             value={formData.category}
             onChange={handleChange}
-            required
           />
         </div>
 
@@ -194,7 +191,6 @@ function EditProductForm({
             name="costPrice"
             value={formData.costPrice}
             onChange={handleChange}
-            required
           />
         </div>
 
@@ -206,7 +202,6 @@ function EditProductForm({
             name="sellingPrice"
             value={formData.sellingPrice}
             onChange={handleChange}
-            required
           />
         </div>
 
@@ -218,7 +213,6 @@ function EditProductForm({
             name="stockQuantity"
             value={formData.stockQuantity}
             onChange={handleChange}
-            required
           />
         </div>
 

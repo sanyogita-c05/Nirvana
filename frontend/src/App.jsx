@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -18,8 +17,6 @@ import Notifications from "./pages/notifications/Notifications";
 function App() {
   return (
     <BrowserRouter>
-      {/* CHANGED: added — without this, toast.success/toast.error calls do nothing visible */}
-      <Toaster position="top-center" />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -50,7 +47,7 @@ function App() {
           }
         />
         <Route path="/notifications" element={<Notifications />} />
-
+        
         <Route
           path="/orders"
           element={

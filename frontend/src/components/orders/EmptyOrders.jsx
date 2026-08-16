@@ -2,7 +2,7 @@ import { PackageOpen } from "lucide-react";
 
 function EmptyOrders({ onCreate }) {
 
-
+  
   return (
     <div className="empty-orders">
 
@@ -17,7 +17,7 @@ function EmptyOrders({ onCreate }) {
         purchasing your products.
       </p>
 
-      <button className="empty-btn" onClick={onCreate}>
+      <button className="empty-btn">
         Create First Order
       </button>
 

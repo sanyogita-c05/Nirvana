@@ -1,10 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
 import { getMe, uploadAvatar } from "../api/auth";
 import api from "../api/api";
-
-import { clearStoredUser, setStoredUser } from "../utils/userStore";
 
 import {
   Package,
@@ -46,7 +43,8 @@ function ProfilePage() {
       setCurrentUser(res.data.data);
     } catch (error) {
       console.error("Failed to fetch user:", error);
-      clearStoredUser();
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       navigate("/login", { replace: true });
     } finally {
       setLoading(false);
@@ -71,7 +69,8 @@ function ProfilePage() {
   }, [fetchUser, fetchStats]);
 
   const handleLogout = () => {
-    clearStoredUser();
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/login", { replace: true });
   };
 
@@ -86,11 +85,8 @@ function ProfilePage() {
       formData.append("avatar", file);
       const res = await uploadAvatar(formData, token);
       setCurrentUser((prev) => ({ ...prev, avatar: res.data.data.avatar }));
-      setStoredUser({ avatar: res.data.data.avatar });
-
-
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to upload photo.");
+      alert(error.response?.data?.message || "Failed to upload photo.");
     } finally {
       setAvatarBusy(false);
       e.target.value = "";

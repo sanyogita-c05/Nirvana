@@ -21,21 +21,11 @@ function StockAlertsCard({ products, refreshProducts }) {
         ) : (
           lowStock.map((product) => (
             <div className="inventory-list-item" key={product._id}>
-
               <img
-                src={
-                  product.images?.[0]?.url
-                    ? `http://localhost:5000${product.images[0].url}`
-                    : "/placeholder-product.png"
-                }
-                alt={product.name}
-                className="inventory-list-icon"
-              />
-              {/* <img
                 src={`http://localhost:5000${product.imagePath}`}
                 alt={product.name}
                 className="inventory-list-icon"
-              /> */}
+              />
 
               <div className="inventory-list-info">
                 <h4>{product.name}</h4>
