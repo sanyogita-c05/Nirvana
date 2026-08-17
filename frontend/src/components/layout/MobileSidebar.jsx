@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -11,17 +12,44 @@ import {
   X,
 } from "lucide-react";
 
+import api from "../../api/api";
+
 function MobileSidebar({ open, onClose }) {
+
   const navigate = useNavigate();
 
+  const [studioName, setStudioName] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [address, setAddress] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await api.get("/auth/me");
+        setStudioName(res.data.data.studio);
+        setFullName(res.data.data.fullName);
+        setAddress(res.data.data.address);
+      } catch (err) {
+        // Sidebar stays on fallback text below if this fails —
+        // not worth a visible error state for a persistent nav element.
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+
   const menuItems = [
-  { title: "Dashboard", path: "/dashboard", icon: <LayoutDashboard size={20} /> },
-  { title: "Inventory", path: "/inventory", icon: <Package size={20} /> },
-  { title: "Orders", path: "/orders", icon: <ShoppingCart size={20} /> },
-  { title: "Analytics", path: "/analytics", icon: <BarChart3 size={20} /> },
-  { title: "Notifications", path: "/notifications", icon: <Bell size={20} /> },
-  { title: "Settings", path: "/settings", icon: <Settings size={20} /> },
-];
+    { title: "Dashboard", path: "/dashboard", icon: <LayoutDashboard size={20} /> },
+    { title: "Inventory", path: "/inventory", icon: <Package size={20} /> },
+    { title: "Orders", path: "/orders", icon: <ShoppingCart size={20} /> },
+    { title: "Analytics", path: "/analytics", icon: <BarChart3 size={20} /> },
+    { title: "Notifications", path: "/notifications", icon: <Bell size={20} /> },
+    { title: "Settings", path: "/settings", icon: <Settings size={20} /> },
+  ];
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -57,11 +85,13 @@ function MobileSidebar({ open, onClose }) {
             YOUR STUDIO
           </p>
 
-          <h3>Meera's Craft</h3>
+          <h3>{loading ? "..." : studioName || fullName || "Your Studio"}</h3>
 
-          <p className="studio-location">
-            Jaipur, Rajasthan
-          </p>
+          {!loading && address && (
+            <p className="studio-location">
+              {address}
+            </p>
+          )}
 
           <span className="studio-status">
             ● Shop Open

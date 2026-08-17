@@ -1,3 +1,5 @@
+const listeners = new Set();
+
 export const setStoredUser = (updates) => {
   try {
     const existing = JSON.parse(localStorage.getItem("user") || "{}");
@@ -8,6 +10,8 @@ export const setStoredUser = (updates) => {
     };
 
     localStorage.setItem("user", JSON.stringify(updated));
+    listeners.forEach((listener) => listener(updated));
+
   } catch (error) {
     console.error("Failed to update stored user:", error);
   }
@@ -24,4 +28,11 @@ export const getStoredUser = () => {
 
 export const clearStoredUser = () => {
   localStorage.removeItem("user");
+  listeners.forEach((listener) => listener({}));
+
+};
+
+export const onUserUpdated = (callback) => {
+  listeners.add(callback);
+  return () => listeners.delete(callback);
 };

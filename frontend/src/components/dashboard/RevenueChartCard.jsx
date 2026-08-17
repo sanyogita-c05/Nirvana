@@ -22,6 +22,7 @@ function RevenueChartCard() {
 
     fetchRevenue();
   }, []);
+  
   if (loading) {
     return (
       <SectionCard title="Revenue Overview" action="Jan–Jul 2026" className="revenue-card">

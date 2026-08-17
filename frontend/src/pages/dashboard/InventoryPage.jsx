@@ -21,7 +21,6 @@ function InventoryPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
 
-
   const fetchProducts = useCallback(async () => {
     try {
       const response = await getProducts();
@@ -41,7 +40,6 @@ function InventoryPage() {
       console.error("Error fetching orders:", error);
     }
   }, []);
-
 
   useEffect(() => {
     fetchProducts();
@@ -89,7 +87,6 @@ function InventoryPage() {
     URL.revokeObjectURL(url);
   };
 
-
   return (
     <DashboardLayout>
       <div className="inventory-page">
@@ -99,18 +96,12 @@ function InventoryPage() {
 
         <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
-
         <CategoryFilter
           products={products}
           activeCategory={activeCategory}
           onCategoryChange={setActiveCategory}
         />
-
-        {/* <ProductInventoryTable
-          products={products}
-          loading={loading}
-          refreshProducts={fetchProducts}
-        /> */}
+     
         <div id="product-inventory-table">
           <ProductInventoryTable
             products={filteredProducts}
@@ -118,23 +109,12 @@ function InventoryPage() {
             refreshProducts={fetchProducts}
           />
         </div>
-
-        {/* <div className="inventory-bottom-grid">
-          <RecentlyAddedCard products={products} />
-          <StockAlertsCard products={products} />
-        </div> */}
-
+        
         <div className="inventory-bottom-grid">
           <RecentlyAddedCard products={products} />
           <StockAlertsCard products={products} refreshProducts={fetchProducts} />
         </div>
 
-
-
-        {/* <div className="inventory-bottom-grid">
-          <TopSellingCard />
-          <RecentActivityCard />
-        </div> */}
         <div className="inventory-bottom-grid">
           <TopSellingCard />
           <RecentActivityCard products={products} orders={orders} />

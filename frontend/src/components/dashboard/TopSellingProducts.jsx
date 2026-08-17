@@ -25,9 +25,11 @@ function TopSellingProducts() {
             width: `${(product.totalSold / maxSold) * 100}%`,
           }))
         );
+        
       } catch (err) {
         setError(err.response?.data?.message || "Failed to load top selling products.");
       } finally {
+
         setLoading(false);
       }
     };

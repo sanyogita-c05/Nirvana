@@ -12,6 +12,7 @@ import {
     deleteProduct,
     getLowStockProducts,
     getTopSellingProducts,
+    getLeastOrderedProducts,
 } from "../controllers/product.controller.js";
 
 const router = express.Router();
@@ -37,6 +38,7 @@ router
 
 router.get("/low-stock", protect, getLowStockProducts);
 router.get("/top-selling", protect, getTopSellingProducts);
+router.get("/least-ordered", protect, getLeastOrderedProducts);
 
 router
     .route("/:id")

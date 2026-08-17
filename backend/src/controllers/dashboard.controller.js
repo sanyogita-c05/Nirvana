@@ -221,3 +221,98 @@ export const getWeeklyStats = asyncHandler(async (req, res) => {
         }, "Weekly stats fetched successfully.")
     );
 });
+
+
+export const getRevenueTrend = asyncHandler(async (req, res) => {
+    const ownerId = req.user._id;
+    const period = req.query.period || "monthly";
+    const now = new Date();
+
+    // -------- Weekly: last 7 calendar days, rolling --------
+    if (period === "weekly") {
+        const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const days = [];
+        for (let i = 6; i >= 0; i--) {
+            days.push(new Date(now.getFullYear(), now.getMonth(), now.getDate() - i));
+        }
+
+        const rangeStart = days[0];
+        const rangeEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+
+        const orders = await Order.find({
+            owner: ownerId,
+            isActive: true,
+            orderDate: { $gte: rangeStart, $lt: rangeEnd },
+        }).select("totalAmount orderDate");
+
+        const data = days.map((d) => {
+            const dayOrders = orders.filter(
+                (o) =>
+                    o.orderDate.getFullYear() === d.getFullYear() &&
+                    o.orderDate.getMonth() === d.getMonth() &&
+                    o.orderDate.getDate() === d.getDate()
+            );
+            const total = dayOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+            return { label: dayNames[d.getDay()], revenue: total };
+        });
+
+        return res.status(200).json(
+            new ApiResponse(200, data, "Weekly revenue trend fetched successfully.")
+        );
+    }
+
+    // -------- Yearly: last 5 calendar years, rolling --------
+    if (period === "yearly") {
+        const years = [];
+        for (let i = 4; i >= 0; i--) years.push(now.getFullYear() - i);
+
+        const rangeStart = new Date(years[0], 0, 1);
+        const rangeEnd = new Date(now.getFullYear() + 1, 0, 1);
+
+        const orders = await Order.find({
+            owner: ownerId,
+            isActive: true,
+            orderDate: { $gte: rangeStart, $lt: rangeEnd },
+        }).select("totalAmount orderDate");
+
+        const data = years.map((y) => {
+            const yearOrders = orders.filter((o) => o.orderDate.getFullYear() === y);
+            const total = yearOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+            return { label: String(y), revenue: total };
+        });
+
+        return res.status(200).json(
+            new ApiResponse(200, data, "Yearly revenue trend fetched successfully.")
+        );
+    }
+
+    // -------- Monthly (default): last 12 calendar months, rolling --------
+    const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const months = [];
+    for (let i = 11; i >= 0; i--) {
+        months.push(new Date(now.getFullYear(), now.getMonth() - i, 1));
+    }
+
+    const rangeStart = months[0];
+    const rangeEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
+    const orders = await Order.find({
+        owner: ownerId,
+        isActive: true,
+        orderDate: { $gte: rangeStart, $lt: rangeEnd },
+    }).select("totalAmount orderDate");
+
+    const data = months.map((m) => {
+        const monthOrders = orders.filter(
+            (o) =>
+                o.orderDate.getFullYear() === m.getFullYear() &&
+                o.orderDate.getMonth() === m.getMonth()
+        );
+        const total = monthOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+        return { label: monthLabels[m.getMonth()], revenue: total };
+    });
+
+    return res.status(200).json(
+        new ApiResponse(200, data, "Monthly revenue trend fetched successfully.")
+    );
+});

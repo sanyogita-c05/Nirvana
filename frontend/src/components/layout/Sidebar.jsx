@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   LayoutDashboard,
   Package,
@@ -9,13 +10,40 @@ import {
 } from "lucide-react";
 
 import { NavLink, useNavigate } from "react-router-dom";
+import api from "../../api/api";
 
 function Sidebar() {
+
   const navigate = useNavigate();
+
+  const [studioName, setStudioName] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [address, setAddress] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await api.get("/auth/me");
+        setStudioName(res.data.data.studio);
+        setFullName(res.data.data.fullName);
+        setAddress(res.data.data.address);
+      } catch (err) {
+        // Sidebar stays on fallback text below if this fails —
+        // not worth a visible error state for a persistent nav element.
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login", { replace: true });
   };
+
   const menuItems = [
     {
       title: "Dashboard",
@@ -55,11 +83,13 @@ function Sidebar() {
             YOUR STUDIO
           </p>
 
-          <h3>Meera's Craft</h3>
+          <h3>{loading ? "..." : studioName || fullName || "Your Studio"}</h3>
 
-          <p className="studio-location">
-            Jaipur, Rajasthan
-          </p>
+          {!loading && address && (
+            <p className="studio-location">
+              {address}
+            </p>
+          )}
 
           <span className="studio-status">
             ● Shop Open

@@ -18,7 +18,7 @@ function RecentOrdersTable() {
           res.data.data.map((order) => ({
             order: order.orderNumber,
             customer: order.customer.name,
-            city: order.customer.city || "—",// see note below
+            city: order.customer.city || "—",
             items: order.items.map((i) => i.name).join(", "),
             total: `₹${order.totalAmount.toLocaleString("en-IN")}`,
             status: order.orderStatus,

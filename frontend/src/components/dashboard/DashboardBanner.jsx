@@ -5,6 +5,7 @@ import api from "../../api/api";
 function DashboardBanner() {
 
   const navigate = useNavigate();
+
   const [fullName, setFullName] = useState("");
   const [studioName, setStudioName] = useState("");
   const [revenue, setRevenue] = useState(null);
@@ -19,10 +20,10 @@ function DashboardBanner() {
           api.get("/dashboard/stats"),
         ]);
 
-        setFullName(meRes.data.data.fullName);
-        
+        setFullName(meRes.data.data.fullName); 
         setStudioName(meRes.data.data.studio);
         setRevenue(statsRes.data.data.revenue);
+
       } catch (err) {
         setError(err.response?.data?.message || "Failed to load dashboard info.");
       } finally {
@@ -31,15 +32,18 @@ function DashboardBanner() {
     };
 
     fetchBannerData();
+
   }, []);
 
   const today = new Date();
+
   const formattedDate = today.toLocaleDateString("en-IN", {
     weekday: "long",
     day: "numeric",
     month: "long",
     year: "numeric",
   });
+
   const currentMonthName = today.toLocaleDateString("en-IN", { month: "long" });
   const lastMonthName = new Date(
     today.getFullYear(),
@@ -48,6 +52,7 @@ function DashboardBanner() {
   ).toLocaleDateString("en-IN", { month: "long" });
 
   return (
+
     <section className="dashboard-banner">
       <div className="dashboard-banner__content">
         <div className="dashboard-banner__left">
@@ -91,7 +96,7 @@ function DashboardBanner() {
           ) : (
             <>
               <h2 className="dashboard-banner__revenue-value">
-                {loading ? "—" : `₹${revenue.thisMonth.toLocaleString("en-IN")}`}
+                {loading ? "—" : `₹${revenue.thisMonth.toLocaleString("en-IN")}`} 
               </h2>
               {!loading && (
                 <span className="dashboard-banner__revenue-growth">

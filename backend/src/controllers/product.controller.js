@@ -368,3 +368,51 @@ export const getTopSellingProducts = asyncHandler(async (req, res) => {
         )
     );
 });
+
+/*
+----------------------------------------
+Get 5 Least Ordered Products (by units sold)
+
+Starts from Product (not Order) via $lookup, so products
+with ZERO sales still show up — a pure mirror of
+getTopSellingProducts (which starts from Order.aggregate)
+would silently skip never-ordered products, since they
+never appear in any order's items array.
+----------------------------------------
+*/
+
+export const getLeastOrderedProducts = asyncHandler(async (req, res) => {
+
+    const leastOrdered = await Product.aggregate([
+        { $match: { owner: req.user._id, isActive: true } },
+        {
+            $lookup: {
+                from: "orders",
+                let: { productId: "$_id" },
+                pipeline: [
+                    { $match: { owner: req.user._id, isActive: true } },
+                    { $unwind: "$items" },
+                    { $match: { $expr: { $eq: ["$items.productId", "$$productId"] } } },
+                    { $group: { _id: null, totalSold: { $sum: "$items.quantity" } } },
+                ],
+                as: "salesData",
+            },
+        },
+        {
+            $addFields: {
+                totalSold: { $ifNull: [{ $arrayElemAt: ["$salesData.totalSold", 0] }, 0] },
+            },
+        },
+        { $sort: { totalSold: 1 } },
+        { $limit: 5 },
+        { $project: { name: 1, totalSold: 1 } },
+    ]);
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            leastOrdered,
+            "Least ordered products fetched successfully."
+        )
+    );
+});

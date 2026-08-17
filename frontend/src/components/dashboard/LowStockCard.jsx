@@ -5,6 +5,7 @@ import SectionCard from "./SectionCard";
 
 function LowStockCard() {
   const navigate = useNavigate();
+  
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

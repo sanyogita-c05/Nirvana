@@ -14,6 +14,8 @@ const STRONG_PASSWORD_REGEX =
 
 // Register
 export const register = asyncHandler(async (req, res) => {
+
+    
     const fullName = req.body.fullName?.trim();
     const email = req.body.email?.trim().toLowerCase();
     const phone = req.body.phone?.trim();
