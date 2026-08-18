@@ -195,6 +195,17 @@ export const createOrder = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Order date is required.");
     }
 
+    const initialStatus = orderStatus || "Active";
+    if (
+        (initialStatus === "Shipped" || initialStatus === "Closed") &&
+        !shipment?.trackingNumber
+    ) {
+        throw new ApiError(
+            400,
+            "Tracking number is required for shipped or closed orders."
+        );
+    }
+
     // Stock is reduced first; if anything below fails, we manually restore it.
     const orderItems = await buildOrderItemsAndReduceStock(items, req.user._id);
 
@@ -333,6 +344,19 @@ export const updateOrder = asyncHandler(async (req, res) => {
         throw new ApiError(
             400,
             "Only tracking and status can be updated for shipped orders."
+        );
+    }
+
+    const nextStatus = orderStatus || order.orderStatus;
+    const nextTrackingNumber =
+        shipment?.trackingNumber !== undefined
+            ? shipment.trackingNumber
+            : order.shipment?.trackingNumber;
+
+    if ((nextStatus === "Shipped" || nextStatus === "Closed") && !nextTrackingNumber) {
+        throw new ApiError(
+            400,
+            "Tracking number is required for shipped or closed orders."
         );
     }
 

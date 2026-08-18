@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 // import api from "../../api/api";
 
@@ -15,26 +15,26 @@ function TrafficSourceCard() {
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchTrafficSources = async () => {
-      try {
-        const res = await api.get("/dashboard/traffic-sources");
-        setData(
-          res.data.data.map((source, index) => ({
-            name: source.name ?? source.source,
-            value: source.value ?? source.percentage ?? 0,
-            color: source.color || PALETTE[index % PALETTE.length],
-          }))
-        );
-      } catch (err) {
-        setError(err.response?.data?.message || "Failed to load traffic sources.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchTrafficSources = async () => {
+  //     try {
+  //       const res = await api.get("/dashboard/traffic-sources");
+  //       setData(
+  //         res.data.data.map((source, index) => ({
+  //           name: source.name ?? source.source,
+  //           value: source.value ?? source.percentage ?? 0,
+  //           color: source.color || PALETTE[index % PALETTE.length],
+  //         }))
+  //       );
+  //     } catch (err) {
+  //       setError(err.response?.data?.message || "Failed to load traffic sources.");
+  //     } finally {
+        // setLoading(false);
+  //     }
+  //   };
 
-    fetchTrafficSources();
-  }, []);
+  //   fetchTrafficSources();
+  // }, []);
 
   return (
     <div className="chart-card traffic-card">
