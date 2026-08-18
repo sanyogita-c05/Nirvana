@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import api from "../../api/api";
+// import api from "../../api/api";
 
 
-// const data = [
-//   { name: "Instagram", value: 45, color: "#ff7a3d" },
-//   { name: "Website", value: 30, color: "#b56cf0" },
-//   { name: "WhatsApp", value: 25, color: "#34a853" },
-// ];
+const data = [
+  { name: "Instagram", value: 45, color: "#ff7a3d" },
+  { name: "Website", value: 30, color: "#b56cf0" },
+  { name: "WhatsApp", value: 25, color: "#34a853" },
+];
 
 function TrafficSourceCard() {
 
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [data, setData] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTrafficSources = async () => {
@@ -43,12 +43,12 @@ function TrafficSourceCard() {
         <h3>Order Sources</h3>
       </div>
 
-
+{/* 
       {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      {error && <p>{error}</p>} */}
 
-      {!loading && !error && (
-        <>
+      {/* {!loading && !error && (
+        <> */}
           <div className="donut-chart-wrap">
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
@@ -81,8 +81,8 @@ function TrafficSourceCard() {
               </div>
             ))}
           </div>
-        </>
-      )}
+        {/* </> */}
+      {/* )} */}
     </div>
   );
 }

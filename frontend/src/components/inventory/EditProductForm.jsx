@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import ImageUpload from "./ImageUpload";
 import { updateProduct } from "../../api/productApi";
 
@@ -91,14 +92,14 @@ function EditProductForm({
       await updateProduct(product._id, data);
       await refreshProducts();
 
-      alert("Product updated successfully!");
+      toast.success("Product updated successfully!");
 
       onClose();
 
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         error?.response?.data?.message ||
         "Unable to update product."
       );

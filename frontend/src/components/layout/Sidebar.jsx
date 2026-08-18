@@ -11,32 +11,36 @@ import {
 
 import { NavLink, useNavigate } from "react-router-dom";
 import api from "../../api/api";
+import { getStoredUser, setStoredUser, onUserUpdated } from "../../utils/userStore";
 
 function Sidebar() {
 
   const navigate = useNavigate();
 
-  const [studioName, setStudioName] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [address, setAddress] = useState("");
-  const [loading, setLoading] = useState(true);
+  // CHANGED: was independent local state (studioName/fullName/address/loading)
+  // fetched once on mount — never updated again after that. Replaced with
+  // the shared store, same pattern as Topbar.jsx.
+  const [user, setUser] = useState(getStoredUser());
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await api.get("/auth/me");
-        setStudioName(res.data.data.studio);
-        setFullName(res.data.data.fullName);
-        setAddress(res.data.data.address);
-      } catch (err) {
-        // Sidebar stays on fallback text below if this fails —
-        // not worth a visible error state for a persistent nav element.
-      } finally {
-        setLoading(false);
-      }
-    };
+    // ADDED: subscribe so Sidebar re-renders instantly whenever
+    // ProfileSettingsForm (or anything else) calls setStoredUser.
+    const unsubscribe = onUserUpdated(setUser);
 
-    fetchProfile();
+    // Fallback fetch only if the store is genuinely empty (e.g. very
+    // first load of the whole app before anything else populated it).
+    if (!user?.fullName && !user?.studio) {
+      api
+        .get("/auth/me")
+        .then((res) => setStoredUser(res.data.data))
+        .catch(() => {
+          // Sidebar stays on fallback text below if this fails —
+          // not worth a visible error state for a persistent nav element.
+        });
+    }
+
+    return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLogout = () => {
@@ -83,11 +87,12 @@ function Sidebar() {
             YOUR STUDIO
           </p>
 
-          <h3>{loading ? "..." : studioName || fullName || "Your Studio"}</h3>
+          {/* CHANGED: reads from shared user state now */}
+          <h3>{user?.studio || user?.fullName || "Your Studio"}</h3>
 
-          {!loading && address && (
+          {user?.address && (
             <p className="studio-location">
-              {address}
+              {user.address}
             </p>
           )}
 

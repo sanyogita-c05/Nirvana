@@ -1,4 +1,5 @@
 import { Eye, Pencil, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 import { deleteOrder } from "../../api/orderApi";
 
 function OrderCard({ order, refreshOrders, onEdit }) {
@@ -13,7 +14,7 @@ function OrderCard({ order, refreshOrders, onEdit }) {
       await deleteOrder(order._id);
       refreshOrders();
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to delete order");
+      toast.error(error.response?.data?.message || "Failed to delete order");
     }
   };
 

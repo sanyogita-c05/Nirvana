@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -17,6 +18,29 @@ import Notifications from "./pages/notifications/Notifications";
 function App() {
   return (
     <BrowserRouter>
+
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            fontFamily: "'Inter', sans-serif",
+          },
+          success: {
+            iconTheme: {
+              primary: "#34a853",
+              secondary: "#fff",
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#e0576b",
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -47,7 +71,7 @@ function App() {
           }
         />
         <Route path="/notifications" element={<Notifications />} />
-        
+
         <Route
           path="/orders"
           element={

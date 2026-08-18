@@ -27,6 +27,8 @@ function PasswordSettings() {
       return;
     }
 
+    setSaving(true);
+
     try {
       const token = localStorage.getItem("token");
 

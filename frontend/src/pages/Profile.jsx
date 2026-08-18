@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { getMe, uploadAvatar } from "../api/auth";
 import api from "../api/api";
 
@@ -86,7 +87,8 @@ function ProfilePage() {
       const res = await uploadAvatar(formData, token);
       setCurrentUser((prev) => ({ ...prev, avatar: res.data.data.avatar }));
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to upload photo.");
+      // alert(error.response?.data?.message || "Failed to upload photo.");
+      toast.error(error.response?.data?.message || "Failed to upload photo.");
     } finally {
       setAvatarBusy(false);
       e.target.value = "";

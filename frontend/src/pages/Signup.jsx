@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { registerUser } from "../api/auth.js";
 import "./Login.css";
 
@@ -76,10 +77,13 @@ function Signup() {
         localStorage.setItem("user", JSON.stringify(user));
       }
 
-      alert(res.data?.message || "Registration successful");
+      // alert(res.data?.message || "Registration successful");
+
+      toast.success("Registration successful! Redirecting to dashboard...");
       navigate("/dashboard");
     } catch (err) {
-      alert(err.response?.data?.message || "Registration failed");
+      toast.error(err.response?.data?.message || "Registration failed");
+      // alert(err.response?.data?.message || "Registration failed");
     }
   };
 

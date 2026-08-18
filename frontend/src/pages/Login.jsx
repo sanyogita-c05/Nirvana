@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../api/auth.js";
 import "./Login.css";
@@ -73,9 +74,11 @@ function Login() {
       }
 
       // alert(res.data?.message || "Login successful");
+      toast.success(res.data?.message || "Login successful")
       navigate("/dashboard");
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
+      // alert(err.response?.data?.message || "Login failed");
+      toast.error(err.response?.data?.message || "Login failed");
     }
   };
 

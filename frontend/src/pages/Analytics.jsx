@@ -1,5 +1,5 @@
+import toast from "react-hot-toast";
 import DashboardLayout from "../components/layout/DashBoardLayout";
-
 import AnalyticsBanner from "../components/analytics/Analyticsbanner";
 import AnalyticsStatsGrid from "../components/analytics/AnalyticsStatsGrid";
 import SalesChartCard from "../components/analytics/SalesChartCard";

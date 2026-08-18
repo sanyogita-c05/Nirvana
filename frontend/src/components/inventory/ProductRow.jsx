@@ -1,4 +1,5 @@
 import { deleteProduct } from "../../api/productApi";
+import toast from "react-hot-toast";
 import StatusBadge from "./StatusBadge";
 
 function ProductRow({
@@ -25,7 +26,7 @@ function ProductRow({
 
       console.error(error);
 
-      alert("Unable to delete product.");
+      toast.error("Unable to delete product.");
 
     }
   };
