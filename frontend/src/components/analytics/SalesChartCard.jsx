@@ -13,18 +13,27 @@ import api from "../../api/api";
 
 function SalesChartCard() {
 
+  const [period, setPeriod] = useState("monthly");
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchChart = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const res = await api.get("/dashboard/revenue-chart");
+        const res = await api.get(`/dashboard/revenue-trend?period=${period}`);
+        // FIXED: revenue-trend returns { label, revenue, orders } per point —
+        // this was still reading point.month and point.value, which are the
+        // field names from the OLD /dashboard/revenue-chart endpoint. Every
+        // bar was getting undefined for both the x-axis label and the
+        // revenue value, which is why the chart looked empty/broken.
         setData(
           res.data.data.map((point) => ({
-            month: point.month,
-            revenue: point.value,
+            month: point.label,
+            revenue: point.revenue,
             orders: point.orders,
           }))
         );
@@ -36,7 +45,7 @@ function SalesChartCard() {
     };
 
     fetchChart();
-  }, []);
+  }, [period]);
 
 
   return (
@@ -55,6 +64,29 @@ function SalesChartCard() {
             Orders
           </span>
         </div>
+      </div>
+
+      <div className="revenue-period-buttons">
+        <button
+          className={period === "weekly" ? "active" : ""}
+          onClick={() => setPeriod("weekly")}
+        >
+          Weekly
+        </button>
+
+        <button
+          className={period === "monthly" ? "active" : ""}
+          onClick={() => setPeriod("monthly")}
+        >
+          Monthly
+        </button>
+
+        <button
+          className={period === "yearly" ? "active" : ""}
+          onClick={() => setPeriod("yearly")}
+        >
+          Yearly
+        </button>
       </div>
 
       <div className="chart-area">

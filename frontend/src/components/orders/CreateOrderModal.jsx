@@ -24,6 +24,7 @@ function CreateOrderModal({ open, onClose, refreshOrders }) {
     amountPaid: 0,
     orderDate: getLocalDateString(),
     notes: "",
+    source: "Website",
   });
 
   const [error, setError] = useState("");
@@ -62,6 +63,7 @@ function CreateOrderModal({ open, onClose, refreshOrders }) {
         },
         orderDate: form.orderDate,
         notes: form.notes,
+        source: form.source,
       });
       refreshOrders();
       onClose();
@@ -150,6 +152,18 @@ function CreateOrderModal({ open, onClose, refreshOrders }) {
             <div className="form-group">
               <label>Amount Paid (₹)</label>
               <input name="amountPaid" type="number" min="0" value={form.amountPaid} onChange={handleChange} />
+            </div>
+          </div>
+
+          <div className="form-grid">
+            <div className="form-group">
+              <label>Order Source</label>
+              <select name="source" value={form.source} onChange={handleChange} required>
+                <option value="Instagram">Instagram</option>
+                <option value="Website">Website</option>
+                <option value="WhatsApp">WhatsApp</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
           </div>
 

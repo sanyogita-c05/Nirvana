@@ -212,6 +212,14 @@ const orderSchema = new mongoose.Schema(
             index: true,
         },
 
+        source: {
+            type: String,
+            enum: ["Instagram", "Website", "WhatsApp", "Other"],
+            required: true,
+            default: "Other",
+            index: true,
+        },
+
         notes: {
             type: String,
             trim: true,

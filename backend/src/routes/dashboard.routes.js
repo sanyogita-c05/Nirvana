@@ -5,6 +5,7 @@ import {
     getRevenueChart,
     getWeeklyStats,
     getRevenueTrend,
+    getTrafficSources,
 } from "../controllers/dashboard.controller.js";
 
 const router = express.Router();
@@ -14,5 +15,6 @@ router.get("/revenue-chart", protect, getRevenueChart);
 router.get("/weekly-stats", protect, getWeeklyStats);
 router.get("/revenue-trend", protect, getRevenueTrend);
 // router.get("/traffic-sources", protect, getTrafficSources);
+router.get("/traffic-sources", protect, getTrafficSources);
 
 export default router;

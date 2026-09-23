@@ -253,7 +253,8 @@ export const getRevenueTrend = asyncHandler(async (req, res) => {
                     o.orderDate.getDate() === d.getDate()
             );
             const total = dayOrders.reduce((sum, o) => sum + o.totalAmount, 0);
-            return { label: dayNames[d.getDay()], revenue: total };
+            // return { label: dayNames[d.getDay()], revenue: total };
+            return { label: dayNames[d.getDay()], revenue: total, orders: dayOrders.length };
         });
 
         return res.status(200).json(
@@ -278,7 +279,8 @@ export const getRevenueTrend = asyncHandler(async (req, res) => {
         const data = years.map((y) => {
             const yearOrders = orders.filter((o) => o.orderDate.getFullYear() === y);
             const total = yearOrders.reduce((sum, o) => sum + o.totalAmount, 0);
-            return { label: String(y), revenue: total };
+            // return { label: String(y), revenue: total };
+            return { label: String(y), revenue: total, orders: yearOrders.length };
         });
 
         return res.status(200).json(
@@ -309,10 +311,48 @@ export const getRevenueTrend = asyncHandler(async (req, res) => {
                 o.orderDate.getMonth() === m.getMonth()
         );
         const total = monthOrders.reduce((sum, o) => sum + o.totalAmount, 0);
-        return { label: monthLabels[m.getMonth()], revenue: total };
+        // return { label: monthLabels[m.getMonth()], revenue: total };
+
+        return {
+            label: monthLabels[m.getMonth()], revenue: total, orders: monthOrders.length
+        };
+
     });
 
     return res.status(200).json(
         new ApiResponse(200, data, "Monthly revenue trend fetched successfully.")
+    );
+});
+
+
+/*
+----------------------------------------
+Get Traffic Sources (order source breakdown)
+----------------------------------------
+*/
+
+export const getTrafficSources = asyncHandler(async (req, res) => {
+    const ownerId = req.user._id;
+
+    const orders = await Order.find({ owner: ownerId, isActive: true }).select("source");
+
+    const counts = orders.reduce((acc, o) => {
+        const key = o.source || "Other";
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+    }, {});
+
+    const total = orders.length;
+
+    const data = Object.entries(counts)
+        .map(([source, count]) => ({
+            source,
+            count,
+            value: total === 0 ? 0 : Math.round((count / total) * 100),
+        }))
+        .sort((a, b) => b.count - a.count);
+
+    return res.status(200).json(
+        new ApiResponse(200, data, "Traffic sources fetched successfully.")
     );
 });

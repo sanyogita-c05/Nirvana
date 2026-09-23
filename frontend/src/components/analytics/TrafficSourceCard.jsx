@@ -1,7 +1,9 @@
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-// import api from "../../api/api";
+import api from "../../api/api";
 
+
+const PALETTE = ["#ff7a3d", "#b56cf0", "#34a853", "#4a90d9", "#f2c94c"];
 
 const data = [
   { name: "Instagram", value: 45, color: "#ff7a3d" },
@@ -11,30 +13,30 @@ const data = [
 
 function TrafficSourceCard() {
 
-  // const [data, setData] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchTrafficSources = async () => {
-  //     try {
-  //       const res = await api.get("/dashboard/traffic-sources");
-  //       setData(
-  //         res.data.data.map((source, index) => ({
-  //           name: source.name ?? source.source,
-  //           value: source.value ?? source.percentage ?? 0,
-  //           color: source.color || PALETTE[index % PALETTE.length],
-  //         }))
-  //       );
-  //     } catch (err) {
-  //       setError(err.response?.data?.message || "Failed to load traffic sources.");
-  //     } finally {
-        // setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchTrafficSources = async () => {
+      try {
+        const res = await api.get("/dashboard/traffic-sources");
+        setData(
+          res.data.data.map((entry, index) => ({
+            name: entry.source,
+            value: entry.value,
+            color: PALETTE[index % PALETTE.length],
+          }))
+        );
+      } catch (err) {
+        setError(err.response?.data?.message || "Failed to load traffic sources.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   fetchTrafficSources();
-  // }, []);
+    fetchTrafficSources();
+  }, []);
 
   return (
     <div className="chart-card traffic-card">
@@ -43,12 +45,13 @@ function TrafficSourceCard() {
         <h3>Order Sources</h3>
       </div>
 
-{/* 
       {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>} */}
+      {error && <p>{error}</p>}
+      {!loading && !error && data.length === 0 && <p>No order source data yet.</p>}
 
-      {/* {!loading && !error && (
-        <> */}
+      {!loading && !error && data.length > 0 && (
+        <>
+
           <div className="donut-chart-wrap">
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
@@ -81,8 +84,9 @@ function TrafficSourceCard() {
               </div>
             ))}
           </div>
-        {/* </> */}
-      {/* )} */}
+        </>
+      )}
+
     </div>
   );
 }

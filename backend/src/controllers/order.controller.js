@@ -185,6 +185,7 @@ export const createOrder = asyncHandler(async (req, res) => {
         deliveryDate,
         orderStatus,
         notes,
+        source,
     } = req.body;
 
     if (!customer || !customer.name || !customer.phone || !customer.email) {
@@ -239,6 +240,7 @@ export const createOrder = asyncHandler(async (req, res) => {
             deliveryDate: deliveryDate || null,
             orderStatus: orderStatus || "Active",
             notes: notes || "",
+            source: source || "Other",
         });
 
         return res.status(201).json(
