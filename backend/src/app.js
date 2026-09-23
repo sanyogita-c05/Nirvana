@@ -5,6 +5,7 @@ import errorHandler from "./middleware/error.middleware.js";
 import productRoutes from "./routes/product.routes.js";
 import orderRoutes from "./routes/order.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
+import { uploadsDir } from "./config/storage.js";
 
 import dashboardRoutes from "./routes/dashboard.routes.js";
 
@@ -26,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files (for uploaded images later)
-app.use("/uploads", express.static("public/uploads"));
+app.use("/uploads", express.static(uploadsDir));
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);

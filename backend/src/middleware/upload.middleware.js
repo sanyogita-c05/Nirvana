@@ -1,6 +1,7 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { productsDir } from "../config/storage.js";
 
 // Storage configuration — files land in public/uploads/products/<productId>/
 // req.productId must already be set (see assignProductId.middleware.js),
@@ -19,7 +20,7 @@ const storage = multer.diskStorage({
         }
 
         const dir = path.join(
-            "public/uploads/products",
+               productsDir,
             productId.toString()
         );
 

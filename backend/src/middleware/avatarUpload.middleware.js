@@ -1,10 +1,11 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { avatarsDir } from "../config/storage.js";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const dir = "public/uploads/avatars";
+        const dir = avatarsDir;
         fs.mkdirSync(dir, { recursive: true });
         cb(null, dir);
         // cb(null, "public/uploads/avatars");
