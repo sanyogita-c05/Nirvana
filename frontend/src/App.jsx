@@ -1,21 +1,30 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+
 import InventoryPage from "./pages/dashboard/InventoryPage";
+import DashboardPage from "./pages/dashboard/DashboardPage";
+
 import Orders from "./pages/Orders";
 import AddProduct from "./pages/AddProduct";
 import Analytics from "./pages/Analytics";
-import DashboardPage from "./pages/dashboard/DashboardPage";
 import CustomerView from "./pages/CustomerView";
 import ProductDetails from "./pages/ProductDetails";
 import SettingsPage from "./pages/SettingsPage";
 import Profile from "./pages/Profile";
-import ProtectedRoute from "./components/layout/ProtectedRoute";
+
 import Notifications from "./pages/notifications/Notifications";
 import License from "./pages/License";
+
+import About from "./pages/About";
+import HowItWorks from "./pages/HowItWorks";
+import Contact from "./pages/Contact";
+
+import ProtectedRoute from "./components/layout/ProtectedRoute";
 
 function LicenseRedirector() {
   const navigate = useNavigate();
@@ -26,8 +35,12 @@ function LicenseRedirector() {
         navigate("/license", { replace: true });
       }
     };
+
     window.addEventListener("license:blocked", onBlocked);
-    return () => window.removeEventListener("license:blocked", onBlocked);
+
+    return () => {
+      window.removeEventListener("license:blocked", onBlocked);
+    };
   }, [navigate]);
 
   return null;
@@ -62,9 +75,27 @@ function App() {
       />
 
       <Routes>
+
+        {/* ================= PUBLIC PAGES ================= */}
+
         <Route path="/" element={<Home />} />
+
+        <Route path="/about" element={<About />} />
+
+        <Route
+          path="/how-it-works"
+          element={<HowItWorks />}
+        />
+
+        <Route path="/contact" element={<Contact />} />
+
         <Route path="/login" element={<Login />} />
+
         <Route path="/signup" element={<Signup />} />
+
+
+        {/* ================= PROTECTED PAGES ================= */}
+
         <Route
           path="/settings"
           element={
@@ -91,6 +122,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/inventory"
           element={
@@ -99,7 +131,11 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/notifications" element={<Notifications />} />
+
+        <Route
+          path="/notifications"
+          element={<Notifications />}
+        />
 
         <Route
           path="/orders"
@@ -118,6 +154,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/analytics"
           element={
@@ -126,7 +163,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* <Route path="/settings" element={<Settings />} /> */}
+
         <Route
           path="/profile"
           element={
@@ -144,6 +181,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/product/:id"
           element={
@@ -152,7 +190,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+
       </Routes>
+
     </BrowserRouter>
   );
 }
