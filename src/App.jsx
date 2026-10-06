@@ -13,14 +13,32 @@ import SettingsPage from "./pages/SettingsPage";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import Notifications from "./pages/notifications/Notifications";
-
+import About from "./pages/About";
+import HowItWorks from "./pages/HowItWorks";
+import Contact from "./pages/Contact";
+import AnalyticsDemo from "./pages/AnalyticsDemo";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route
+  path="/analytics-demo"
+  element={<AnalyticsDemo />}
+/>
         <Route path="/signup" element={<Signup />} />
+        <Route path="/about" element={<About />} />
+
+<Route
+  path="/how-it-works"
+  element={<HowItWorks />}
+/>
+
+<Route
+  path="/contact"
+  element={<Contact />}
+/>
         <Route
           path="/settings"
           element={

@@ -1,12 +1,23 @@
 import { useState, useEffect, useRef } from "react";
 import { Camera, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 import { getMe, updateProfile, uploadAvatar, deleteAvatar } from "../../api/auth";
 
+import { setStoredUser } from "../../utils/userStore";
+
+// const syncLocalUser = (fields) => {
+//   const existing = JSON.parse(localStorage.getItem("user") || "{}");
+//   const updated = { ...existing, ...fields };
+//   localStorage.setItem("user", JSON.stringify(updated));
+// };
+
 function ProfileSettingsForm() {
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+
+  // const [success, setSuccess] = useState("");
 
   const [avatarPath, setAvatarPath] = useState("");
   const [avatarBusy, setAvatarBusy] = useState(false);
@@ -43,6 +54,22 @@ function ProfileSettingsForm() {
       });
 
       setAvatarPath(user.avatar || "");
+
+      // syncLocalUser({
+      //   firstName: user.firstName || "",
+      //   lastName: user.lastName || "",
+      //   studio: user.studio || "",
+      //   address: user.address || "",
+      //   avatar: user.avatar || "",
+      // });.
+      setStoredUser({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        studio: user.studio || "",
+        address: user.address || "",
+        avatar: user.avatar || "",
+      });
+
     } catch (err) {
       console.error("Failed to load profile:", err);
       setError("Could not load your profile. Please refresh.");
@@ -64,7 +91,7 @@ function ProfileSettingsForm() {
     e.preventDefault();
     setSaving(true);
     setError("");
-    setSuccess("");
+    // setSuccess("");
 
     try {
       const token = localStorage.getItem("token");
@@ -80,10 +107,18 @@ function ProfileSettingsForm() {
       };
 
       await updateProfile(editableFields, token);
-      setSuccess("Profile updated successfully.");
+
+      // syncLocalUser(editableFields);
+      setStoredUser(editableFields);
+      toast.success("Profile updated successfully.");
+      // setSuccess("Profile updated successfully.");
     } catch (err) {
+
       console.error("Failed to update profile:", err);
-      setError(
+      // setError(
+      //   err.response?.data?.message || "Something went wrong. Please try again."
+      // );
+      toast.error(
         err.response?.data?.message || "Something went wrong. Please try again."
       );
     } finally {
@@ -103,6 +138,8 @@ function ProfileSettingsForm() {
       formData.append("avatar", file);
       const res = await uploadAvatar(formData, token);
       setAvatarPath(res.data.data.avatar);
+      setStoredUser({ avatar: res.data.data.avatar });
+      // syncLocalUser({ avatar: res.data.data.avatar });
     } catch (err) {
       setError(err.response?.data?.message || "Failed to upload photo.");
     } finally {
@@ -114,11 +151,14 @@ function ProfileSettingsForm() {
 
   const handleDeleteAvatar = async () => {
     setAvatarBusy(true);
+
     setError("");
     try {
       const token = localStorage.getItem("token");
       await deleteAvatar(token);
       setAvatarPath("");
+      setStoredUser({ avatar: "" });
+      // syncLocalUser({ avatar: "" });
     } catch (err) {
       setError(err.response?.data?.message || "Failed to remove photo.");
     } finally {
@@ -194,7 +234,8 @@ function ProfileSettingsForm() {
 
 
       {error && <p className="form-error">{error}</p>}
-      {success && <p className="form-success">{success}</p>}
+      {/* {success && <p className="form-success">{success}</p>}
+      */}
 
       <form className="settings-form" onSubmit={handleSubmit}>
 

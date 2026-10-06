@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { createProduct } from "../../api/productApi";
 import ImageUpload from "./ImageUpload";
 
@@ -31,7 +32,7 @@ function ProductForm({ onClose, refreshProducts }) {
     e.preventDefault();
 
     if (imageFiles.length === 0) {
-      alert("Please upload at least one product image.");
+      toast.error("Please upload at least one product image.");
       return;
     }
 
@@ -59,7 +60,7 @@ function ProductForm({ onClose, refreshProducts }) {
 
       await createProduct(data);
 
-      alert("Product added successfully!");
+      toast.success("Product added successfully!");
 
       refreshProducts();
       onClose();
@@ -67,9 +68,9 @@ function ProductForm({ onClose, refreshProducts }) {
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         error?.response?.data?.message ||
-          "Unable to create product."
+        "Unable to create product."
       );
     } finally {
       setLoading(false);

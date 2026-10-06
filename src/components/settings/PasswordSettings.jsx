@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { changePassword } from "../../api/auth";
 
 function PasswordSettings() {
@@ -8,6 +9,8 @@ function PasswordSettings() {
     newPassword: "",
     confirmPassword: "",
   });
+
+  const [saving, setSaving] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -20,7 +23,7 @@ function PasswordSettings() {
     e.preventDefault();
 
     if (formData.newPassword !== formData.confirmPassword) {
-      alert("New passwords do not match.");
+      toast.error("New passwords do not match.");
       return;
     }
 
@@ -35,7 +38,7 @@ function PasswordSettings() {
         token
       );
 
-      alert("Password updated successfully!");
+      toast.success("Password updated successfully!");
 
       setFormData({
         oldPassword: "",
@@ -44,10 +47,14 @@ function PasswordSettings() {
       });
 
     } catch (error) {
-      alert(
+      toast.error(
         error.response?.data?.message ||
         "Failed to update password."
       );
+    }
+    finally {
+      // CHANGED: stop loading regardless of outcome
+      setSaving(false);
     }
   };
   return (
@@ -98,8 +105,8 @@ function PasswordSettings() {
         </div>
 
         <div className="settings-form-actions">
-          <button type="submit" className="save-changes-btn">
-            Update Password
+          <button type="submit" className="save-changes-btn" disabled={saving}>
+            {saving ? "Updating..." : "Update Password"}
           </button>
         </div>
 

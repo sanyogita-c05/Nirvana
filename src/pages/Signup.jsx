@@ -1,13 +1,17 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { registerUser } from "../api/auth.js";
+import { setStoredUser } from "../utils/userStore.js";
 import "./Login.css";
 
 function Signup() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
@@ -72,13 +76,22 @@ function Signup() {
       }
 
       if (user) {
-        localStorage.setItem("user", JSON.stringify(user));
+        setStoredUser(user);
       }
 
-      alert(res.data?.message || "Registration successful");
+      // alert(res.data?.message || "Registration successful");
+      toast.success(res.data?.message || "Registration successful");
+
       navigate("/dashboard");
     } catch (err) {
-      alert(err.response?.data?.message || "Registration failed");
+
+      toast.error(err.response?.data?.message || "Registration failed");
+
+      // alert(err.response?.data?.message || "Registration failed");
+    }
+    finally {
+      // CHANGED: stop loading regardless of outcome
+      setLoading(false);
     }
   };
 
@@ -242,8 +255,8 @@ function Signup() {
                 I agree to the Terms & Privacy Policy
               </label>
 
-              <button type="submit" className="login-submit">
-                Create account
+              <button type="submit" className="login-submit" disabled={loading}>
+                {loading ? "Creating account..." : "Create account"}
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"

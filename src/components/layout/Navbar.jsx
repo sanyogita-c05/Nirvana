@@ -5,12 +5,14 @@ import { FiMenu, FiX } from "react-icons/fi";
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <header className="navbar">
       <div className="container navbar-inner">
 
         {/* Logo */}
-        <div className="brand">
+        <Link to="/" className="brand" onClick={closeMenu}>
           <img
             src="/nirvana_transformation_academy_logo.jpg"
             alt="ArtisanSuite Logo"
@@ -20,13 +22,23 @@ function Navbar() {
           <span className="brand-text">
             Artisan<span>Suite</span>
           </span>
-        </div>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="nav-links">
-          <a href="#about">About Us</a>
-          <a href="#how-it-works">How It Works</a>
-          <a href="#contact">Contact</a>
+          <Link to="/about">About Us</Link>
+
+          <Link to="/how-it-works">
+            How It Works
+          </Link>
+
+          <Link to="/analytics-demo">
+            Analytics Demo
+          </Link>
+
+          <Link to="/contact">
+            Contact
+          </Link>
         </nav>
 
         {/* Desktop Login */}
@@ -40,33 +52,50 @@ function Navbar() {
         <button
           className="menu-btn"
           onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle Menu"
         >
           {menuOpen ? <FiX size={28} /> : <FiMenu size={28} />}
         </button>
+
       </div>
 
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="mobile-menu">
-          <a href="#about" onClick={() => setMenuOpen(false)}>
+
+          <Link to="/about" onClick={closeMenu}>
             About Us
-          </a>
+          </Link>
 
-          <a href="#how-it-works" onClick={() => setMenuOpen(false)}>
+          <Link
+            to="/how-it-works"
+            onClick={closeMenu}
+          >
             How It Works
-          </a>
+          </Link>
 
-          <a href="#contact" onClick={() => setMenuOpen(false)}>
+          <Link
+            to="/analytics-demo"
+            onClick={closeMenu}
+          >
+            Analytics Demo
+          </Link>
+
+          <Link
+            to="/contact"
+            onClick={closeMenu}
+          >
             Contact
-          </a>
+          </Link>
 
           <Link
             to="/login"
             className="btn btn-primary"
-            onClick={() => setMenuOpen(false)}
+            onClick={closeMenu}
           >
             Login
           </Link>
+
         </div>
       )}
     </header>

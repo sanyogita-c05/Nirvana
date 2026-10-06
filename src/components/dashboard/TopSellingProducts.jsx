@@ -8,13 +8,7 @@ function TopSellingProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const products = [
-  //   { rank: 1, name: "Clay Lotus Diya Set", sold: 89, revenue: "₹33,820", width: "100%" },
-  //   { rank: 2, name: "Lavender Soy Candle", sold: 67, revenue: "₹28,140", width: "76%" },
-  //   { rank: 3, name: "Resin Floral Coaster Set", sold: 45, revenue: "₹29,250", width: "52%" },
-  //   { rank: 4, name: "Hand-crocheted Boho Bag", sold: 34, revenue: "₹28,900", width: "38%" },
-  // ];
-
+  
   useEffect(() => {
     const fetchTopSelling = async () => {
       try {

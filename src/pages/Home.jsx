@@ -13,10 +13,21 @@ function Home() {
       <Navbar />
       <HeroSection />
       <StatsSection />
-      <FeaturesSection />
-      <SetupSection />
+
+      <div id="about">
+        <FeaturesSection />
+      </div>
+
+      <div id="how-it-works">
+        <SetupSection />
+      </div>
+
       <DashboardPreview />
-      <CTASection />
+
+      <div id="contact">
+        <CTASection />
+      </div>
+      
       <Footer />
     </div>
   );

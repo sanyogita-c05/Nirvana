@@ -1,4 +1,5 @@
 import { Eye, Pencil, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 import { deleteOrder } from "../../api/orderApi";
 import OrderDetailsDrawer from "./OrderDetailsDrawer";
 
@@ -14,7 +15,7 @@ function OrderRow({ order, refreshOrders, onEdit }) {
       await deleteOrder(order._id);
       refreshOrders();
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to delete order");
+      toast.error(error.response?.data?.message || "Failed to delete order");
     }
   };
 
@@ -55,7 +56,7 @@ function OrderRow({ order, refreshOrders, onEdit }) {
           <button onClick={() => onEdit(order)}>
             <Pencil size={18} />
           </button>
-          
+
           <button className="delete-btn" onClick={handleDelete}>
             <Trash2 size={18} />
           </button>

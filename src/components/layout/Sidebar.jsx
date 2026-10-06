@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   LayoutDashboard,
   Package,
@@ -9,13 +10,28 @@ import {
 } from "lucide-react";
 
 import { NavLink, useNavigate } from "react-router-dom";
+import { getStoredUser, clearStoredUser, onUserUpdated } from "../../utils/userStore";
 
 function Sidebar() {
+
   const navigate = useNavigate();
+  const [user, setUser] = useState(() => getStoredUser() || {});
+
+  // const user = JSON.parse(localStorage.getItem("user") || "{}");
+  useEffect(() => {
+    return onUserUpdated((updated) => setUser(updated || {}));
+  }, []);
+
+  const studioName = user.studio || "Your Craft Studio";
+
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    // CHANGED: was two localStorage.removeItem calls — now a single helper
+    // that also notifies listeners, so any other mounted component clears too
+    clearStoredUser();
     navigate("/login", { replace: true });
   };
+
+
   const menuItems = [
     {
       title: "Dashboard",
@@ -55,10 +71,10 @@ function Sidebar() {
             YOUR STUDIO
           </p>
 
-          <h3>Meera's Craft</h3>
+          <h3>{studioName}</h3>
 
           <p className="studio-location">
-            Jaipur, Rajasthan
+            {user.address || "Add your location in Settings"}
           </p>
 
           <span className="studio-status">
