@@ -54,9 +54,10 @@ const userSchema = new mongoose.Schema(
         },
 
         gender: {
-            type: String,
-            enum: ["Male", "Female", "Other"],
-        },
+    type: String,
+    enum: ["Male", "Female", "Other"],
+    set: (value) => value === "" ? undefined : value,
+},
 
         taxIdNumber: {
             type: String,

@@ -2,9 +2,13 @@ import { Bell, Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { getStoredUser, setStoredUser, onUserUpdated } from "../../utils/userStore";
-import api from "../../api/api";
+import {
+  getStoredUser,
+  setStoredUser,
+  onUserUpdated,
+} from "../../utils/userStore";
 
+import api from "../../api/api";
 
 function Topbar({ onMenuClick }) {
   const navigate = useNavigate();
@@ -15,31 +19,47 @@ function Topbar({ onMenuClick }) {
   const [user, setUser] = useState(getStoredUser());
 
   useEffect(() => {
-    // Stay in sync if the profile changes elsewhere — Settings page edits,
-    // Sidebar's fetch resolving, login, etc. all call setStoredUser, and
-    // this component re-renders automatically when that happens.
+    // Keep Topbar synchronized whenever user information changes.
     const unsubscribe = onUserUpdated(setUser);
 
-    // If the store is empty (e.g. a hard refresh on this page before
-    // Sidebar's own fetch has resolved), fetch once here and populate the
-    // shared store — every other subscriber picks up the same data too.
+    // If user data is not available in the shared store,
+    // fetch it from the backend.
     if (!user?.fullName && !user?.studio) {
       api
         .get("/auth/me")
-        .then((res) => setStoredUser(res.data.data))
+        .then((res) => {
+          setStoredUser(res.data.data);
+        })
         .catch(() => {
-          // Avatar just falls back to "?" below — not worth a visible error
-          // for a small topbar element.
+          // Avatar will simply fall back to the user's initial.
         });
     }
 
     return unsubscribe;
+
+    // We only want this effect to run once when Topbar mounts.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const initial = (user?.studio || user?.fullName || "?").trim().charAt(0).toUpperCase();
+  // Fallback initial when there is no profile image.
+  const initial = (
+    user?.studio ||
+    user?.fullName ||
+    "?"
+  )
+    .trim()
+    .charAt(0)
+    .toUpperCase();
 
-
+  // Backend stores the avatar as something like:
+  // /uploads/avatars/filename.jpg
+  //
+  // So we prepend localhost:5000.
+  const avatarUrl = user?.avatar
+    ? user.avatar.startsWith("http")
+      ? user.avatar
+      : `http://localhost:5000${user.avatar}`
+    : null;
 
   return (
     <header className="dashboard-topbar">
@@ -74,6 +94,7 @@ function Topbar({ onMenuClick }) {
           </button>
         </div>
 
+        {/* Notifications */}
         <button
           className="icon-btn"
           onClick={() => navigate("/notifications")}
@@ -81,13 +102,40 @@ function Topbar({ onMenuClick }) {
         >
           <Bell size={20} />
         </button>
+
+        {/* Profile Avatar */}
         <button
           className="profile-avatar"
           onClick={() => navigate("/profile")}
           title="View profile"
-          style={{ overflow: "hidden", borderRadius: "50%" }}
+          style={{
+            overflow: "hidden",
+            borderRadius: "50%",
+            padding: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          {initial}
+          {avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt={user?.fullName || "Profile"}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+              }}
+              onError={(e) => {
+                // If image fails to load, hide it so the
+                // initial can be shown instead.
+                e.currentTarget.style.display = "none";
+              }}
+            />
+          ) : (
+            initial
+          )}
         </button>
       </div>
     </header>
