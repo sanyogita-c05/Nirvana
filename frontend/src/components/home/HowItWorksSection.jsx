@@ -1,4 +1,9 @@
-import { FiUserPlus, FiPackage, FiShoppingBag, FiBarChart2 } from "react-icons/fi";
+import {
+  FiUserPlus,
+  FiPackage,
+  FiShoppingBag,
+  FiBarChart2,
+} from "react-icons/fi";
 
 const STEPS = [
   {
@@ -25,25 +30,50 @@ const STEPS = [
 
 function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="landing-section how-section">
+    <section className="landing-section how-section">
       <div className="container">
 
-        <div className="landing-heading">
-          <span className="landing-tag">How It Works</span>
+        {/* Heading */}
+        <div className="landing-heading how-heading">
+
           <h2>
-            From first product to <em>full business</em> in four steps
+            From first product to{" "}
+            <em>full business</em>
+            <br />
+            in four steps
           </h2>
+
+          <p>
+            Everything you need to set up, manage and grow your
+            handmade business — all in one place.
+          </p>
+
         </div>
 
+        {/* Steps */}
         <ol className="steps-grid">
+
           {STEPS.map((step, index) => (
             <li className="step-card" key={step.title}>
-              <span className="step-number">{index + 1}</span>
-              <span className="step-icon">{step.icon}</span>
+
+              {/* Step Number */}
+              <span className="step-number">
+                {index + 1}
+              </span>
+
+              {/* Icon */}
+              <span className="step-icon">
+                {step.icon}
+              </span>
+
+              {/* Content */}
               <h3>{step.title}</h3>
+
               <p>{step.text}</p>
+
             </li>
           ))}
+
         </ol>
 
       </div>

@@ -1,17 +1,33 @@
 import Navbar from "../components/layout/Navbar";
-import HowItWorksSection from "../components/home/HowItWorksSection";
 import Footer from "../components/layout/Footer";
+import BackButton from "../components/layout/BackButton";
+import HowItWorksSection from "../components/home/HowItWorksSection";
 
 import "../styles/landing-sections.css";
 
 function HowItWorks() {
   return (
-    <div className="min-h-screen bg-[#FBF4EA] text-[#3B241A]">
+    <div className="how-page">
+
+      {/* Navbar */}
       <Navbar />
 
-      <HowItWorksSection />
+      {/* Page Content */}
+      <main>
 
+        {/* Back Button */}
+        <div className="container inner-page-top">
+          <BackButton />
+        </div>
+
+        {/* How It Works Content */}
+        <HowItWorksSection />
+
+      </main>
+
+      {/* Footer */}
       <Footer />
+
     </div>
   );
 }

@@ -9,50 +9,77 @@
 ====================================================== */
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 .landing-section {
-    padding: clamp(64px, 8vw, 110px) 0;
+  padding: clamp(64px, 8vw, 110px) 0;
 }
 
 .landing-heading {
-    max-width: 720px;
-    margin: 0 auto clamp(36px, 5vw, 60px);
-    text-align: center;
+  max-width: 720px;
+  margin: 0 auto clamp(36px, 5vw, 60px);
+  text-align: center;
 }
 
 .landing-tag {
-    display: inline-block;
-    padding: 8px 18px;
-    margin-bottom: 18px;
-    border-radius: 999px;
-    background: #fde7ef;
-    color: #c93a77;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+  display: inline-block;
+  padding: 8px 18px;
+  margin-bottom: 18px;
+  border-radius: 999px;
+
+  background: #fde7ef;
+  color: #c93a77;
+
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .landing-heading h2 {
-    margin: 0 0 16px;
-    font-family: "Cormorant Garamond", Georgia, serif;
-    font-size: clamp(2.1rem, 4.4vw, 3.4rem);
-    line-height: 1.1;
-    font-weight: 700;
-    color: #2d160f;
+  margin: 0 0 16px;
+
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+  line-height: 1.1;
+  font-weight: 700;
+
+  color: #2d160f;
 }
 
 .landing-heading h2 em {
-    font-style: normal;
-    color: #d6457f;
+  font-style: normal;
+  color: #d6457f;
 }
 
 .landing-heading p {
-    margin: 0;
-    font-size: 1.05rem;
-    line-height: 1.75;
-    color: #7a5645;
+  margin: 0;
+
+  font-size: 1.05rem;
+  line-height: 1.75;
+
+  color: #7a5645;
+}
+
+
+/* ======================================================
+   HEADING WRAPPING
+   Balanced lines; keep the pink phrase together
+   (nowrap only on larger screens so phones don't overflow)
+====================================================== */
+
+.landing-heading h2,
+.contact-heading h2,
+.how-section .landing-heading h2 {
+  text-wrap: balance;
+}
+
+@media (min-width: 561px) {
+  .landing-heading h2 em,
+  .contact-heading h2 em,
+  .how-section .landing-heading h2 em {
+    white-space: nowrap;
+  }
 }
 
 
@@ -61,182 +88,338 @@ html {
 ====================================================== */
 
 .about-section {
-    background: #fff;
+  background: #ffffff;
 }
 
 .about-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
 }
 
 .about-card {
-    padding: 30px 26px;
-    border-radius: 24px;
-    background: #fdf5ec;
-    border: 1px solid #f4e6d6;
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
+  padding: 30px 26px;
+
+  border-radius: 24px;
+
+  background: #ffffff;
+  border: 1px solid #f4e6d6;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .about-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 40px rgba(72, 45, 32, 0.1);
+  transform: translateY(-4px);
+
+  box-shadow: 0 18px 40px rgba(72, 45, 32, 0.1);
 }
 
 .about-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-    width: 52px;
-    height: 52px;
-    margin-bottom: 18px;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 18px;
 
-    border-radius: 16px;
+  border-radius: 16px;
 
-    background: linear-gradient(
-        135deg,
-        #d6457f,
-        #ff7a3d
-    );
+  background: linear-gradient(
+    135deg,
+    #d6457f,
+    #ff7a3d
+  );
 
-    color: #fff;
+  color: #ffffff;
 
-    box-shadow: 0 10px 20px rgba(214, 69, 127, 0.28);
+  box-shadow: 0 10px 20px rgba(214, 69, 127, 0.28);
 }
 
 .about-card h3 {
-    margin: 0 0 10px;
+  margin: 0 0 10px;
 
-    font-size: 1.15rem;
-    font-weight: 800;
+  font-size: 1.15rem;
+  font-weight: 800;
 
-    color: #2d160f;
+  color: #2d160f;
 }
 
 .about-card p {
-    margin: 0;
+  margin: 0;
 
-    line-height: 1.7;
+  line-height: 1.7;
 
-    color: #7a5645;
+  color: #7a5645;
 }
 
 
 /* ======================================================
    HOW IT WORKS
+   (top padding comes from .landing-section /
+   .subpage-main .landing-section, not from here)
 ====================================================== */
 
 .how-section {
-    background: #fdf5ec;
+  background: #ffffff;
+
+  padding-bottom: 90px;
 }
+
+.how-section .landing-heading {
+  max-width: 760px;
+
+  margin: 0 auto 42px;
+
+  text-align: center;
+}
+
+.how-section .landing-heading h2 {
+  margin: 0;
+
+  font-family: "Cormorant Garamond", Georgia, serif;
+
+  font-size: clamp(2.5rem, 4.5vw, 3.7rem);
+
+  line-height: 1.08;
+
+  font-weight: 700;
+
+  color: #2d160f;
+}
+
+.how-section .landing-heading h2 em {
+  font-style: normal;
+  color: #d6457f;
+}
+
+
+/* ======================================================
+   STEPS GRID
+====================================================== */
 
 .steps-grid {
-    list-style: none;
+  list-style: none;
 
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 22px;
+  display: grid;
+
+  grid-template-columns: repeat(
+    4,
+    minmax(0, 1fr)
+  );
+
+  gap: 22px;
 }
 
+
+/* ======================================================
+   STEP CARD
+====================================================== */
+
 .step-card {
-    position: relative;
+  position: relative;
 
-    padding: 30px 24px 26px;
+  padding: 32px 26px 30px;
 
-    border-radius: 24px;
+  min-height: 255px;
 
-    background: #fff;
+  border-radius: 24px;
 
-    box-shadow: 0 12px 35px rgba(72, 45, 32, 0.07);
+  background: #ffffff;
 
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
+  border: 1px solid rgba(244, 230, 214, 0.8);
+
+  box-shadow:
+    0 12px 35px rgba(72, 45, 32, 0.07);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .step-card:hover {
-    transform: translateY(-4px);
+  transform: translateY(-5px);
 
-    box-shadow: 0 18px 40px rgba(72, 45, 32, 0.11);
+  box-shadow:
+    0 20px 42px rgba(72, 45, 32, 0.12);
 }
+
+
+/* ======================================================
+   STEP NUMBER
+====================================================== */
 
 .step-number {
-    position: absolute;
+  position: absolute;
 
-    top: 18px;
-    right: 20px;
+  top: 22px;
+  right: 22px;
 
-    font-family: "Cormorant Garamond", Georgia, serif;
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
 
-    font-size: 2.6rem;
-    font-weight: 700;
-    line-height: 1;
+  font-size: 2.5rem;
 
-    color: #f6dfe8;
+  font-weight: 700;
+
+  line-height: 1;
+
+  color: #f5dce7;
+
+  pointer-events: none;
 }
 
+
+/* ======================================================
+   STEP ICON
+====================================================== */
+
 .step-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  display: inline-flex;
 
-    width: 54px;
-    height: 54px;
-    margin-bottom: 18px;
+  align-items: center;
+  justify-content: center;
 
-    border-radius: 16px;
+  width: 58px;
+  height: 58px;
 
-    background: #fff0e8;
+  margin-bottom: 20px;
 
-    color: #ff7a3d;
+  border-radius: 17px;
+
+  background: #fff0e8;
+
+  color: #ff7135;
+
+  box-shadow:
+    0 8px 20px rgba(255, 113, 53, 0.08);
 }
 
 .step-card:nth-child(even) .step-icon {
-    background: #fde7ef;
-    color: #d6457f;
+  background: #fde7ef;
+
+  color: #d6457f;
+
+  box-shadow:
+    0 8px 20px rgba(214, 69, 127, 0.08);
 }
 
+
+/* ======================================================
+   STEP TEXT
+====================================================== */
+
 .step-card h3 {
-    margin: 0 0 8px;
+  margin: 0 0 10px;
 
-    font-size: 1.08rem;
-    font-weight: 800;
+  font-size: 1.08rem;
 
-    color: #2d160f;
+  font-weight: 800;
+
+  color: #2d160f;
 }
 
 .step-card p {
-    margin: 0;
+  margin: 0;
 
-    line-height: 1.65;
-    font-size: 0.95rem;
+  font-size: 0.96rem;
 
-    color: #7a5645;
+  line-height: 1.7;
+
+  color: #7a5645;
+}
+
+
+/* ======================================================
+   CONTACT PAGE
+====================================================== */
+
+.contact-page {
+  min-height: 100vh;
+
+  background: #ffffff;
+
+  color: #2d160f;
 }
 
 
 /* ======================================================
    CONTACT SECTION
+   (top padding comes from .landing-section /
+   .subpage-main .landing-section, not from here)
 ====================================================== */
 
 .contact-section {
-    background: #fff;
+  background: #ffffff;
+
+  padding-bottom: 90px;
 }
 
+
+/* ======================================================
+   CONTACT HEADING
+====================================================== */
+
+.contact-heading {
+  margin-bottom: 48px;
+}
+
+.contact-heading h2 {
+  margin: 0 0 18px;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: clamp(2.7rem, 4.5vw, 4rem);
+
+  line-height: 1.08;
+
+  font-weight: 700;
+
+  color: #2d160f;
+}
+
+.contact-heading h2 em {
+  font-style: normal;
+
+  color: #d6457f;
+}
+
+.contact-heading p {
+  max-width: 680px;
+
+  margin: 20px auto 0;
+
+  font-size: 1.05rem;
+
+  line-height: 1.75;
+
+  color: #7a5645;
+}
+
+
+/* ======================================================
+   CONTACT GRID
+====================================================== */
+
 .contact-grid {
-    display: grid;
+  display: grid;
 
-    grid-template-columns: 1fr 1.3fr;
+  grid-template-columns:
+    1fr 1.25fr;
 
-    gap: 28px;
+  gap: 26px;
 
-    align-items: stretch;
+  align-items: stretch;
 }
 
 
@@ -245,316 +428,530 @@ html {
 ====================================================== */
 
 .contact-info {
-    display: flex;
-    flex-direction: column;
+  display: flex;
 
-    gap: 16px;
+  flex-direction: column;
 
-    padding: 30px;
+  justify-content: center;
 
-    border-radius: 24px;
+  gap: 8px;
 
-    background: linear-gradient(
-        135deg,
-        #2d160f,
-        #4a1f17
+  padding: 34px;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2d160f 0%,
+      #4a1f17 100%
     );
 
-    color: #fff;
+  color: #ffffff;
+
+  box-shadow:
+    0 16px 40px rgba(45, 22, 15, 0.12);
 }
 
+
+/* ======================================================
+   CONTACT ITEM
+====================================================== */
+
 .contact-item {
-    display: flex;
-    align-items: center;
+  display: flex;
 
-    gap: 16px;
+  align-items: center;
 
-    padding: 2px 0;
+  gap: 16px;
 
-    color: #fff;
+  padding: 14px 8px;
 
-    text-decoration: none;
+  color: #ffffff;
 
-    border-radius: 12px;
+  text-decoration: none;
 
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease;
+  border-radius: 14px;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
 .contact-item:hover {
-    transform: translateX(4px);
-}
+  transform: translateX(4px);
 
-.contact-icon {
-    flex-shrink: 0;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 46px;
-    height: 46px;
-
-    border-radius: 14px;
-
-    background: rgba(255, 255, 255, 0.12);
-
-    color: #f2b134;
-}
-
-.contact-item small {
-    display: block;
-
-    margin-bottom: 3px;
-
-    font-size: 0.78rem;
-
-    letter-spacing: 0.06em;
-
-    text-transform: uppercase;
-
-    opacity: 0.7;
-}
-
-.contact-item strong {
-    display: block;
-
-    font-size: 1rem;
-
-    font-weight: 700;
-
-    line-height: 1.4;
-
-    color: #fff;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 
 /* ======================================================
-   CONTACT RIGHT CARD
+   CONTACT ICON
+====================================================== */
+
+.contact-icon {
+  flex-shrink: 0;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  color: #ff9a68;
+}
+
+
+/* ======================================================
+   CONTACT LABEL
+====================================================== */
+
+.contact-item small {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 0.75rem;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+
+  color: rgba(255, 255, 255, 0.65);
+}
+
+
+/* ======================================================
+   CONTACT VALUE
+====================================================== */
+
+.contact-item strong {
+  display: block;
+
+  font-size: 0.98rem;
+
+  font-weight: 700;
+
+  line-height: 1.4;
+
+  color: #ffffff;
+}
+
+
+/* ======================================================
+   RIGHT CONTACT CARD
 ====================================================== */
 
 .contact-form {
-    display: flex;
-    align-items: flex-start;
+  display: flex;
 
-    padding: 30px;
+  align-items: center;
 
-    border-radius: 24px;
+  padding: 38px;
 
-    background: #fdf5ec;
+  border-radius: 24px;
 
-    border: 1px solid #f4e6d6;
+  background: #ffffff;
+
+  border: 1px solid #f0e3d8;
+
+  box-shadow:
+    0 16px 40px rgba(72, 45, 32, 0.07);
 }
 
+
+/* ======================================================
+   CONTACT MESSAGE
+====================================================== */
+
 .contact-message {
-    width: 100%;
+  width: 100%;
 }
 
 .contact-message h3 {
-    margin: 0 0 8px;
+  margin: 0 0 12px;
 
-    color: #2d160f;
+  font-size: 1.55rem;
 
-    font-size: 1.4rem;
+  font-weight: 800;
 
-    font-weight: 800;
+  color: #2d160f;
 }
 
 .contact-message p {
-    margin: 0 0 24px;
+  max-width: 580px;
 
-    color: #7a5645;
+  margin: 0 0 28px;
 
-    line-height: 1.65;
+  color: #7a5645;
+
+  font-size: 1rem;
+
+  line-height: 1.75;
 }
 
 
 /* ======================================================
-   CONTACT SOCIAL LINKS
+   SOCIAL LINKS
 ====================================================== */
 
 .contact-social-links {
-    display: flex;
+  display: flex;
 
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 
-    gap: 12px;
+  gap: 12px;
 }
 
 .contact-social-link {
-    display: inline-flex;
+  display: inline-flex;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
 
-    gap: 8px;
+  justify-content: center;
 
-    padding: 11px 16px;
+  gap: 8px;
 
-    border-radius: 12px;
+  padding: 11px 17px;
 
-    background: #fff;
+  border-radius: 13px;
 
-    border: 1px solid #ecd9c8;
+  background: #fdf5ec;
 
-    color: #2d160f;
+  border: 1px solid #ecd9c8;
 
-    text-decoration: none;
+  color: #2d160f;
 
-    font-size: 0.9rem;
+  text-decoration: none;
 
-    font-weight: 700;
+  font-size: 0.9rem;
 
-    white-space: nowrap;
+  font-weight: 700;
 
-    transition:
-        transform 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease,
-        box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .contact-social-link:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 
-    border-color: #d6457f;
+  border-color: #d6457f;
 
-    color: #d6457f;
+  color: #d6457f;
 
-    box-shadow: 0 8px 20px rgba(72, 45, 32, 0.08);
+  box-shadow:
+    0 8px 20px rgba(72, 45, 32, 0.08);
 }
 
 
 /* ======================================================
-   RESPONSIVE
+   BACK BUTTON CONTAINER
+   Gap between navbar and the Back to Home button
 ====================================================== */
 
+.back-button-container {
+  padding-top: 24px;
+  padding-bottom: 8px;
+}
 
-/* ---------- Tablet ---------- */
+
+/* ======================================================
+   BACK TO HOME BUTTON
+====================================================== */
+
+.back-home-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 10px 17px;
+
+  border-radius: 14px;
+
+  background: #fffaf4;
+
+  border: 1px solid #f0dfcf;
+
+  color: #6f4a39;
+
+  font-size: 0.88rem;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 5px 15px rgba(72, 45, 32, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.back-home-btn svg {
+  flex-shrink: 0;
+
+  transition:
+    transform 0.2s ease;
+}
+
+.back-home-btn:hover {
+  color: #d6457f;
+
+  background: #fff5f8;
+
+  border-color: #efbfd2;
+
+  transform: translateX(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(214, 69, 127, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.back-home-btn:hover svg {
+  transform: translateX(-3px);
+}
+
+
+/* ======================================================
+   SUBPAGE CONTENT SPACING
+
+   Single source of truth for the space between the
+   Back to Home button and the page heading on
+   About / How It Works / Contact.
+====================================================== */
+
+.subpage-main .landing-section {
+  padding-top: 40px;
+}
+
+.subpage-main .landing-heading {
+  margin-bottom: 48px;
+}
+
+
+/* ======================================================
+   TABLET
+====================================================== */
 
 @media (max-width: 1000px) {
 
-    .steps-grid {
-        grid-template-columns: repeat(
-            2,
-            minmax(0, 1fr)
-        );
-    }
+  .steps-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
 
 }
 
 
-/* ---------- Smaller Tablet / Large Mobile ---------- */
+/* ======================================================
+   SMALLER TABLET
+====================================================== */
 
 @media (max-width: 820px) {
 
-    .about-grid {
-        grid-template-columns: 1fr;
-    }
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .contact-grid {
-        grid-template-columns: 1fr;
-    }
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .contact-info,
-    .contact-form {
-        padding: 26px;
-    }
+  .contact-info,
+  .contact-form {
+    padding: 26px;
+  }
+
+  .how-section {
+    padding-bottom: 70px;
+  }
+
+  .how-section .landing-heading {
+    margin-bottom: 35px;
+  }
 
 }
 
 
-/* ---------- Mobile ---------- */
+/* ======================================================
+   MOBILE
+====================================================== */
 
 @media (max-width: 560px) {
 
-    .landing-section {
-        padding: 60px 0;
-    }
+  .landing-section {
+    padding: 60px 0;
+  }
 
-    .landing-heading {
-        margin-bottom: 34px;
-    }
+  .landing-heading {
+    margin-bottom: 34px;
+  }
 
-    .landing-heading h2 {
-        font-size: 2.2rem;
-    }
+  .landing-heading h2 {
+    font-size: 2.2rem;
+  }
 
-    .landing-heading p {
-        font-size: 0.98rem;
-    }
-
-
-    /* About */
-
-    .about-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .about-card {
-        padding: 24px 20px;
-    }
+  .landing-heading p {
+    font-size: 0.98rem;
+  }
 
 
-    /* How It Works */
+  /* ---------- About ---------- */
 
-    .steps-grid {
-        grid-template-columns: 1fr;
-    }
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .step-card {
-        padding: 26px 20px 24px;
-    }
+  .about-card {
+    padding: 24px 20px;
+  }
 
 
-    /* Contact */
+  /* ---------- How It Works ---------- */
 
-    .contact-info,
-    .contact-form {
-        padding: 22px;
-    }
+  .how-section {
+    padding-bottom: 60px;
+  }
 
-    .contact-item {
-        gap: 12px;
-    }
+  .how-section .landing-heading {
+    margin-bottom: 32px;
+  }
 
-    .contact-icon {
-        width: 44px;
-        height: 44px;
-    }
+  .how-section .landing-heading h2 {
+    font-size: 2.35rem;
+  }
 
-    .contact-item strong {
-        font-size: 0.92rem;
-    }
+  .steps-grid {
+    grid-template-columns: 1fr;
 
-    .contact-social-links {
-        flex-direction: column;
-    }
+    gap: 18px;
+  }
 
-    .contact-social-link {
-        width: 100%;
-    }
+  .step-card {
+    min-height: auto;
+
+    padding: 26px 20px 24px;
+  }
+
+  .step-icon {
+    width: 54px;
+    height: 54px;
+  }
+
+
+  /* ---------- Contact ---------- */
+
+  .contact-section {
+    padding-bottom: 65px;
+  }
+
+  .contact-heading {
+    margin-bottom: 36px;
+  }
+
+  .contact-heading h2 {
+    font-size: 2.35rem;
+  }
+
+  .contact-heading p {
+    font-size: 0.97rem;
+  }
+
+  .contact-info,
+  .contact-form {
+    padding: 22px;
+  }
+
+  .contact-item {
+    gap: 12px;
+  }
+
+  .contact-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .contact-item strong {
+    font-size: 0.92rem;
+  }
+
+  .contact-social-links {
+    flex-direction: column;
+  }
+
+  .contact-social-link {
+    width: 100%;
+  }
+
+
+  /* ---------- Back Button ---------- */
+
+  .back-button-container {
+    padding-top: 16px;
+    padding-bottom: 4px;
+  }
+
+  .back-home-btn {
+    padding: 9px 14px;
+
+    border-radius: 12px;
+
+    font-size: 0.84rem;
+  }
+
+  .subpage-main .landing-section {
+    padding-top: 24px;
+  }
 
 }
 
 
-/* ---------- Very Small Phones ---------- */
+/* ======================================================
+   VERY SMALL PHONES
+====================================================== */
 
 @media (max-width: 380px) {
 
-    .landing-heading h2 {
-        font-size: 2rem;
-    }
+  .landing-heading h2 {
+    font-size: 2rem;
+  }
 
-    .landing-tag {
-        padding: 7px 14px;
-        font-size: 0.8rem;
-    }
+  .landing-tag {
+    padding: 7px 14px;
 
-    .contact-info,
-    .contact-form {
-        padding: 18px;
-    }
+    font-size: 0.8rem;
+  }
+
+  .contact-info,
+  .contact-form {
+    padding: 18px;
+  }
+
+  .back-home-btn {
+    padding: 8px 12px;
+
+    font-size: 0.8rem;
+  }
 
 }

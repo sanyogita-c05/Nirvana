@@ -459,3 +459,37 @@
 .login-fineprint a:hover {
   color: var(--ink-soft);
 }
+/* ======================================================
+   BACK TO HOME
+====================================================== */
+
+.login-back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  width: fit-content;
+
+  margin-bottom: 24px;
+
+  color: var(--ink-muted);
+
+  font-size: 0.875rem;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.login-back-home:hover {
+  color: var(--brand-magenta);
+  transform: translateX(-3px);
+}
+
+.login-back-home span:first-child {
+  font-size: 1.1rem;
+  line-height: 1;
+}

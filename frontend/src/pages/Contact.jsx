@@ -1,17 +1,33 @@
 import Navbar from "../components/layout/Navbar";
-import ContactSection from "../components/home/ContactSection";
 import Footer from "../components/layout/Footer";
+import BackButton from "../components/layout/BackButton";
+import ContactSection from "../components/home/ContactSection";
 
 import "../styles/landing-sections.css";
 
 function Contact() {
   return (
-    <div className="min-h-screen bg-[#FBF4EA] text-[#3B241A]">
+    <div className="contact-page">
+
+      {/* Navbar */}
       <Navbar />
 
-      <ContactSection />
+      {/* Page Content */}
+      <main>
 
+        {/* Back Button */}
+        <div className="container inner-page-top">
+          <BackButton />
+        </div>
+
+        {/* Contact Content */}
+        <ContactSection />
+
+      </main>
+
+      {/* Footer */}
       <Footer />
+
     </div>
   );
 }
