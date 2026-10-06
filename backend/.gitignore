@@ -1,5 +1,19 @@
-node_modules
+node_modules/
+
+# Secrets
 .env
+.env.*
+!.env.example
+*.pem
+!src/config/license.public.pem
+
+# License admin: company only, never in the repo
+scripts/
+.license-lock.json
+issued-licenses.jsonl
+
+# Runtime data
 uploads/
 backups/
 logs/
+*.log
