@@ -1,0 +1,264 @@
+/* ======================================================
+   LICENSE PAGE
+====================================================== */
+
+.license-page{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:#faf1ea;
+}
+
+.license-card{
+    width:100%;
+    max-width:600px;
+    background:white;
+    border-radius:24px;
+    padding:36px;
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+}
+
+.license-brand{
+    font-weight:800;
+    font-size:1.1rem;
+    color:#2d160f;
+}
+
+.license-muted{
+    color:#8a5b44;
+    font-size:.85rem;
+}
+
+.license-alert{
+    border-radius:16px;
+    padding:16px 18px;
+}
+
+.license-alert h2{
+    font-size:1.15rem;
+    font-weight:800;
+    margin-bottom:4px;
+}
+
+.license-alert p{
+    font-size:.92rem;
+    line-height:1.5;
+}
+
+.license-alert.danger{ background:#fff0f0; color:#b42323; }
+.license-alert.warn{ background:#fff5da; color:#a86e00; }
+.license-alert.info{ background:#eef4ff; color:#2a4ea0; }
+.license-alert.ok{ background:#e9f8ee; color:#1f7a3d; }
+
+.license-facts{
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+}
+
+.license-facts div{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+}
+
+.license-facts span{
+    font-size:.8rem;
+    color:#8a5b44;
+}
+
+.license-facts strong{
+    font-size:1.1rem;
+    color:#2d160f;
+}
+
+.license-section{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.license-section h3{
+    font-size:.95rem;
+    font-weight:800;
+    color:#2d160f;
+}
+
+.license-device{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.license-device code{
+    flex:1;
+    min-width:0;
+    word-break:break-all;
+    padding:11px 14px;
+    background:#faf8f7;
+    border:1.5px solid #f0ece8;
+    border-radius:12px;
+    font-size:.85rem;
+    color:#2d160f;
+}
+
+.license-textarea{
+    width:100%;
+    border:1.5px solid #f0ece8;
+    background:#faf8f7;
+    border-radius:14px;
+    padding:13px 16px;
+    font-family:monospace;
+    font-size:.85rem;
+    color:#2d160f;
+    outline:none;
+    resize:vertical;
+    transition:.2s;
+}
+
+.license-textarea:focus{
+    border-color:#ff7a3d;
+    background:white;
+    box-shadow:0 0 0 4px rgba(255,122,61,.12);
+}
+
+.license-error{
+    color:#df3b3b;
+    font-size:.88rem;
+    font-weight:600;
+}
+
+.license-btn{
+    height:50px;
+    border:none;
+    border-radius:14px;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    background:linear-gradient(135deg,#ff7a3d,#b56cf0);
+    transition:.2s;
+}
+
+.license-btn:hover:not(:disabled){
+    transform:translateY(-2px);
+    box-shadow:0 10px 24px rgba(255,122,61,.3);
+}
+
+.license-btn:disabled{ opacity:.6; cursor:not-allowed; }
+
+.license-btn-outline{
+    height:42px;
+    padding:0 18px;
+    border:1.5px solid #f0d9cc;
+    border-radius:12px;
+    background:white;
+    color:#5b3528;
+    font-weight:700;
+    font-size:.85rem;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.license-btn-outline:hover:not(:disabled){ background:#faf1ea; }
+.license-btn-outline:disabled{ opacity:.5; cursor:not-allowed; }
+
+.license-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.license-link{
+    border:none;
+    background:none;
+    color:#8a5b44;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+/* ======================================================
+   LICENSE BANNER (dashboard layout)
+====================================================== */
+
+.license-banner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:12px 20px;
+    margin:0 0 16px;
+    border-radius:14px;
+    font-size:.9rem;
+    font-weight:600;
+}
+
+.license-banner.warn{ background:#fff5da; color:#a86e00; }
+.license-banner.danger{ background:#fff0f0; color:#b42323; }
+
+.license-banner-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-shrink:0;
+}
+
+.license-banner-actions a{
+    color:inherit;
+    font-weight:800;
+    text-decoration:underline;
+}
+
+.license-banner-actions button{
+    border:none;
+    background:none;
+    color:inherit;
+    font-size:1.3rem;
+    line-height:1;
+    cursor:pointer;
+}
+
+/* ======================================================
+   LICENSE SETTINGS TAB
+====================================================== */
+
+.license-settings-list{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:24px;
+}
+
+.license-settings-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:16px 4px;
+    border-bottom:1px solid #f1ece8;
+    color:#2d160f;
+}
+
+.license-settings-row > span{
+    color:#8a5b44;
+    font-size:.88rem;
+}
+
+.license-settings-link{
+    display:inline-flex;
+    align-items:center;
+    text-decoration:none;
+}
+
+@media(max-width:600px){
+    .license-card{ padding:24px; }
+    .license-banner{ flex-direction:column; align-items:flex-start; }
+    .license-settings-row{ flex-direction:column; align-items:flex-start; }
+}

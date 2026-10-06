@@ -1,10 +1,11 @@
-import { User, Lock, Bell, ShieldCheck } from "lucide-react";
+import { User, Lock, Bell, ShieldCheck, KeyRound } from "lucide-react";
 
 const tabs = [
   { id: "profile", label: "Profile Settings", icon: <User size={18} /> },
   { id: "password", label: "Password", icon: <Lock size={18} /> },
   { id: "notifications", label: "Notifications", icon: <Bell size={18} /> },
   { id: "verification", label: "Verification", icon: <ShieldCheck size={18} /> },
+  { id: "license", label: "License", icon: <KeyRound size={18} /> },
 ];
 
 function SettingsSidebar({ activeTab, onTabChange }) {

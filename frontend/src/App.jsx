@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -14,10 +15,29 @@ import SettingsPage from "./pages/SettingsPage";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import Notifications from "./pages/notifications/Notifications";
+import License from "./pages/License";
+
+function LicenseRedirector() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const onBlocked = () => {
+      if (window.location.pathname !== "/license") {
+        navigate("/license", { replace: true });
+      }
+    };
+    window.addEventListener("license:blocked", onBlocked);
+    return () => window.removeEventListener("license:blocked", onBlocked);
+  }, [navigate]);
+
+  return null;
+}
 
 function App() {
   return (
     <BrowserRouter>
+
+      <LicenseRedirector />
 
       <Toaster
         position="top-center"
@@ -50,6 +70,15 @@ function App() {
           element={
             <ProtectedRoute>
               <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/license"
+          element={
+            <ProtectedRoute>
+              <License />
             </ProtectedRoute>
           }
         />
