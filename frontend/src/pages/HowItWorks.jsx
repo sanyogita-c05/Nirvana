@@ -8,26 +8,17 @@ import "../styles/landing-sections.css";
 function HowItWorks() {
   return (
     <div className="how-page">
-
-      {/* Navbar */}
       <Navbar />
 
-      {/* Page Content */}
-      <main>
-
-        {/* Back Button */}
-        <div className="container inner-page-top">
+      <main className="subpage-main">
+        <div className="container back-button-container">
           <BackButton />
         </div>
 
-        {/* How It Works Content */}
         <HowItWorksSection />
-
       </main>
 
-      {/* Footer */}
       <Footer />
-
     </div>
   );
 }

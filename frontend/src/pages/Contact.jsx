@@ -8,26 +8,17 @@ import "../styles/landing-sections.css";
 function Contact() {
   return (
     <div className="contact-page">
-
-      {/* Navbar */}
       <Navbar />
 
-      {/* Page Content */}
-      <main>
-
-        {/* Back Button */}
-        <div className="container inner-page-top">
+      <main className="subpage-main">
+        <div className="container back-button-container">
           <BackButton />
         </div>
 
-        {/* Contact Content */}
         <ContactSection />
-
       </main>
 
-      {/* Footer */}
       <Footer />
-
     </div>
   );
 }

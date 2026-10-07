@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { loginUser } from "../api/auth.js";
 import { saveAuth, hasValidSession } from "../utils/authStorage";
+import BackButton from "../components/layout/BackButton";
 import "./Login.css";
 
 function Login() {
@@ -75,11 +76,9 @@ function Login() {
 
       saveAuth({ token, user, rememberMe });
 
-      // alert(res.data?.message || "Login successful");
-      toast.success(res.data?.message || "Login successful")
+      toast.success(res.data?.message || "Login successful");
       navigate("/dashboard");
     } catch (err) {
-      // alert(err.response?.data?.message || "Login failed");
       toast.error(err.response?.data?.message || "Login failed");
     }
   };
@@ -92,16 +91,7 @@ function Login() {
         <div className="login-brand-blob-2" />
 
         <div className="login-brand-content">
-          <div className="login-logo-row">
-            <div className="login-logo-badge">
-              <img
-                src="/nirvana_transformation_academy_logo.jpg"
-                alt="ArtisanSuite Logo"
-                className="login-logo-img"
-              />
-            </div>
-            <span className="login-wordmark">ARTISANSUITE</span>
-          </div>
+          
 
           <h1 className="login-headline">
             Your craft, your
@@ -158,6 +148,8 @@ function Login() {
 
       {/* RIGHT — form panel */}
       <div className="login-form-panel">
+        <BackButton />
+
         <div className="login-form-wrap">
           <div className="login-mobile-logo">
             <div className="login-logo-badge login-logo-badge--small">

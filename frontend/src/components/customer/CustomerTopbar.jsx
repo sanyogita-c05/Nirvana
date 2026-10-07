@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import "./CustomerTopbar.css";
+
 function CustomerTopbar() {
   return (
     <header className="customer-topbar">
@@ -9,9 +12,13 @@ function CustomerTopbar() {
         </div>
       </div>
 
-      <div className="topbar-actions">
-        <button className="ghost-btn">Wishlist</button>
-        <button className="primary-pill">Cart (0)</button>
+      <div className="view-toggle">
+        <Link to="/dashboard" className="view-toggle-btn">
+          Dashboard
+        </Link>
+        <span className="view-toggle-btn active" aria-current="page">
+          Customer View
+        </span>
       </div>
     </header>
   );

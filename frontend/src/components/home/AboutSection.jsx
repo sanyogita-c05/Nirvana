@@ -4,8 +4,6 @@ import {
   FiSmartphone,
 } from "react-icons/fi";
 
-import BackButton from "../layout/BackButton";
-
 const POINTS = [
   {
     icon: <FiHeart size={22} />,
@@ -23,14 +21,12 @@ const POINTS = [
     text: "See what sells, what doesn't and who owes you, so every decision is backed by real numbers.",
   },
 ];
+
 function AboutSection() {
   return (
     <section id="about" className="landing-section about-section">
       <div className="container">
-
         <div className="landing-heading">
-          
-
           <h2>
             Craft is personal. <em>Your tools should be too.</em>
           </h2>
@@ -51,7 +47,6 @@ function AboutSection() {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

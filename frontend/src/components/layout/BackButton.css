@@ -1,0 +1,23 @@
+.back-home-btn {
+  position: absolute;
+  top: 28px;
+  left: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--cream-border);
+  color: var(--ink-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s, transform 0.2s, border-color 0.2s;
+}
+
+.back-home-btn:hover {
+  color: var(--brand-magenta);
+  border-color: var(--brand-pink);
+  transform: translateX(-2px);
+}

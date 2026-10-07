@@ -7,7 +7,7 @@ import "../styles/landing-sections.css";
 
 function About() {
   return (
-    <div className="min-h-screen bg-[#FBF4EA] text-[#3B241A]">
+    <div className="min-h-screen bg-white text-[#3B241A]">
       <Navbar />
 
       <main className="subpage-main">
