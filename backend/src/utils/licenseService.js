@@ -8,7 +8,7 @@ import LICENSE_PUBLIC_KEY from "../config/licensePublicKey.js";
 /* ------------------------------------------------------------------
    Policy constants - the ONLY place these live.
 ------------------------------------------------------------------ */
-export const TRIAL_DAYS = 0;
+export const TRIAL_DAYS = 30;
 
 const LICENSE_ID = "app-license";
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
