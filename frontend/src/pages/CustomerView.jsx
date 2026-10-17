@@ -5,7 +5,7 @@ import CategoryChips from "../components/customer/CategoryChips";
 import SearchSortBar from "../components/customer/SearchSortBar";
 import ProductCard from "../components/customer/ProductCard";
 import { getProducts } from "../api/productApi";
-import categories from "../data/categories";
+// import categories from "../data/categories";
 import "../styles/customer.css";
 
 function CustomerView() {
@@ -68,6 +68,11 @@ function CustomerView() {
 
     return filtered;
   }, [products, activeCategory, searchTerm, sortBy]);
+
+  const categories = useMemo(
+    () => ["All", ...new Set(products.map((p) => p.category).filter(Boolean))],
+    [products]
+  );
 
   return (
     <div className="customer-page">

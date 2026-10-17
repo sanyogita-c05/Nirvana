@@ -2,7 +2,8 @@ import express from "express";
 
 import protect from "../middleware/auth.middleware.js";
 import upload from "../middleware/upload.middleware.js";
-import assignProductId from "../middleware/assignProductId.middleware.js";
+import assignProductId from "../middleware/assignproductid.middleware.js";
+// import assignProductId from "../middleware/assignproductid.middleware.js";
 
 import {
     createProduct,

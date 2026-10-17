@@ -16,7 +16,7 @@ function OrderRow({ order, refreshOrders, onEdit }) {
       refreshOrders();
     } catch (error) {
       // alert(error.response?.data?.message || "Failed to delete order");
-      toast.error(error.response?.data?.message || "Failed to delete order")
+      // toast.error(error.response?.data?.message || "Failed to delete order")
     }
   };
 

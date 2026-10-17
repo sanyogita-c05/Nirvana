@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
 import SectionCard from "./SectionCard";
 
@@ -7,6 +8,10 @@ function RevenueChartCard() {
   const [points, setPoints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
+  const goToAnalytics = () => navigate("/analytics");
+
 
   useEffect(() => {
     const fetchRevenue = async () => {
@@ -22,10 +27,10 @@ function RevenueChartCard() {
 
     fetchRevenue();
   }, []);
-  
+
   if (loading) {
     return (
-      <SectionCard title="Revenue Overview" action="Jan–Jul 2026" className="revenue-card">
+      <SectionCard title="Revenue Overview" action="View details" onAction={goToAnalytics} className="revenue-card">
         <p>Loading chart...</p>
       </SectionCard>
     );
@@ -33,16 +38,16 @@ function RevenueChartCard() {
 
   if (error) {
     return (
-      <SectionCard title="Revenue Overview" action="Jan–Jul 2026" className="revenue-card">
+      <SectionCard title="Revenue Overview" action="View details" onAction={goToAnalytics} className="revenue-card">
         <p>{error}</p>
       </SectionCard>
     );
   }
 
   const max = Math.max(...points.map((p) => p.value), 1);
-  
+
   return (
-    <SectionCard title="Revenue Overview" action="Jan–Jul 2026" className="revenue-card">
+    <SectionCard title="Revenue Overview" action="View details" onAction={goToAnalytics} className="revenue-card">
       <div className="revenue-chart">
         <div className="revenue-bars">
           {points.map((point) => (

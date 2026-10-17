@@ -16,7 +16,7 @@ function OrderHero({ onNewOrder, onExport, orders = [] }) {
   );
 
   const ordersToday = todaysOrders.length;
-  const revenueToday = todaysOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+  const revenueToday = todaysOrders.reduce((sum, o) => sum + (o.payment?.amountPaid || 0), 0);
   const pendingOrders = orders.filter((o) => o.orderStatus === "Active").length;
 
 

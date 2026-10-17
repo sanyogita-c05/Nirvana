@@ -13,7 +13,7 @@ function OrderStats({ orders = [] }) {
   const closedOrders = orders.filter((o) => o.orderStatus === "Closed").length;
   const revenueToday = orders
     .filter((o) => new Date(o.orderDate).toDateString() === today)
-    .reduce((sum, o) => sum + o.totalAmount, 0);
+    .reduce((sum, o) => sum + (o.payment?.amountPaid || 0), 0);
 
   const stats = [
     {

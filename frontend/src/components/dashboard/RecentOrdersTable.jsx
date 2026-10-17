@@ -44,14 +44,14 @@ function RecentOrdersTable() {
 
   if (error) {
     return (
-      <SectionCard title="Recent Orders" action="View all">
+      <SectionCard title="Recent Orders" action="View all" onAction={() => navigate("/orders")}>
         <p>{error}</p>
       </SectionCard>
     );
   }
 
   return (
-    <SectionCard title="Recent Orders" action="View all">
+    <SectionCard title="Recent Orders" action="View all" onAction={() => navigate("/orders")}>
       <div className="dash-orders-table-wrap">
         <table className="dash-orders-table">
           <thead>

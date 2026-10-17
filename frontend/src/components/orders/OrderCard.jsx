@@ -14,7 +14,7 @@ function OrderCard({ order, refreshOrders, onEdit }) {
       await deleteOrder(order._id);
       refreshOrders();
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to delete order");
+      // toast.error(error.response?.data?.message || "Failed to delete order");
     }
   };
 

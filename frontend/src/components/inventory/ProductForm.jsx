@@ -60,7 +60,7 @@ function ProductForm({ onClose, refreshProducts }) {
 
       await createProduct(data);
 
-      toast.success("Product added successfully!");
+      // toast.success("Product added successfully!");
 
       refreshProducts();
       onClose();
@@ -68,10 +68,10 @@ function ProductForm({ onClose, refreshProducts }) {
     } catch (error) {
       console.error(error);
 
-      toast.error(
-        error?.response?.data?.message ||
-          "Unable to create product."
-      );
+      // toast.error(
+      //   error?.response?.data?.message ||
+      //     "Unable to create product."
+      // );
     } finally {
       setLoading(false);
     }

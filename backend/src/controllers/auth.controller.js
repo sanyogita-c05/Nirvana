@@ -15,7 +15,7 @@ const STRONG_PASSWORD_REGEX =
 // Register
 export const register = asyncHandler(async (req, res) => {
 
-    
+
     const fullName = req.body.fullName?.trim();
     const email = req.body.email?.trim().toLowerCase();
     const phone = req.body.phone?.trim();
@@ -142,6 +142,13 @@ export const changePassword = asyncHandler(async (req, res) => {
 
     if (oldPassword === newPassword) {
         throw new ApiError(400, "New password cannot be same as old password");
+    }
+
+    if (!STRONG_PASSWORD_REGEX.test(newPassword)) {
+        throw new ApiError(
+            400,
+            "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number, and a special character"
+        );
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);

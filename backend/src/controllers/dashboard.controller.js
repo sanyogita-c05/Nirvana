@@ -16,6 +16,9 @@ const calcGrowth = (current, previous) => {
     return Math.round(((current - previous) / previous) * 100);
 };
 
+// Revenue counts only the money actually received, not the full order value.
+const paidAmount = (o) => o.payment?.amountPaid || 0;
+
 /*
 ----------------------------------------
 Get Dashboard Stats
@@ -33,10 +36,10 @@ export const getDashboardStats = asyncHandler(async (req, res) => {
     const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
     const allOrders = await Order.find({ owner: ownerId, isActive: true }).select(
-        "totalAmount orderDate customer.email"
+        "payment.amountPaid orderDate customer.email"
     );
 
-    const totalRevenue = allOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+    const totalRevenue = allOrders.reduce((sum, o) => sum + paidAmount(o), 0);
 
     const thisMonthOrders = allOrders.filter(
         (o) => o.orderDate >= thisMonthStart && o.orderDate < thisMonthEnd
@@ -45,8 +48,8 @@ export const getDashboardStats = asyncHandler(async (req, res) => {
         (o) => o.orderDate >= lastMonthStart && o.orderDate < lastMonthEnd
     );
 
-    const thisMonthRevenue = thisMonthOrders.reduce((sum, o) => sum + o.totalAmount, 0);
-    const lastMonthRevenue = lastMonthOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+    const thisMonthRevenue = thisMonthOrders.reduce((sum, o) => sum + paidAmount(o), 0);
+    const lastMonthRevenue = lastMonthOrders.reduce((sum, o) => sum + paidAmount(o), 0);
 
     const revenueGrowth = calcGrowth(thisMonthRevenue, lastMonthRevenue);
     const ordersGrowth = calcGrowth(thisMonthOrders.length, lastMonthOrders.length);
@@ -143,7 +146,7 @@ export const getRevenueChart = asyncHandler(async (req, res) => {
         owner: ownerId,
         isActive: true,
         orderDate: { $gte: rangeStart, $lt: rangeEnd },
-    }).select("totalAmount orderDate");
+    }).select("payment.amountPaid orderDate");
 
     const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -154,7 +157,7 @@ export const getRevenueChart = asyncHandler(async (req, res) => {
                 o.orderDate.getMonth() === m.getMonth()
         );
 
-        const monthTotal = monthOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+        const monthTotal = monthOrders.reduce((sum, o) => sum + paidAmount(o), 0);
 
         return {
             month: monthLabels[m.getMonth()],
@@ -196,7 +199,7 @@ export const getWeeklyStats = asyncHandler(async (req, res) => {
         owner: ownerId,
         isActive: true,
         orderDate: { $gte: lastWeekStart, $lt: thisWeekEnd },
-    }).select("totalAmount orderDate");
+    }).select("payment.amountPaid orderDate");
 
     const thisWeekOrders = orders.filter(
         (o) => o.orderDate >= thisWeekStart && o.orderDate < thisWeekEnd
@@ -205,8 +208,8 @@ export const getWeeklyStats = asyncHandler(async (req, res) => {
         (o) => o.orderDate >= lastWeekStart && o.orderDate < lastWeekEnd
     );
 
-    const thisWeekRevenue = thisWeekOrders.reduce((sum, o) => sum + o.totalAmount, 0);
-    const lastWeekRevenue = lastWeekOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+    const thisWeekRevenue = thisWeekOrders.reduce((sum, o) => sum + paidAmount(o), 0);
+    const lastWeekRevenue = lastWeekOrders.reduce((sum, o) => sum + paidAmount(o), 0);
 
     return res.status(200).json(
         new ApiResponse(200, {
@@ -243,7 +246,7 @@ export const getRevenueTrend = asyncHandler(async (req, res) => {
             owner: ownerId,
             isActive: true,
             orderDate: { $gte: rangeStart, $lt: rangeEnd },
-        }).select("totalAmount orderDate");
+        }).select("payment.amountPaid orderDate");
 
         const data = days.map((d) => {
             const dayOrders = orders.filter(
@@ -252,7 +255,7 @@ export const getRevenueTrend = asyncHandler(async (req, res) => {
                     o.orderDate.getMonth() === d.getMonth() &&
                     o.orderDate.getDate() === d.getDate()
             );
-            const total = dayOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+            const total = dayOrders.reduce((sum, o) => sum + paidAmount(o), 0);
             // return { label: dayNames[d.getDay()], revenue: total };
             return { label: dayNames[d.getDay()], revenue: total, orders: dayOrders.length };
         });
@@ -274,11 +277,11 @@ export const getRevenueTrend = asyncHandler(async (req, res) => {
             owner: ownerId,
             isActive: true,
             orderDate: { $gte: rangeStart, $lt: rangeEnd },
-        }).select("totalAmount orderDate");
+        }).select("payment.amountPaid orderDate");
 
         const data = years.map((y) => {
             const yearOrders = orders.filter((o) => o.orderDate.getFullYear() === y);
-            const total = yearOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+            const total = yearOrders.reduce((sum, o) => sum + paidAmount(o), 0);
             // return { label: String(y), revenue: total };
             return { label: String(y), revenue: total, orders: yearOrders.length };
         });
@@ -302,7 +305,7 @@ export const getRevenueTrend = asyncHandler(async (req, res) => {
         owner: ownerId,
         isActive: true,
         orderDate: { $gte: rangeStart, $lt: rangeEnd },
-    }).select("totalAmount orderDate");
+    }).select("payment.amountPaid orderDate");
 
     const data = months.map((m) => {
         const monthOrders = orders.filter(
@@ -310,7 +313,7 @@ export const getRevenueTrend = asyncHandler(async (req, res) => {
                 o.orderDate.getFullYear() === m.getFullYear() &&
                 o.orderDate.getMonth() === m.getMonth()
         );
-        const total = monthOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+        const total = monthOrders.reduce((sum, o) => sum + paidAmount(o), 0);
         // return { label: monthLabels[m.getMonth()], revenue: total };
 
         return {

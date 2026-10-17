@@ -8,7 +8,6 @@ function EditOrderModal({ order, onClose, refreshOrders }) {
 
     const [form, setForm] = useState({
         orderStatus: order.orderStatus || "Active",
-        paymentStatus: order.payment?.status || "Unpaid",
         amountPaid: order.payment?.amountPaid || 0,
         trackingNumber: order.shipment?.trackingNumber || "",
         shipmentDate: order.shipment?.shipmentDate
@@ -24,6 +23,20 @@ function EditOrderModal({ order, onClose, refreshOrders }) {
         }));
     };
 
+    // Same rules as the backend's computeFinancials, so the user sees
+    // the status that WILL be saved before clicking Update.
+    const total = order.totalAmount || 0;
+    const paid = Number(form.amountPaid) || 0;
+    const remaining = Math.max(total - paid, 0);
+
+    let livePaymentStatus = "Unpaid";
+    if (total === 0 || paid === total) livePaymentStatus = "Fully Settled";
+    else if (paid > 0 && paid < total) livePaymentStatus = "Partially Paid";
+
+    const payInFull = () => {
+        setForm((prev) => ({ ...prev, amountPaid: total }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -35,7 +48,6 @@ function EditOrderModal({ order, onClose, refreshOrders }) {
                 orderStatus: form.orderStatus,
 
                 payment: {
-                    status: form.paymentStatus,
                     amountPaid: Number(form.amountPaid),
                 },
 
@@ -103,30 +115,42 @@ function EditOrderModal({ order, onClose, refreshOrders }) {
                     </div>
 
                     <div className="form-group">
-                        <label>Payment Status</label>
-
-                        <select
-                            name="paymentStatus"
-                            value={form.paymentStatus}
-                            onChange={handleChange}
-                        >
-                            <option value="Unpaid">Unpaid</option>
-                            <option value="Partially Paid">Partially Paid</option>
-                            <option value="Fully Settled">Fully Settled</option>
-                        </select>
-
-                    </div>
-
-                    <div className="form-group">
-                        <label>Amount Paid</label>
+                        <label>
+                            Amount Paid (Total: ₹{total.toLocaleString("en-IN")})
+                        </label>
 
                         <input
                             type="number"
                             name="amountPaid"
+                            min="0"
+                            max={total}
                             value={form.amountPaid}
                             onChange={handleChange}
                         />
 
+                        {paid < total && (
+                            <button
+                                type="button"
+                                className="cancel-btn"
+                                style={{ height: 38, alignSelf: "flex-start" }}
+                                onClick={payInFull}
+                            >
+                                Mark as fully paid
+                            </button>
+                        )}
+                    </div>
+
+                    <div className="form-group">
+                        <label>Payment Status (auto)</label>
+
+                        <input
+                            value={
+                                livePaymentStatus === "Partially Paid"
+                                    ? `Partially Paid — ₹${remaining.toLocaleString("en-IN")} remaining`
+                                    : livePaymentStatus
+                            }
+                            disabled
+                        />
                     </div>
 
                     <div className="form-group">

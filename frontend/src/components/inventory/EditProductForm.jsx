@@ -92,17 +92,17 @@ function EditProductForm({
       await updateProduct(product._id, data);
       await refreshProducts();
 
-      toast.success("Product updated successfully!");
+      // toast.success("Product updated successfully!");
 
       onClose();
 
     } catch (error) {
       console.error(error);
 
-      toast.error(
-        error?.response?.data?.message ||
-        "Unable to update product."
-      );
+      // toast.error(
+      //   error?.response?.data?.message ||
+      //   "Unable to update product."
+      // );
     } finally {
       setLoading(false);
     }

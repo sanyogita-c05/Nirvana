@@ -26,7 +26,7 @@ function ProductRow({
 
       console.error(error);
 
-      toast.error("Unable to delete product.");
+      // toast.error("Unable to delete product.");
 
     }
   };

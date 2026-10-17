@@ -11,8 +11,8 @@ const LOW_STOCK_THRESHOLD = 5;
 // Creates a low-stock notification for this product, unless an unread
 // one already exists — without this check, every small stock edit under
 // the threshold would spawn a duplicate notification for the same item.
-const maybeCreateLowStockNotification = async (product, ownerId) => {
-    if (product.stockQuantity >= LOW_STOCK_THRESHOLD) return;
+export const maybeCreateLowStockNotification = async (product, ownerId) => {
+    if (product.stockQuantity > LOW_STOCK_THRESHOLD) return;
 
     const alreadyNotified = await Notification.findOne({
         owner: ownerId,
@@ -110,9 +110,9 @@ export const createProduct = asyncHandler(async (req, res) => {
         _id: req.productId,
         owner: req.user._id,
         sku,
-        name,
+        name: trimmedName,
         description,
-        category,
+        category: trimmedCategory,
         costPrice,
         sellingPrice,
         stockQuantity,
@@ -325,7 +325,7 @@ export const getLowStockProducts = asyncHandler(async (req, res) => {
     const products = await Product.find({
         owner: req.user._id,
         isActive: true,
-        stockQuantity: { $lt: 5 },
+        stockQuantity: { $lte: LOW_STOCK_THRESHOLD },
     }).sort({ stockQuantity: 1 });
 
     return res.status(200).json(
@@ -356,9 +356,21 @@ export const getTopSellingProducts = asyncHandler(async (req, res) => {
                 totalRevenue: { $sum: "$items.lineTotal" },
             },
         },
+        // Hide products that were deleted (soft delete) after being ordered
+        {
+            $lookup: {
+                from: "products",
+                localField: "_id",
+                foreignField: "_id",
+                as: "product",
+            },
+        },
+        { $match: { "product.isActive": true } },
+        { $project: { product: 0 } },
         { $sort: { totalSold: -1 } },
         { $limit: 4 },
     ]);
+
 
     return res.status(200).json(
         new ApiResponse(

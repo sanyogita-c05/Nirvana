@@ -4,6 +4,7 @@ import ApiResponse from "../utils/api-response.js";
 import ApiError from "../utils/api-error.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import generateSequence from "../utils/generateSequence.js";
+import { maybeCreateLowStockNotification } from "./product.controller.js";
 
 /*
 ----------------------------------------
@@ -27,34 +28,44 @@ const buildOrderItemsAndReduceStock = async (items, ownerId) => {
 
             const numericQuantity = Number(quantity);
 
-
             if (!productId || !quantity || isNaN(numericQuantity) || numericQuantity < 1) {
                 throw new ApiError(400, "Invalid product or quantity provided.");
             }
 
-            const product = await Product.findOne({
-                _id: productId,
-                owner: ownerId,
-                isActive: true,
-            });
+            // Check stock and reduce it in ONE database step, so two orders
+            // placed at the same moment can't both take the last units.
+            const product = await Product.findOneAndUpdate(
+                {
+                    _id: productId,
+                    owner: ownerId,
+                    isActive: true,
+                    stockQuantity: { $gte: numericQuantity },
+                },
+                { $inc: { stockQuantity: -numericQuantity } },
+                { returnDocument: "after" }
+            );
 
             if (!product) {
-                throw new ApiError(404, `Product not found for id ${productId}.`);
-            }
+                // Find out why it failed: missing product, or not enough stock
+                const existing = await Product.findOne({
+                    _id: productId,
+                    owner: ownerId,
+                    isActive: true,
+                });
 
-            if (product.stockQuantity < Number(quantity)) {
+                if (!existing) {
+                    throw new ApiError(404, `Product not found for id ${productId}.`);
+                }
+
                 throw new ApiError(
                     400,
-                    `Insufficient stock for ${product.name}. Available: ${product.stockQuantity}`
+                    `Insufficient stock for ${existing.name}. Available: ${existing.stockQuantity}`
                 );
             }
 
-            product.stockQuantity -= Number(quantity);
-            await product.save();
+            reducedSoFar.push({ productId: product._id, quantity: numericQuantity });
 
-            reducedSoFar.push({ productId: product._id, quantity: Number(quantity) });
-
-            const lineTotal = product.sellingPrice * Number(quantity);
+            const lineTotal = product.sellingPrice * numericQuantity;
 
             orderItems.push({
                 productId: product._id,
@@ -62,8 +73,7 @@ const buildOrderItemsAndReduceStock = async (items, ownerId) => {
                 name: product.name,
                 category: product.category,
                 imageUrl: product.images?.[0]?.url || "",
-                // imagePath: product.imagePath,
-                quantity: Number(quantity),
+                quantity: numericQuantity,
                 costPrice: product.costPrice,
                 priceAtSale: product.sellingPrice,
                 lineTotal,
@@ -85,6 +95,22 @@ const buildOrderItemsAndReduceStock = async (items, ownerId) => {
     }
 };
 
+/*
+----------------------------------------
+Helper: Low-stock notifications after an order
+(called only AFTER the order is saved, so a failed
+order never leaves behind a false alert)
+----------------------------------------
+*/
+
+const notifyLowStock = async (orderItems, ownerId) => {
+    for (const item of orderItems) {
+        const product = await Product.findById(item.productId);
+        if (product) {
+            await maybeCreateLowStockNotification(product, ownerId);
+        }
+    }
+};
 /*
 ----------------------------------------
 Helper: Restore Stock
@@ -230,7 +256,7 @@ export const createOrder = asyncHandler(async (req, res) => {
             tax: financials.tax,
             totalAmount: financials.totalAmount,
             payment: {
-                status: payment?.status || financials.paymentStatus,
+                status: financials.paymentStatus,
                 method: payment?.method || "N/A",
                 amountPaid: financials.amountPaid,
                 remainingAmount: financials.remainingAmount,
@@ -242,6 +268,8 @@ export const createOrder = asyncHandler(async (req, res) => {
             notes: notes || "",
             source: source || "Other",
         });
+
+        await notifyLowStock(orderItems, req.user._id).catch(console.error);
 
         return res.status(201).json(
             new ApiResponse(
@@ -363,18 +391,24 @@ export const updateOrder = asyncHandler(async (req, res) => {
     }
 
     let orderItems = order.items;
-    let stockAlreadyRestored = false;
+    const previousItems = order.items.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+    }));
+    let oldStockRestored = false;
+    let newStockReduced = false;
 
     try {
         if (items && order.orderStatus === "Active") {
 
             // Restore stock for previous items first
-            await restoreStock(order.items, req.user._id);
-            stockAlreadyRestored = true;
+            await restoreStock(previousItems, req.user._id);
+            oldStockRestored = true;
 
             // Validate and reduce stock for new items
             // (buildOrderItemsAndReduceStock rolls back its own partial reductions on failure)
             orderItems = await buildOrderItemsAndReduceStock(items, req.user._id);
+            newStockReduced = true;
         }
 
         const financials = computeFinancials(
@@ -397,14 +431,14 @@ export const updateOrder = asyncHandler(async (req, res) => {
         order.totalAmount = financials.totalAmount;
 
         order.payment = {
-            status: payment?.status || financials.paymentStatus,
+            status: financials.paymentStatus,
             method: payment?.method || order.payment.method,
             amountPaid: financials.amountPaid,
             remainingAmount: financials.remainingAmount,
         };
 
         if (shipment) {
-            order.shipment = shipment;
+            order.shipment = { ...order.shipment?.toObject?.(), ...shipment };
         }
 
         if (orderDate) {
@@ -425,6 +459,10 @@ export const updateOrder = asyncHandler(async (req, res) => {
 
         await order.save();
 
+        if (newStockReduced) {
+            await notifyLowStock(orderItems, req.user._id).catch(console.error);
+        }
+
         return res.status(200).json(
             new ApiResponse(
                 200,
@@ -434,17 +472,15 @@ export const updateOrder = asyncHandler(async (req, res) => {
         );
 
     } catch (error) {
-        // If new stock was reduced but saving the order failed, restore the new items too.
-        if (orderItems !== order.items) {
+        // New items' stock was taken -> give it back
+        if (newStockReduced) {
             await restoreStock(orderItems, req.user._id);
         }
 
-        // If we restored old stock but never made it to reducing new stock
-        // (e.g. buildOrderItemsAndReduceStock threw), put the old stock back.
-        if (stockAlreadyRestored && orderItems === order.items) {
-            const originalItems = await Order.findById(order._id).select("items");
+        // Old items' stock was given back, but the order still has them -> take it out again
+        if (oldStockRestored) {
             await Product.bulkWrite(
-                (originalItems?.items || []).map((item) => ({
+                previousItems.map((item) => ({
                     updateOne: {
                         filter: { _id: item.productId, owner: req.user._id },
                         update: { $inc: { stockQuantity: -item.quantity } },
