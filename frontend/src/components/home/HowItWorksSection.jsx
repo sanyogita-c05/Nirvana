@@ -1,3 +1,4 @@
+
 import {
   FiUserPlus,
   FiPackage,
@@ -35,7 +36,6 @@ function HowItWorksSection() {
 
         {/* Heading */}
         <div className="landing-heading how-heading">
-
           <h2>
             From first product to{" "}
             <em>full business</em>
@@ -47,12 +47,10 @@ function HowItWorksSection() {
             Everything you need to set up, manage and grow your
             handmade business — all in one place.
           </p>
-
         </div>
 
         {/* Steps */}
         <ol className="steps-grid">
-
           {STEPS.map((step, index) => (
             <li className="step-card" key={step.title}>
 
@@ -70,11 +68,41 @@ function HowItWorksSection() {
               <h3>{step.title}</h3>
 
               <p>{step.text}</p>
-
             </li>
           ))}
-
         </ol>
+
+        {/* Demo Video Section */}
+        <div className="demo-video-section">
+
+          <div className="demo-video-heading">
+            <h2>
+              See Artisan<em>Suite</em> in Action
+            </h2>
+
+            <p>
+              Take a quick tour of ArtisanSuite and discover how
+              you can manage your handmade business in one place.
+            </p>
+          </div>
+
+          <div className="demo-video-container">
+            <video
+              className="demo-video"
+              controls
+              playsInline
+              preload="metadata"
+            >
+              <source
+                src="/DemoVideo.mp4"
+                type="video/mp4"
+              />
+
+              Your browser does not support HTML video.
+            </video>
+          </div>
+
+        </div>
 
       </div>
     </section>
