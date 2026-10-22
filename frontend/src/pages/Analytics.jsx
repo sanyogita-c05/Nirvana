@@ -53,7 +53,7 @@ function Analytics() {
     const orders = DEMO_ORDERS;
 
     if (orders.length === 0) {
-      alert("No orders available to export.");
+            toast.error("There is no data to download yet.");
       return;
     }
 
@@ -109,7 +109,9 @@ function Analytics() {
     link.click();
     document.body.removeChild(link);
 
-    URL.revokeObjectURL(url);
+      URL.revokeObjectURL(url);
+
+        toast.success("Your report has been downloaded. Check your Downloads folder.");
   };
 
   // ------------------------------------------

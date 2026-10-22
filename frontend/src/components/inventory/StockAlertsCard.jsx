@@ -5,9 +5,9 @@ import EditProductForm from "./EditProductForm";
 function StockAlertsCard({ products, refreshProducts }) {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const lowStock = products.filter(
-    (product) => product.stockQuantity > 0 && product.stockQuantity <= 5
-  );
+    const lowStock = products
+    .filter((product) => product.stockQuantity <= 5)
+    .sort((a, b) => a.stockQuantity - b.stockQuantity);
 
   return (
     <div className="inventory-section-card">
@@ -33,7 +33,11 @@ function StockAlertsCard({ products, refreshProducts }) {
 
               <div className="inventory-list-info">
                 <h4>{product.name}</h4>
-                <p>{product.stockQuantity} items left</p>
+                                <p>
+                  {product.stockQuantity === 0
+                    ? "Out of stock"
+                    : `${product.stockQuantity} items left`}
+                </p>
               </div>
 
               <button onClick={() => setSelectedProduct(product)}>

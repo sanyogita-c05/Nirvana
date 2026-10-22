@@ -368,7 +368,7 @@ export const getTopSellingProducts = asyncHandler(async (req, res) => {
         { $match: { "product.isActive": true } },
         { $project: { product: 0 } },
         { $sort: { totalSold: -1 } },
-        { $limit: 4 },
+        { $limit: 5 },
     ]);
 
 

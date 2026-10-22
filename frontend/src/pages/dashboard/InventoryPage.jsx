@@ -10,6 +10,7 @@ import RecentlyAddedCard from "../../components/inventory/RecentlyAddedCard";
 import StockAlertsCard from "../../components/inventory/StockAlertsCard";
 import TopSellingCard from "../../components/inventory/TopSellingCard";
 import RecentActivityCard from "../../components/inventory/RecentActivityCard";
+import toast from "react-hot-toast";
 
 import { getProducts } from "../../api/productApi";
 import { getOrders } from "../../api/orderApi";
@@ -61,7 +62,10 @@ function InventoryPage() {
   });
 
   const handleExport = () => {
-    if (products.length === 0) return;
+        if (products.length === 0) {
+          toast.error("There are no products to download yet.");
+      return;
+    }
 
     const headers = ["SKU", "Name", "Category", "Cost Price", "Selling Price", "Stock Quantity", "Status"];
     const rows = products.map((p) => [
@@ -85,6 +89,8 @@ function InventoryPage() {
     link.download = `products-${new Date().toISOString().split("T")[0]}.csv`;
     link.click();
     URL.revokeObjectURL(url);
+
+      toast.success(`Your product list has been downloaded. Check your Downloads folder.`);
   };
 
   return (

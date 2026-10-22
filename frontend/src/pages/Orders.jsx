@@ -13,6 +13,7 @@ import EditOrderModal from "../components/orders/EditOrderModal";
 import EmptyOrders from "../components/orders/EmptyOrders";
 import Pagination from "../components/orders/Pagination";
 import { getOrders } from "../api/orderApi";
+import toast from "react-hot-toast";
 
 import "../styles/orders.css";
 
@@ -92,7 +93,10 @@ function Orders() {
   );
 
   const handleExport = () => {
-    if (filteredOrders.length === 0) return;
+     if (filteredOrders.length === 0) {
+        toast.error("There are no orders to download yet.");
+      return;
+    }
 
     const headers = [
       "Order Number", "Customer Name", "Customer Email", "Customer Phone",
@@ -123,6 +127,8 @@ function Orders() {
     link.download = `orders-${new Date().toISOString().split("T")[0]}.csv`;
     link.click();
     URL.revokeObjectURL(url);
+
+      toast.success(`Your order list has been downloaded. Check your Downloads folder.`);
   };
 
   return (

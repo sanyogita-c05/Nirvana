@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import { IndianRupee, ShoppingBag, Eye } from "lucide-react";
+import { IndianRupee, ShoppingBag, Package } from "lucide-react";
 import api from "../../api/api";
 
 
 function AnalyticsStatsGrid() {
 
-  const [weekly, setWeekly] = useState(null);
+  const [totals, setTotals] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchWeekly = async () => {
+    const fetchTotals = async () => {
       try {
-        const res = await api.get("/dashboard/weekly-stats");
-        setWeekly(res.data.data);
+        const res = await api.get("/dashboard/stats");
+        setTotals(res.data.data);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to load stats.");
       } finally {
@@ -21,36 +21,36 @@ function AnalyticsStatsGrid() {
       }
     };
 
-    fetchWeekly();
+    fetchTotals();
   }, []);
 
   const formatChange = (growth) =>
-    `${growth >= 0 ? "Increased" : "Decreased"} by ${Math.abs(growth)}%`;
+    `${growth >= 0 ? "Increased" : "Decreased"} by ${Math.abs(growth)}% this month`;
 
 
   const stats = [
     {
       id: "revenue",
-      label: "Weekly Revenue",
-      value: loading ? "..." : error ? "—" : `₹${weekly.revenue.total.toLocaleString("en-IN")}`,
-      change: loading ? "" : error || formatChange(weekly.revenue.growth),
+      label: "Total Revenue",
+      value: loading ? "..." : error ? "—" : `₹${totals.revenue.total.toLocaleString("en-IN")}`,
+      change: loading ? "" : error || formatChange(totals.revenue.growth),
       icon: <IndianRupee size={20} />,
       gradientClass: "stat-gradient-pink",
     },
     {
       id: "orders",
-      label: "Weekly Orders",
-      value: loading ? "..." : error ? "—" : `${weekly.orders.total}`,
-      change: loading ? "" : error || formatChange(weekly.orders.growth),
+      label: "Total Orders",
+      value: loading ? "..." : error ? "—" : `${totals.orders.total}`,
+      change: loading ? "" : error || formatChange(totals.orders.growth),
       icon: <ShoppingBag size={20} />,
       gradientClass: "stat-gradient-blue",
     },
     {
-      id: "visitors",
-      label: "Store Visitors",
-      value: "5,741",
-      change: "Increased by 27%",
-      icon: <Eye size={20} />,
+      id: "products",
+      label: "Total Products",
+      value: loading ? "..." : error ? "—" : `${totals.products.total}`,
+      change: loading ? "" : error || `${totals.products.categories} categories`,
+      icon: <Package size={20} />,
       gradientClass: "stat-gradient-green",
     },
   ];
