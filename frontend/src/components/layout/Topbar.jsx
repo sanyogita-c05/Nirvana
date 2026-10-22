@@ -9,6 +9,7 @@ import {
 } from "../../utils/userStore";
 
 import api from "../../api/api";
+import { getNotifications } from "../../api/notificationApi";
 
 function Topbar({ onMenuClick }) {
   const navigate = useNavigate();
@@ -17,13 +18,12 @@ function Topbar({ onMenuClick }) {
   const isCustomerView = location.pathname.startsWith("/customer");
 
   const [user, setUser] = useState(getStoredUser());
+  const [unreadCount, setUnreadCount] = useState(0);
 
+  // Keep user info in sync
   useEffect(() => {
-    // Keep Topbar synchronized whenever user information changes.
     const unsubscribe = onUserUpdated(setUser);
 
-    // If user data is not available in the shared store,
-    // fetch it from the backend.
     if (!user?.fullName && !user?.studio) {
       api
         .get("/auth/me")
@@ -31,30 +31,44 @@ function Topbar({ onMenuClick }) {
           setStoredUser(res.data.data);
         })
         .catch(() => {
-          // Avatar will simply fall back to the user's initial.
+          // Avatar will fall back to the user's initial.
         });
     }
 
     return unsubscribe;
 
-    // We only want this effect to run once when Topbar mounts.
+    // Run once when Topbar mounts.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Fallback initial when there is no profile image.
-  const initial = (
-    user?.studio ||
-    user?.fullName ||
-    "?"
-  )
+  // Unread notification count for the bell badge
+  useEffect(() => {
+    const fetchUnread = async () => {
+      try {
+        const res = await getNotifications();
+        setUnreadCount(res.data.data.filter((n) => !n.isRead).length);
+      } catch {
+        // keep the previous count if the request fails
+      }
+    };
+
+    fetchUnread();
+    const timer = setInterval(fetchUnread, 30000);
+
+    // Lets the Notifications page tell the bell to refresh instantly
+    window.addEventListener("notifications-updated", fetchUnread);
+
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("notifications-updated", fetchUnread);
+    };
+  }, [location.pathname]);
+
+  const initial = (user?.studio || user?.fullName || "?")
     .trim()
     .charAt(0)
     .toUpperCase();
 
-  // Backend stores the avatar as something like:
-  // /uploads/avatars/filename.jpg
-  //
-  // So we prepend localhost:5000.
   const avatarUrl = user?.avatar
     ? user.avatar.startsWith("http")
       ? user.avatar
@@ -64,10 +78,7 @@ function Topbar({ onMenuClick }) {
   return (
     <header className="dashboard-topbar">
       <div className="topbar-left">
-        <button
-          className="icon-btn mobile-menu-btn"
-          onClick={onMenuClick}
-        >
+        <button className="icon-btn mobile-menu-btn" onClick={onMenuClick}>
           <Menu size={20} />
         </button>
 
@@ -96,11 +107,16 @@ function Topbar({ onMenuClick }) {
 
         {/* Notifications */}
         <button
-          className="icon-btn"
+          className="icon-btn bell-btn"
           onClick={() => navigate("/notifications")}
           title="Notifications"
         >
           <Bell size={20} />
+          {unreadCount > 0 && (
+            <span className="bell-badge">
+              {unreadCount > 9 ? "9+" : unreadCount}
+            </span>
+          )}
         </button>
 
         {/* Profile Avatar */}
@@ -128,8 +144,6 @@ function Topbar({ onMenuClick }) {
                 display: "block",
               }}
               onError={(e) => {
-                // If image fails to load, hide it so the
-                // initial can be shown instead.
                 e.currentTarget.style.display = "none";
               }}
             />

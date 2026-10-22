@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -46,6 +45,10 @@ const TAG_CLASS = {
   New: "notif-tag new",
   Info: "notif-tag info",
 };
+
+// Tells the Topbar bell to re-check the unread count right away
+const notifyTopbar = () =>
+  window.dispatchEvent(new Event("notifications-updated"));
 
 function timeAgo(dateString) {
   const diffMs = Date.now() - new Date(dateString).getTime();
@@ -185,37 +188,34 @@ export default function NotificationsPage() {
 
   const markAsRead = async (id) => {
     setNotifications((prev) =>
-      prev.map((n) =>
-        n._id === id ? { ...n, isRead: true } : n
-      )
+      prev.map((n) => (n._id === id ? { ...n, isRead: true } : n))
     );
 
     try {
       await markNotificationRead(id);
+      notifyTopbar();
     } catch (err) {
       console.error("Failed to mark notification as read:", err);
     }
   };
 
   const markAllRead = async () => {
-    setNotifications((prev) =>
-      prev.map((n) => ({ ...n, isRead: true }))
-    );
+    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
 
     try {
       await markAllNotificationsRead();
+      notifyTopbar();
     } catch (err) {
       console.error("Failed to mark all notifications as read:", err);
     }
   };
 
   const remove = async (id) => {
-    setNotifications((prev) =>
-      prev.filter((n) => n._id !== id)
-    );
+    setNotifications((prev) => prev.filter((n) => n._id !== id));
 
     try {
       await deleteNotification(id);
+      notifyTopbar();
     } catch (err) {
       console.error("Failed to delete notification:", err);
     }
@@ -232,6 +232,7 @@ export default function NotificationsPage() {
 
     try {
       await clearAllNotifications();
+      notifyTopbar();
     } catch (err) {
       console.error("Failed to clear notifications:", err);
     }
@@ -240,7 +241,6 @@ export default function NotificationsPage() {
   return (
     <div className="notif-page">
       <div className="notif-container">
-
         {/* Go to Dashboard */}
         <div className="notif-back-button">
           <button
@@ -323,9 +323,7 @@ export default function NotificationsPage() {
                   onClick={() => setFilter(f)}
                 >
                   {f}
-                  <span className="notif-filter-count">
-                    {counts[f]}
-                  </span>
+                  <span className="notif-filter-count">{counts[f]}</span>
                 </button>
               ))}
             </div>
@@ -339,15 +337,12 @@ export default function NotificationsPage() {
               <div className="notif-list">
                 {visible.map((n) => {
                   const Icon = ICONS[n.icon] || Bell;
-                  const color =
-                    CATEGORY_COLOR[n.category] || "orange";
+                  const color = CATEGORY_COLOR[n.category] || "orange";
 
                   return (
                     <div
                       key={n._id}
-                      className={`notif-card${
-                        !n.isRead ? " unread" : ""
-                      }`}
+                      className={`notif-card${!n.isRead ? " unread" : ""}`}
                     >
                       <div className={`notif-icon-badge ${color}`}>
                         <Icon size={19} color="#fff" />
@@ -359,24 +354,18 @@ export default function NotificationsPage() {
                             <h3>{n.title}</h3>
 
                             <span
-                              className={
-                                TAG_CLASS[n.tag] || "notif-tag info"
-                              }
+                              className={TAG_CLASS[n.tag] || "notif-tag info"}
                             >
                               {n.tag}
                             </span>
 
-                            <span
-                              className={`notif-tag category ${color}`}
-                            >
+                            <span className={`notif-tag category ${color}`}>
                               {n.category}
                             </span>
                           </div>
 
                           <div className="notif-row-icons">
-                            {!n.isRead && (
-                              <span className="notif-dot" />
-                            )}
+                            {!n.isRead && <span className="notif-dot" />}
 
                             <button
                               className="notif-icon-btn"
