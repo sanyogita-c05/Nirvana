@@ -141,7 +141,7 @@ function Login() {
             ))}
           </div>
           <p className="login-trust-text">
-            Trusted by 2,400+ artisan businesses across India
+            Every craft tells a story. ArtisanSuite helps manage the story behind it.
           </p>
         </div>
       </div>

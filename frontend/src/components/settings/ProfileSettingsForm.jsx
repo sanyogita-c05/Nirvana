@@ -1,23 +1,19 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Camera, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
-import { getMe, updateProfile, uploadAvatar, deleteAvatar } from "../../api/auth";
-
+import {
+  getMe,
+  updateProfile,
+  uploadAvatar,
+  deleteAvatar,
+} from "../../api/auth";
 import { setStoredUser } from "../../utils/userStore";
 
-// const syncLocalUser = (fields) => {
-//   const existing = JSON.parse(localStorage.getItem("user") || "{}");
-//   const updated = { ...existing, ...fields };
-//   localStorage.setItem("user", JSON.stringify(updated));
-// };
-
 function ProfileSettingsForm() {
-
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-
-  // const [success, setSuccess] = useState("");
 
   const [avatarPath, setAvatarPath] = useState("");
   const [avatarBusy, setAvatarBusy] = useState(false);
@@ -29,8 +25,6 @@ function ProfileSettingsForm() {
     email: "",
     phone: "",
     gender: "",
-    taxIdNumber: "",
-    taxIdCountry: "India",
     studio: "",
     address: "",
   });
@@ -47,21 +41,12 @@ function ProfileSettingsForm() {
         email: user.email || "",
         phone: user.phone || "",
         gender: user.gender || "",
-        taxIdNumber: user.taxIdNumber || "",
-        taxIdCountry: user.taxIdCountry || "India",
         studio: user.studio || "",
         address: user.address || "",
       });
 
       setAvatarPath(user.avatar || "");
 
-      // syncLocalUser({
-      //   firstName: user.firstName || "",
-      //   lastName: user.lastName || "",
-      //   studio: user.studio || "",
-      //   address: user.address || "",
-      //   avatar: user.avatar || "",
-      // });.
       setStoredUser({
         firstName: user.firstName || "",
         lastName: user.lastName || "",
@@ -69,7 +54,6 @@ function ProfileSettingsForm() {
         address: user.address || "",
         avatar: user.avatar || "",
       });
-
     } catch (err) {
       console.error("Failed to load profile:", err);
       setError("Could not load your profile. Please refresh.");
@@ -84,14 +68,17 @@ function ProfileSettingsForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
     setError("");
-    // setSuccess("");
 
     try {
       const token = localStorage.getItem("token");
@@ -100,26 +87,20 @@ function ProfileSettingsForm() {
         firstName: form.firstName,
         lastName: form.lastName,
         gender: form.gender,
-        taxIdNumber: form.taxIdNumber,
-        taxIdCountry: form.taxIdCountry,
         studio: form.studio,
         address: form.address,
       };
 
       await updateProfile(editableFields, token);
 
-      // syncLocalUser(editableFields);
       setStoredUser(editableFields);
       toast.success("Profile updated successfully.");
-      // setSuccess("Profile updated successfully.");
     } catch (err) {
-
       console.error("Failed to update profile:", err);
-      // setError(
-      //   err.response?.data?.message || "Something went wrong. Please try again."
-      // );
+
       toast.error(
-        err.response?.data?.message || "Something went wrong. Please try again."
+        err.response?.data?.message ||
+          "Something went wrong. Please try again."
       );
     } finally {
       setSaving(false);
@@ -132,35 +113,43 @@ function ProfileSettingsForm() {
 
     setAvatarBusy(true);
     setError("");
+
     try {
       const token = localStorage.getItem("token");
       const formData = new FormData();
+
       formData.append("avatar", file);
+
       const res = await uploadAvatar(formData, token);
-      setAvatarPath(res.data.data.avatar);
-      setStoredUser({ avatar: res.data.data.avatar });
-      // syncLocalUser({ avatar: res.data.data.avatar });
+      const newAvatar = res.data.data.avatar;
+
+      setAvatarPath(newAvatar);
+      setStoredUser({ avatar: newAvatar });
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to upload photo.");
+      setError(
+        err.response?.data?.message || "Failed to upload photo."
+      );
     } finally {
       setAvatarBusy(false);
       e.target.value = "";
     }
   };
 
-
   const handleDeleteAvatar = async () => {
     setAvatarBusy(true);
-
     setError("");
+
     try {
       const token = localStorage.getItem("token");
+
       await deleteAvatar(token);
+
       setAvatarPath("");
       setStoredUser({ avatar: "" });
-      // syncLocalUser({ avatar: "" });
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to remove photo.");
+      setError(
+        err.response?.data?.message || "Failed to remove photo."
+      );
     } finally {
       setAvatarBusy(false);
     }
@@ -172,9 +161,7 @@ function ProfileSettingsForm() {
 
   return (
     <div className="settings-card">
-
       <div className="profile-avatar-row">
-
         <div className="avatar-upload-wrap">
           {avatarPath ? (
             <img
@@ -199,9 +186,6 @@ function ProfileSettingsForm() {
           </button>
         </div>
 
-
-
-
         <div className="avatar-actions">
           <button
             type="button"
@@ -211,6 +195,7 @@ function ProfileSettingsForm() {
           >
             {avatarBusy ? "Working..." : "Upload New"}
           </button>
+
           <button
             type="button"
             className="delete-btn-outline"
@@ -221,6 +206,7 @@ function ProfileSettingsForm() {
             Delete avatar
           </button>
         </div>
+
         <input
           ref={fileInputRef}
           type="file"
@@ -228,19 +214,12 @@ function ProfileSettingsForm() {
           hidden
           onChange={handleAvatarFileSelected}
         />
-
       </div>
 
-
-
       {error && <p className="form-error">{error}</p>}
-      {/* {success && <p className="form-success">{success}</p>}
-      */}
 
       <form className="settings-form" onSubmit={handleSubmit}>
-
         <div className="settings-form-grid">
-
           <div className="form-group">
             <label>First Name *</label>
             <input
@@ -262,11 +241,9 @@ function ProfileSettingsForm() {
               onChange={handleChange}
             />
           </div>
-
         </div>
 
         <div className="settings-form-grid">
-
           <div className="form-group">
             <label>Email</label>
             <input
@@ -286,13 +263,12 @@ function ProfileSettingsForm() {
               title="Mobile number can't be changed here"
             />
           </div>
-
         </div>
 
         <div className="form-group">
           <label>Gender</label>
-          <div className="radio-row">
 
+          <div className="radio-row">
             <label className="radio-option">
               <input
                 type="radio"
@@ -314,7 +290,6 @@ function ProfileSettingsForm() {
               />
               Female
             </label>
-
           </div>
         </div>
 
@@ -329,34 +304,6 @@ function ProfileSettingsForm() {
           />
         </div>
 
-        <div className="settings-form-grid">
-
-          <div className="form-group">
-            <label>Tax Identification Number</label>
-            <input
-              type="text"
-              name="taxIdNumber"
-              placeholder="e.g. 29ABCDE1234F1Z5"
-              value={form.taxIdNumber}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Tax Identification Country</label>
-            <select
-              name="taxIdCountry"
-              value={form.taxIdCountry}
-              onChange={handleChange}
-            >
-              <option>India</option>
-              <option>United States</option>
-              <option>United Kingdom</option>
-            </select>
-          </div>
-
-        </div>
-
         <div className="form-group">
           <label>Residential Address</label>
           <textarea
@@ -369,13 +316,15 @@ function ProfileSettingsForm() {
         </div>
 
         <div className="settings-form-actions">
-          <button type="submit" className="save-changes-btn" disabled={saving}>
+          <button
+            type="submit"
+            className="save-changes-btn"
+            disabled={saving}
+          >
             {saving ? "Saving..." : "Save Changes"}
           </button>
         </div>
-
       </form>
-
     </div>
   );
 }

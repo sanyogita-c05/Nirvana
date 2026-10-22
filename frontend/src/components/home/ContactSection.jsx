@@ -1,10 +1,10 @@
+
 import {
   FiMail,
-  FiPhone,
   FiMapPin,
-  FiInstagram,
-  FiFacebook,
-  FiMessageCircle,
+  FiLinkedin,
+  FiYoutube,
+  FiGlobe,
 } from "react-icons/fi";
 
 function ContactSection() {
@@ -15,18 +15,17 @@ function ContactSection() {
         {/* Heading */}
         <div className="landing-heading contact-heading">
           <h2>
-            Let’s build something{" "}
-            <em>beautiful</em>
+            Let’s grow something{" "}
+            <em>meaningful</em>
             <br />
             together.
           </h2>
 
           <p>
-            Have a question, need help setting up your studio,
-            or simply want to say hello? We’d love to hear from you.
+            Have a question, want to explore our programs, or
+            simply want to connect? We’d love to hear from you.
           </p>
         </div>
-
 
         {/* Contact Content */}
         <div className="contact-grid">
@@ -34,8 +33,9 @@ function ContactSection() {
           {/* Left - Contact Information */}
           <div className="contact-info">
 
+            {/* Email */}
             <a
-              href="mailto:hello@artisansuite.com"
+              href="mailto:nirvana.acad@gmail.com"
               className="contact-item"
             >
               <span className="contact-icon">
@@ -44,26 +44,11 @@ function ContactSection() {
 
               <span>
                 <small>Email</small>
-                <strong>hello@artisansuite.com</strong>
+                <strong>nirvana.acad@gmail.com</strong>
               </span>
             </a>
 
-
-            <a
-              href="tel:+919876543210"
-              className="contact-item"
-            >
-              <span className="contact-icon">
-                <FiPhone size={21} />
-              </span>
-
-              <span>
-                <small>Phone</small>
-                <strong>+91 98765 43210</strong>
-              </span>
-            </a>
-
-
+            {/* Location */}
             <div className="contact-item">
               <span className="contact-icon">
                 <FiMapPin size={21} />
@@ -71,78 +56,87 @@ function ContactSection() {
 
               <span>
                 <small>Location</small>
-                <strong>India</strong>
+                <strong>Pune, Maharashtra, India</strong>
               </span>
             </div>
 
+            {/* Website */}
+            <a
+              href="https://sites.google.com/view/nirvanaelevate"
+              target="_blank"
+              rel="noreferrer"
+              className="contact-item"
+            >
+              <span className="contact-icon">
+                <FiGlobe size={21} />
+              </span>
 
+              <span>
+                <small>Website</small>
+                <strong>Nirvana Elevate</strong>
+              </span>
+            </a>
+
+            {/* Support */}
             <div className="contact-item">
               <span className="contact-icon">
-                <FiMessageCircle size={21} />
+                <FiMail size={21} />
               </span>
 
               <span>
                 <small>Support</small>
-                <strong>We’re here to help</strong>
+                <strong>We're here to help</strong>
               </span>
             </div>
 
           </div>
 
-
           {/* Right - Message */}
           <div className="contact-form">
-
             <div className="contact-message">
 
               <h3>
-                We’d love to hear from you.
+                Your growth journey starts here.
               </h3>
 
               <p>
-                Whether you're a handmade seller getting started,
-                already running your studio, or just curious about
-                ArtisanSuite, feel free to reach out.
+                At Nirvana Elevate, we believe in transforming
+                potential into progress through learning,
+                personal growth, and meaningful opportunities.
+                Whether you're a student, aspiring professional,
+                or simply curious about what we do, feel free
+                to reach out.
               </p>
-
 
               {/* Social Links */}
               <div className="contact-social-links">
 
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/company/nirvana-transformation-academy/posts/?feedView=all"
+                  target="_blank"
+                  rel="noreferrer"
                   className="contact-social-link"
                 >
-                  <FiInstagram size={18} />
-                  Instagram
+                  <FiLinkedin size={18} />
+                  LinkedIn
                 </a>
 
-
                 <a
-                  href="#"
+                  href="https://www.youtube.com/@nirvanaSpeaks_Elevate"
+                  target="_blank"
+                  rel="noreferrer"
                   className="contact-social-link"
                 >
-                  <FiFacebook size={18} />
-                  Facebook
-                </a>
-
-
-                <a
-                  href="mailto:hello@artisansuite.com"
-                  className="contact-social-link"
-                >
-                  <FiMail size={18} />
-                  Email Us
+                  <FiYoutube size={18} />
+                  YouTube
                 </a>
 
               </div>
 
             </div>
-
           </div>
 
         </div>
-
       </div>
     </section>
   );
