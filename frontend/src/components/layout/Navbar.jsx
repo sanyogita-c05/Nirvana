@@ -1,16 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
   return (
     <header className="navbar">
       <div className="container navbar-inner">
 
-        {/* Logo */}
-        <div className="brand">
+        {/* =========================
+            LOGO / BRAND
+        ========================= */}
+        <Link to="/" className="brand" onClick={closeMenu}>
           <img
             src="/nirvana_transformation_academy_logo.jpg"
             alt="ArtisanSuite Logo"
@@ -20,53 +26,117 @@ function Navbar() {
           <span className="brand-text">
             Artisan<span>Suite</span>
           </span>
-        </div>
+        </Link>
 
-        {/* Desktop Navigation */}
+        {/* =========================
+            DESKTOP NAVIGATION
+        ========================= */}
         <nav className="nav-links">
-          <a href="#about">About Us</a>
-          <a href="#how-it-works">How It Works</a>
-          <a href="#contact">Contact</a>
+
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            About Us
+          </NavLink>
+
+          <NavLink
+            to="/how-it-works"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            How It Works
+          </NavLink>
+
+          <NavLink
+            to="/contact"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            Contact
+          </NavLink>
+
         </nav>
 
-        {/* Desktop Login */}
+        {/* =========================
+            LOGIN
+        ========================= */}
         <div className="nav-actions">
-          <Link to="/login" className="btn btn-primary">
-            Login
-          </Link>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="menu-btn"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <FiX size={28} /> : <FiMenu size={28} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="mobile-menu">
-          <a href="#about" onClick={() => setMenuOpen(false)}>
-            About Us
-          </a>
-
-          <a href="#how-it-works" onClick={() => setMenuOpen(false)}>
-            How It Works
-          </a>
-
-          <a href="#contact" onClick={() => setMenuOpen(false)}>
-            Contact
-          </a>
-
           <Link
             to="/login"
             className="btn btn-primary"
-            onClick={() => setMenuOpen(false)}
+            onClick={closeMenu}
           >
             Login
           </Link>
+        </div>
+
+        {/* =========================
+            MOBILE MENU BUTTON
+        ========================= */}
+        <button
+          type="button"
+          className="menu-btn"
+          onClick={() => setMenuOpen((prev) => !prev)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+        >
+          {menuOpen ? (
+            <FiX size={28} />
+          ) : (
+            <FiMenu size={28} />
+          )}
+        </button>
+      </div>
+
+      {/* =========================
+          MOBILE MENU
+      ========================= */}
+      {menuOpen && (
+        <div className="mobile-menu">
+
+          <NavLink
+            to="/about"
+            onClick={closeMenu}
+            className={({ isActive }) =>
+              isActive ? "mobile-nav-link active" : "mobile-nav-link"
+            }
+          >
+            About Us
+          </NavLink>
+
+          <NavLink
+            to="/how-it-works"
+            onClick={closeMenu}
+            className={({ isActive }) =>
+              isActive ? "mobile-nav-link active" : "mobile-nav-link"
+            }
+          >
+            How It Works
+          </NavLink>
+
+          <NavLink
+            to="/contact"
+            onClick={closeMenu}
+            className={({ isActive }) =>
+              isActive ? "mobile-nav-link active" : "mobile-nav-link"
+            }
+          >
+            Contact
+          </NavLink>
+
+          <Link
+            to="/login"
+            className="btn btn-primary mobile-login"
+            onClick={closeMenu}
+          >
+            Login
+          </Link>
+
         </div>
       )}
     </header>

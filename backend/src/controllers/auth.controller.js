@@ -80,6 +80,9 @@ export const login = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Email and password are required");
     }
 
+    // "Keep me signed in" checkbox from the login form
+    const rememberMe = req.body.rememberMe === true;
+
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -92,7 +95,7 @@ export const login = asyncHandler(async (req, res) => {
         throw new ApiError(401, "Invalid email or password");
     }
 
-    const token = generateToken(user);
+    const token = generateToken(user, rememberMe);
 
     return res.status(200).json(
         new ApiResponse(

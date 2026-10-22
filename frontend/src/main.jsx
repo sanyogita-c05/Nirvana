@@ -10,7 +10,9 @@ import "./styles/inventory.css";
 import "./styles/orders.css";
 import "./styles/analytics.css";
 import "./styles/settings.css";
-import "./pages/profile.css";
+import "./styles/license.css";
+import "./pages/Profile.css";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App />

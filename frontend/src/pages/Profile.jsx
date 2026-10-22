@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { getMe, uploadAvatar } from "../api/auth";
 import api from "../api/api";
+import { setStoredUser } from "../utils/userStore";
 
 import {
   Package,
@@ -26,10 +27,12 @@ function ProfilePage() {
 
   const [darkMode, setDarkMode] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  const [stats, setStats] = useState({ products: 0, orders: 0 });
+  const [stats, setStats] = useState({
+    products: 0,
+    orders: 0,
+  });
   const [loading, setLoading] = useState(true);
   const [avatarBusy, setAvatarBusy] = useState(false);
-
 
   const fetchUser = useCallback(async () => {
     try {
@@ -41,11 +44,17 @@ function ProfilePage() {
       }
 
       const res = await getMe(token);
+
       setCurrentUser(res.data.data);
+
+      // Also keep the shared user store updated
+      setStoredUser(res.data.data);
     } catch (error) {
       console.error("Failed to fetch user:", error);
+
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+
       navigate("/login", { replace: true });
     } finally {
       setLoading(false);
@@ -55,6 +64,7 @@ function ProfilePage() {
   const fetchStats = useCallback(async () => {
     try {
       const res = await api.get("/dashboard/stats");
+
       setStats({
         products: res.data.data.products.total,
         orders: res.data.data.orders.total,
@@ -72,34 +82,66 @@ function ProfilePage() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/login", { replace: true });
+
+    navigate("/login", {
+      replace: true,
+    });
   };
 
   const handleAvatarFileSelected = async (e) => {
     const file = e.target.files[0];
+
     if (!file) return;
 
     setAvatarBusy(true);
+
     try {
       const token = localStorage.getItem("token");
+
       const formData = new FormData();
       formData.append("avatar", file);
+
       const res = await uploadAvatar(formData, token);
-      setCurrentUser((prev) => ({ ...prev, avatar: res.data.data.avatar }));
+
+      const avatar = res.data.data.avatar;
+
+      // Update the Profile page immediately
+      setCurrentUser((prev) => ({
+        ...prev,
+        avatar,
+      }));
+
+      // IMPORTANT:
+      // Update shared user store so Topbar also gets the new avatar
+      setStoredUser({
+        avatar,
+      });
+
+      toast.success("Profile photo updated.");
     } catch (error) {
-      // alert(error.response?.data?.message || "Failed to upload photo.");
-      toast.error(error.response?.data?.message || "Failed to upload photo.");
+      console.error("Failed to upload avatar:", error);
+
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to upload photo."
+      );
     } finally {
       setAvatarBusy(false);
+
+      // Reset file input so the same file can be selected again
       e.target.value = "";
     }
   };
 
-
   if (loading) {
     return (
       <DashBoardLayout>
-        <div style={{ padding: "40px", textAlign: "center" }}>
+        <div
+          style={{
+            padding: "40px",
+            textAlign: "center",
+          }}
+        >
           Loading Profile...
         </div>
       </DashBoardLayout>
@@ -109,7 +151,12 @@ function ProfilePage() {
   if (!currentUser) {
     return (
       <DashBoardLayout>
-        <div style={{ padding: "40px", textAlign: "center" }}>
+        <div
+          style={{
+            padding: "40px",
+            textAlign: "center",
+          }}
+        >
           Unable to load profile.
         </div>
       </DashBoardLayout>
@@ -131,30 +178,51 @@ function ProfilePage() {
                 src={`http://localhost:5000${currentUser.avatar}`}
                 alt={currentUser.fullName}
                 className="profile-avatar-xl"
-                style={{ objectFit: "cover" }}
+                style={{
+                  objectFit: "cover",
+                }}
               />
             ) : (
               <div className="profile-avatar-xl">
-                {currentUser.fullName?.charAt(0).toUpperCase()}
+                {currentUser.fullName
+                  ?.charAt(0)
+                  .toUpperCase()}
               </div>
             )}
 
-
             <div>
-              <h1 className="profile-hero__name">{currentUser.fullName}</h1>
+              <h1 className="profile-hero__name">
+                {currentUser.fullName}
+              </h1>
+
               <p className="profile-hero__studio">
-                {currentUser.studio || "ArtisanSuite User"}
+                {currentUser.studio ||
+                  "ArtisanSuite User"}
               </p>
             </div>
           </div>
 
           <div className="profile-hero__actions">
-            <button className="hero-btn hero-btn--primary" onClick={() => navigate("/settings")}>
+            <button
+              className="hero-btn hero-btn--primary"
+              onClick={() => navigate("/settings")}
+            >
               <Pencil size={15} />
               Edit Profile
             </button>
-            <label className="hero-btn" style={{ cursor: "pointer" }}>
-              {avatarBusy ? "Uploading..." : "Change Photo"}
+
+            <label
+              className="hero-btn"
+              style={{
+                cursor: avatarBusy
+                  ? "not-allowed"
+                  : "pointer",
+              }}
+            >
+              {avatarBusy
+                ? "Uploading..."
+                : "Change Photo"}
+
               <input
                 type="file"
                 accept="image/*"
@@ -170,8 +238,9 @@ function ProfilePage() {
           <h4>Account Overview</h4>
 
           <p>
-            Manage your contact details, account information and application
-            preferences from one place.
+            Manage your contact details, account
+            information and application preferences
+            from one place.
           </p>
         </div>
       </section>
@@ -195,7 +264,9 @@ function ProfilePage() {
 
         <StatCard
           icon={<CalendarDays size={20} />}
-          value={new Date(currentUser.createdAt).toLocaleDateString()}
+          value={new Date(
+            currentUser.createdAt
+          ).toLocaleDateString()}
           label="Member Since"
           subtext="Registered User"
           growth="Active"
@@ -207,7 +278,12 @@ function ProfilePage() {
           <div className="section-card__header">
             <h3>Account Info</h3>
 
-            <button className="icon-link-btn" onClick={() => navigate("/settings")}>
+            <button
+              className="icon-link-btn"
+              onClick={() =>
+                navigate("/settings")
+              }
+            >
               <Pencil size={14} />
               Edit
             </button>
@@ -218,7 +294,10 @@ function ProfilePage() {
               <Phone size={16} />
               Phone
             </span>
-            <span className="info-row__value">{currentUser.phone}</span>
+
+            <span className="info-row__value">
+              {currentUser.phone}
+            </span>
           </div>
 
           <div className="info-row">
@@ -232,14 +311,16 @@ function ProfilePage() {
             </span>
           </div>
 
-
-
           <div className="info-row">
             <span className="info-row__label">
               <Store size={16} />
               Studio
             </span>
-            <span className="info-row__value">{currentUser.studio || "Not Added"}</span>
+
+            <span className="info-row__value">
+              {currentUser.studio ||
+                "Not Added"}
+            </span>
           </div>
 
           <div className="info-row">
@@ -247,7 +328,11 @@ function ProfilePage() {
               <MapPin size={16} />
               Location
             </span>
-            <span className="info-row__value">{currentUser.address || "Not Added"}</span>
+
+            <span className="info-row__value">
+              {currentUser.address ||
+                "Not Added"}
+            </span>
           </div>
         </div>
 
@@ -263,8 +348,12 @@ function ProfilePage() {
             </span>
 
             <button
-              className={`toggle-switch ${darkMode ? "on" : "off"}`}
-              onClick={() => setDarkMode((prev) => !prev)}
+              className={`toggle-switch ${
+                darkMode ? "on" : "off"
+              }`}
+              onClick={() =>
+                setDarkMode((prev) => !prev)
+              }
               aria-label="Toggle dark mode"
             >
               <span className="toggle-knob" />
@@ -273,7 +362,9 @@ function ProfilePage() {
 
           <button
             className="info-row info-row--clickable"
-            onClick={() => navigate("/settings")}
+            onClick={() =>
+              navigate("/settings")
+            }
           >
             <span className="info-row__label">
               Account settings
@@ -295,7 +386,7 @@ function ProfilePage() {
           </button>
         </div>
       </div>
-    </DashBoardLayout >
+    </DashBoardLayout>
   );
 }
 

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { loginUser } from "../api/auth.js";
+import { saveAuth, hasValidSession } from "../utils/authStorage";
+import BackButton from "../components/layout/BackButton";
 import "./Login.css";
 
 function Login() {
@@ -12,6 +14,13 @@ function Login() {
     email: "",
     password: "",
   });
+  const [rememberMe, setRememberMe] = useState(false);
+
+  // Already logged in (e.g. the installed app launched straight onto /login)
+  // -> skip the form and go to the dashboard.
+  if (hasValidSession()) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const features = [
     {
@@ -60,24 +69,16 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await loginUser(formData);
+      const res = await loginUser({ ...formData, rememberMe });
 
       const token = res.data?.data?.token;
       const user = res.data?.data?.user;
 
-      if (token) {
-        localStorage.setItem("token", token);
-      }
+      saveAuth({ token, user, rememberMe });
 
-      if (user) {
-        localStorage.setItem("user", JSON.stringify(user));
-      }
-
-      // alert(res.data?.message || "Login successful");
-      toast.success(res.data?.message || "Login successful")
+      toast.success(res.data?.message || "Login successful");
       navigate("/dashboard");
     } catch (err) {
-      // alert(err.response?.data?.message || "Login failed");
       toast.error(err.response?.data?.message || "Login failed");
     }
   };
@@ -90,16 +91,7 @@ function Login() {
         <div className="login-brand-blob-2" />
 
         <div className="login-brand-content">
-          <div className="login-logo-row">
-            <div className="login-logo-badge">
-              <img
-                src="/nirvana_transformation_academy_logo.jpg"
-                alt="ArtisanSuite Logo"
-                className="login-logo-img"
-              />
-            </div>
-            <span className="login-wordmark">ARTISANSUITE</span>
-          </div>
+          
 
           <h1 className="login-headline">
             Your craft, your
@@ -149,13 +141,15 @@ function Login() {
             ))}
           </div>
           <p className="login-trust-text">
-            Trusted by 2,400+ artisan businesses across India
+            Every craft tells a story. ArtisanSuite helps manage the story behind it.
           </p>
         </div>
       </div>
 
       {/* RIGHT — form panel */}
       <div className="login-form-panel">
+        <BackButton />
+
         <div className="login-form-wrap">
           <div className="login-mobile-logo">
             <div className="login-logo-badge login-logo-badge--small">
@@ -224,7 +218,11 @@ function Login() {
               </div>
 
               <label className="login-checkbox-row">
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
                 Keep me signed in
               </label>
 

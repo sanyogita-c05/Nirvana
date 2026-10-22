@@ -7,16 +7,20 @@ import DashboardPreview from "../components/home/DashboardPreview";
 import CTASection from "../components/home/CTASection";
 import Footer from "../components/layout/Footer";
 
+import "../styles/landing-sections.css";
+
 function Home() {
   return (
     <div className="min-h-screen bg-[#FBF4EA] text-[#3B241A]">
       <Navbar />
+
       <HeroSection />
       <StatsSection />
       <FeaturesSection />
       <SetupSection />
       <DashboardPreview />
       <CTASection />
+
       <Footer />
     </div>
   );

@@ -3,6 +3,7 @@ import { useState } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import MobileSidebar from "./MobileSidebar";
+import LicenseBanner from "../license/LicenseBanner";
 import "../../styles/layout.css";
 
 function DashBoardLayout({ children }) {
@@ -22,6 +23,7 @@ function DashBoardLayout({ children }) {
         <Topbar onMenuClick={() => setIsMobileSidebarOpen(true)} />
 
         <main className="dashboard-main-content">
+          <LicenseBanner />
           {children}
         </main>
 

@@ -31,6 +31,8 @@ function ImageUpload({
   };
 
   const handleRemoveNewImage = (index) => {
+    URL.revokeObjectURL(imagePreviews[index]); // free browser memory
+
     setImageFiles((prev) => prev.filter((_, i) => i !== index));
     setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
@@ -40,13 +42,31 @@ function ImageUpload({
 
     if (!file) return;
 
+    // free the previous preview if there was one
+    if (videoPreview) URL.revokeObjectURL(videoPreview);
+
     setVideoFile(file);
     setVideoPreview(URL.createObjectURL(file));
+
+    // reset so selecting the same file again still fires onChange
+    e.target.value = "";
+  };
+
+  const handleRemoveVideo = () => {
+    if (videoPreview) URL.revokeObjectURL(videoPreview);
+
+    setVideoFile(null);
+    setVideoPreview("");
+
+    if (videoInputRef.current) {
+      videoInputRef.current.value = "";
+    }
   };
 
   return (
     <div className="media-upload">
 
+      {/* ---------- IMAGES ---------- */}
       <div className="image-upload">
         <label className="image-upload-label">Product Images</label>
 
@@ -59,6 +79,7 @@ function ImageUpload({
                 type="button"
                 className="remove-thumb-btn"
                 onClick={() => handleRemoveNewImage(index)}
+                aria-label="Remove image"
               >
                 ✕
               </button>
@@ -86,27 +107,37 @@ function ImageUpload({
         />
       </div>
 
+      {/* ---------- VIDEO ---------- */}
       <div className="video-upload">
         <label className="image-upload-label">Product Video (optional)</label>
 
-        <div
-          className="image-upload-box"
-          onClick={() => videoInputRef.current.click()}
-        >
-          {videoPreview ? (
+        {videoPreview ? (
+          <div className="video-preview-wrapper">
             <video
               src={videoPreview}
               controls
               className="video-preview"
             />
-          ) : (
-            <>
-              <div className="upload-icon">🎬</div>
-              <p>Click to upload video</p>
-              <span>MP4 • MOV • WEBM</span>
-            </>
-          )}
-        </div>
+
+            <button
+              type="button"
+              className="video-remove-btn"
+              onClick={handleRemoveVideo}
+              aria-label="Remove video"
+            >
+              ✕
+            </button>
+          </div>
+        ) : (
+          <div
+            className="image-upload-box"
+            onClick={() => videoInputRef.current.click()}
+          >
+            <div className="upload-icon">🎬</div>
+            <p>Click to upload video</p>
+            <span>MP4 • MOV • WEBM</span>
+          </div>
+        )}
 
         <input
           ref={videoInputRef}

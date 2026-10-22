@@ -516,3 +516,119 @@
 .icon-btn:active {
   transform: scale(.96);
 }
+/* =====================================================
+   DESKTOP NAVIGATION
+===================================================== */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-link {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px 18px;
+
+  border-radius: 999px;
+
+  color: #5f4032;
+  text-decoration: none;
+
+  font-size: 1rem;
+  font-weight: 600;
+
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* Normal hover */
+
+.nav-link:hover {
+  color: #d6457f;
+  background: #fde7ef;
+}
+
+/* =====================================================
+   ACTIVE PAGE
+   ===================================================== */
+
+.nav-link.active {
+  color: #ffffff;
+
+  background: linear-gradient(
+    135deg,
+    #d6457f 0%,
+    #e85b72 100%
+  );
+
+  box-shadow:
+    0 6px 16px rgba(214, 69, 127, 0.25);
+
+  transform: translateY(-1px);
+}
+
+/* Remove old underline completely */
+
+.nav-link.active::after {
+  display: none;
+}
+
+/* =====================================================
+   ACTIVE HOVER
+===================================================== */
+
+.nav-link.active:hover {
+  color: #ffffff;
+
+  background: linear-gradient(
+    135deg,
+    #cf3d76 0%,
+    #e05269 100%
+  );
+
+  box-shadow:
+    0 8px 20px rgba(214, 69, 127, 0.32);
+
+  transform: translateY(-2px);
+}
+.bell-btn {
+  position: relative;
+}
+
+.bell-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: #e53935;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+}
+
+.bell-dot {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #e53935;
+  border: 2px solid #fff;
+}

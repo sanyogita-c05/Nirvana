@@ -5,7 +5,7 @@ import SettingsSidebar from "../components/settings/SettingsSidebar";
 import ProfileSettingsForm from "../components/settings/ProfileSettingsForm";
 import PasswordSettings from "../components/settings/PasswordSettings";
 import NotificationSettings from "../components/settings/NotificationSettings";
-import VerificationSettings from "../components/settings/VerificationSettings";
+import LicenseSettings from "../components/settings/LicenseSettings";
 
 import "../styles/settings.css";
 
@@ -20,8 +20,8 @@ function SettingsPage() {
         return <PasswordSettings />;
       case "notifications":
         return <NotificationSettings />;
-      case "verification":
-        return <VerificationSettings />;
+      case "license":
+        return <LicenseSettings />;
       default:
         return <ProfileSettingsForm />;
     }

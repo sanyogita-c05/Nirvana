@@ -576,3 +576,432 @@
 }
 
 }
+/* ======================================================
+   CHART POLISH — paste at the BOTTOM of your analytics CSS
+   (it overrides earlier rules, so order matters)
+====================================================== */
+
+/* ---------- Shared card feel ---------- */
+
+.chart-card,
+.revenue-trend-card,
+.top-selling-product-card,
+.least-ordered-product-card{
+    border:1px solid #f4ede7;
+    border-radius:24px;
+    box-shadow:0 1px 2px rgba(72,45,32,.04), 0 14px 40px rgba(72,45,32,.07);
+    transition:box-shadow .25s ease, transform .25s ease;
+}
+
+.chart-card:hover,
+.revenue-trend-card:hover,
+.top-selling-product-card:hover,
+.least-ordered-product-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 2px 4px rgba(72,45,32,.05), 0 20px 50px rgba(72,45,32,.10);
+}
+
+/* Titles: tighter, with a small accent bar */
+.chart-card-header h3,
+.revenue-trend-header h3{
+    position:relative;
+    padding-left:14px;
+    font-size:1.08rem;
+    font-weight:800;
+    letter-spacing:-.01em;
+    color:#2d160f;
+}
+
+.chart-card-header h3::before,
+.revenue-trend-header h3::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    width:4px;
+    height:18px;
+    border-radius:4px;
+    background:linear-gradient(180deg,#ff7a3d,#e0316b);
+}
+
+.least-ordered-product-card .chart-card-header h3::before{
+    background:linear-gradient(180deg,#b56cf0,#4f6bf6);
+}
+
+.chart-subtitle{
+    padding-left:14px;
+    margin-top:4px;
+}
+
+/* ---------- Period toggle (Weekly / Monthly / Yearly) ---------- */
+
+.revenue-period-buttons{
+    display:inline-flex;
+    gap:4px;
+    padding:4px;
+    margin-bottom:18px;
+    background:#f8f2ee;
+    border-radius:999px;
+    box-shadow:inset 0 1px 2px rgba(72,45,32,.06);
+}
+
+.revenue-period-buttons button{
+    padding:8px 18px;
+    border-radius:999px;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.01em;
+    color:#8a5b44;
+}
+
+.revenue-period-buttons button:hover{
+    background:rgba(255,255,255,.8);
+    color:#5b3528;
+}
+
+.revenue-period-buttons button.active{
+    background:linear-gradient(135deg,#ff7a3d,#ff5f8f);
+    color:#fff;
+    box-shadow:0 6px 14px rgba(255,122,61,.32);
+}
+
+/* The toggle inside .chart-card was stretching full width — keep it compact */
+.chart-card > .revenue-period-buttons{
+    width:fit-content;
+}
+
+/* ---------- Legend ---------- */
+
+.chart-legend{
+    gap:8px;
+}
+
+.legend-item{
+    padding:6px 12px;
+    border-radius:999px;
+    background:#faf6f3;
+    font-size:.8rem;
+}
+
+/* ---------- Chart area ---------- */
+
+.chart-area{
+    min-height:0;           /* removes the dead space under short charts */
+}
+
+/* Softer gridlines */
+.recharts-cartesian-grid line{
+    stroke:#f3ebe5;
+    stroke-dasharray:4 6;
+}
+
+/* Axis text */
+.recharts-cartesian-axis-tick-value{
+    font-weight:600;
+    letter-spacing:.01em;
+}
+
+/* Hover highlight: replaces the harsh grey block on bars */
+.recharts-tooltip-cursor{
+    fill:rgba(255,122,61,.07) !important;
+    stroke:none !important;
+}
+
+.least-ordered-product-card .recharts-tooltip-cursor{
+    fill:rgba(181,108,240,.08) !important;
+}
+
+/* Bars: subtle depth + hover feedback */
+.recharts-bar-rectangle path{
+    transition:opacity .2s ease, filter .2s ease;
+}
+
+.recharts-bar:hover .recharts-bar-rectangle path{
+    opacity:.55;
+}
+
+.recharts-bar-rectangle:hover path{
+    opacity:1 !important;
+    filter:drop-shadow(0 6px 10px rgba(255,122,61,.35));
+}
+
+.least-ordered-product-card .recharts-bar-rectangle:hover path{
+    filter:drop-shadow(0 6px 10px rgba(181,108,240,.35));
+}
+
+/* Tooltip: frosted card */
+.recharts-default-tooltip{
+    padding:12px 16px !important;
+    background:rgba(255,255,255,.92) !important;
+    backdrop-filter:blur(8px);
+    border:1px solid #f1e7e0 !important;
+    border-radius:14px !important;
+    box-shadow:0 14px 34px rgba(72,45,32,.14) !important;
+}
+
+.recharts-tooltip-label{
+    margin-bottom:6px !important;
+    font-weight:800;
+    color:#2d160f;
+}
+
+.recharts-tooltip-item{
+    font-weight:700;
+    font-size:.85rem;
+}
+
+/* ---------- Donut / Order Sources ---------- */
+
+.traffic-card .donut-chart-wrap{
+    padding:6px 0;
+}
+
+.traffic-card .recharts-pie-sector path{
+    transition:transform .2s ease, filter .2s ease;
+    transform-origin:center;
+}
+
+.traffic-card .recharts-pie-sector:hover path{
+    filter:drop-shadow(0 8px 14px rgba(0,0,0,.18));
+}
+
+.donut-legend{
+    gap:8px;
+    margin-top:14px;
+}
+
+.donut-legend-item{
+    padding:10px 14px;
+    background:#fbf7f4;
+    border-radius:12px;
+    transition:background .2s ease;
+}
+
+.donut-legend-item:hover{
+    background:#f6ede7;
+}
+
+.donut-legend-value{
+    padding:2px 10px;
+    border-radius:999px;
+    background:#fff;
+    box-shadow:0 1px 3px rgba(72,45,32,.08);
+    font-size:.82rem;
+}
+
+/* ---------- Loading / empty / error text ---------- */
+
+.chart-area > p,
+.traffic-card > p{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:200px;
+    margin:0;
+    color:#b39a8c;
+    font-size:.9rem;
+    font-weight:600;
+    background:repeating-linear-gradient(135deg,#fdfaf8 0 12px,#faf5f1 12px 24px);
+    border-radius:16px;
+}
+
+/* ---------- Mobile ---------- */
+
+@media(max-width:700px){
+    .revenue-period-buttons button{
+        padding:8px 12px;
+    }
+    .legend-item{
+        padding:5px 10px;
+    }
+    .chart-card:hover,
+    .revenue-trend-card:hover,
+    .top-selling-product-card:hover,
+    .least-ordered-product-card:hover{
+        transform:none;
+    }
+}
+/* ======================================================
+   CHART POLISH, PART 2
+   Paste at the very BOTTOM of your analytics CSS
+   (after the first polish block).
+====================================================== */
+
+/* ---------- Fix: black box around the donut ----------
+   Recharts' SVG gets keyboard focus when clicked and the
+   browser draws its default outline. Remove it everywhere. */
+
+.recharts-wrapper,
+.recharts-wrapper:focus,
+.recharts-wrapper *:focus,
+.recharts-surface,
+.recharts-surface:focus{
+    outline:none !important;
+}
+
+/* ---------- Order Sources donut ---------- */
+
+.donut-chart-wrap{
+    position:relative;
+}
+
+.donut-center{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:2px;
+    pointer-events:none;
+}
+
+.donut-center strong{
+    font-size:1.9rem;
+    font-weight:800;
+    line-height:1;
+    letter-spacing:-.02em;
+    color:#2d160f;
+}
+
+.donut-center span{
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:#9a8074;
+}
+
+/* ---------- Ranked product lists ---------- */
+
+/* Remove the fixed chart height, the list sizes itself */
+.top-selling-product-card .chart-area,
+.least-ordered-product-card .chart-area{
+    min-height:0;
+}
+
+.rank-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.rank-item{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px 16px;
+    background:#fbf7f4;
+    border-radius:16px;
+    transition:background .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+.rank-item:hover{
+    background:#fff;
+    transform:translateX(3px);
+    box-shadow:0 8px 22px rgba(72,45,32,.08);
+}
+
+.rank-badge{
+    flex-shrink:0;
+    width:34px;
+    height:34px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:11px;
+    font-size:.9rem;
+    font-weight:800;
+}
+
+.rank-body{
+    flex:1;
+    min-width:0;
+}
+
+.rank-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:8px;
+}
+
+.rank-name{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:.95rem;
+    font-weight:700;
+    color:#2d160f;
+}
+
+.rank-count{
+    flex-shrink:0;
+    font-size:.8rem;
+    font-weight:700;
+    color:#8a5b44;
+}
+
+.rank-track{
+    height:8px;
+    background:#f1e8e2;
+    border-radius:999px;
+    overflow:hidden;
+}
+
+.rank-fill{
+    height:100%;
+    border-radius:999px;
+    transition:width .6s cubic-bezier(.22,1,.36,1);
+}
+
+/* Orange = top selling */
+.rank-list-orange .rank-badge{
+    background:#fff0e8;
+    color:#ff7a3d;
+}
+
+.rank-list-orange .rank-item:first-child .rank-badge{
+    background:linear-gradient(135deg,#ff7a3d,#ff5f8f);
+    color:#fff;
+    box-shadow:0 6px 14px rgba(255,122,61,.35);
+}
+
+.rank-list-orange .rank-fill{
+    background:linear-gradient(90deg,#ffa63d,#ff7a3d);
+}
+
+/* Purple = least ordered */
+.rank-list-purple .rank-badge{
+    background:#f5ecfd;
+    color:#b56cf0;
+}
+
+.rank-list-purple .rank-fill{
+    background:linear-gradient(90deg,#d3a4f7,#b56cf0);
+}
+
+.rank-item-empty .rank-name{
+    color:#8a5b44;
+}
+
+.rank-item-empty .rank-count{
+    color:#b39a8c;
+    font-style:italic;
+}
+
+@media(max-width:700px){
+    .rank-item{
+        padding:12px;
+        gap:10px;
+    }
+    .rank-item:hover{
+        transform:none;
+    }
+}

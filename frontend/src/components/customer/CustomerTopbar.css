@@ -1,0 +1,29 @@
+.view-toggle {
+  display: inline-flex;
+  padding: 5px;
+  gap: 4px;
+  background: #f3ebe0;
+  border: 1px solid #e8dccb;
+  border-radius: 999px;
+}
+
+.view-toggle-btn {
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  color: #6b5a4a;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.view-toggle-btn:hover:not(.active) {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.view-toggle-btn.active {
+  background: linear-gradient(135deg, #e8456b, #f47b3e);
+  color: #fff;
+  cursor: default;
+}

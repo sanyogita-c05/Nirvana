@@ -1,0 +1,703 @@
+/* ======================================================
+   LANDING SECTIONS
+   About | How It Works | Contact
+====================================================== */
+
+/* ---------- GLOBAL ---------- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+.landing-section {
+  padding: clamp(64px, 8vw, 110px) 0;
+}
+
+.landing-heading {
+  max-width: 720px;
+  margin: 0 auto clamp(36px, 5vw, 60px);
+  text-align: center;
+}
+
+.landing-tag {
+  display: inline-block;
+  padding: 8px 18px;
+  margin-bottom: 18px;
+  border-radius: 999px;
+  background: #fde7ef;
+  color: #c93a77;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.landing-heading h2 {
+  margin: 0 0 16px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+  line-height: 1.1;
+  font-weight: 700;
+  color: #2d160f;
+}
+
+.landing-heading h2 em {
+  font-style: normal;
+  color: #d6457f;
+}
+
+.landing-heading p {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #7a5645;
+}
+
+/* ---------- HEADING WRAPPING ---------- */
+
+.landing-heading h2,
+.contact-heading h2,
+.how-section .landing-heading h2 {
+  text-wrap: balance;
+}
+
+@media (min-width: 561px) {
+  .landing-heading h2 em,
+  .contact-heading h2 em,
+  .how-section .landing-heading h2 em {
+    white-space: nowrap;
+  }
+}
+
+/* ---------- ABOUT ---------- */
+
+.about-section {
+  background: #ffffff;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.about-card {
+  padding: 30px 26px;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid #f4e6d6;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.about-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(72, 45, 32, 0.1);
+}
+
+.about-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #d6457f, #ff7a3d);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(214, 69, 127, 0.28);
+}
+
+.about-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #2d160f;
+}
+
+.about-card p {
+  margin: 0;
+  line-height: 1.7;
+  color: #7a5645;
+}
+
+/* ---------- HOW IT WORKS ---------- */
+
+.how-page {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #2d160f;
+}
+
+.how-section {
+  background: #ffffff;
+  padding-bottom: 90px;
+}
+
+.how-section .landing-heading {
+  max-width: 760px;
+  margin: 0 auto 42px;
+  text-align: center;
+}
+
+.how-section .landing-heading h2 {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.5rem, 4.5vw, 3.7rem);
+  line-height: 1.08;
+  font-weight: 700;
+  color: #2d160f;
+}
+
+.how-section .landing-heading h2 em {
+  font-style: normal;
+  color: #d6457f;
+}
+
+.steps-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.step-card {
+  position: relative;
+  padding: 32px 26px 30px;
+  min-height: 255px;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid rgba(244, 230, 214, 0.8);
+  box-shadow: 0 12px 35px rgba(72, 45, 32, 0.07);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 42px rgba(72, 45, 32, 0.12);
+}
+
+.step-number {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #f5dce7;
+  pointer-events: none;
+}
+
+.step-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 20px;
+  border-radius: 17px;
+  background: #fff0e8;
+  color: #ff7135;
+  box-shadow: 0 8px 20px rgba(255, 113, 53, 0.08);
+}
+
+.step-card:nth-child(even) .step-icon {
+  background: #fde7ef;
+  color: #d6457f;
+  box-shadow: 0 8px 20px rgba(214, 69, 127, 0.08);
+}
+
+.step-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: #2d160f;
+}
+
+.step-card p {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: #7a5645;
+}
+
+/* ---------- CONTACT ---------- */
+
+.contact-page {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #2d160f;
+}
+
+.contact-section {
+  background: #ffffff;
+  padding-bottom: 90px;
+}
+
+.contact-heading {
+  margin-bottom: 48px;
+}
+
+.contact-heading h2 {
+  margin: 0 0 18px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.7rem, 4.5vw, 4rem);
+  line-height: 1.08;
+  font-weight: 700;
+  color: #2d160f;
+}
+
+.contact-heading h2 em {
+  font-style: normal;
+  color: #d6457f;
+}
+
+.contact-heading p {
+  max-width: 680px;
+  margin: 20px auto 0;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #7a5645;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 26px;
+  align-items: stretch;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 34px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #2d160f 0%, #4a1f17 100%);
+  color: #ffffff;
+  box-shadow: 0 16px 40px rgba(45, 22, 15, 0.12);
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 8px;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 14px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.contact-item:hover {
+  transform: translateX(4px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.contact-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ff9a68;
+}
+
+.contact-item small {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.contact-item strong {
+  display: block;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #ffffff;
+}
+
+.contact-form {
+  display: flex;
+  align-items: center;
+  padding: 38px;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid #f0e3d8;
+  box-shadow: 0 16px 40px rgba(72, 45, 32, 0.07);
+}
+
+.contact-message {
+  width: 100%;
+}
+
+.contact-message h3 {
+  margin: 0 0 12px;
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #2d160f;
+}
+
+.contact-message p {
+  max-width: 580px;
+  margin: 0 0 28px;
+  color: #7a5645;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.contact-social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.contact-social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 17px;
+  border-radius: 13px;
+  background: #fdf5ec;
+  border: 1px solid #ecd9c8;
+  color: #2d160f;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: transform 0.2s ease, border-color 0.2s ease,
+    color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-social-link:hover {
+  transform: translateY(-2px);
+  border-color: #d6457f;
+  color: #d6457f;
+  box-shadow: 0 8px 20px rgba(72, 45, 32, 0.08);
+}
+
+/* ======================================================
+   SUBPAGES (About / How It Works / Contact)
+   White content area under the navbar
+====================================================== */
+
+.subpage-main {
+  background: #ffffff;
+}
+
+.subpage-main .landing-section {
+  padding-top: 40px;
+}
+
+.subpage-main .landing-heading {
+  margin-bottom: 48px;
+}
+
+/* ======================================================
+   BACK BUTTON ON SUBPAGES
+   BackButton.css makes the button position: absolute (used
+   by the Login page). Inside this container we put it back
+   in normal flow and style it, so Login is unaffected.
+====================================================== */
+
+.back-button-container {
+  padding-top: 24px;
+  padding-bottom: 8px;
+  background: #ffffff;
+}
+
+.back-button-container .back-home-btn {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 17px;
+  border-radius: 14px;
+  background: #fffaf4;
+  border: 1px solid #f0dfcf;
+  color: #6f4a39;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 5px 15px rgba(72, 45, 32, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease,
+    border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.back-button-container .back-home-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.back-button-container .back-home-btn:hover {
+  color: #d6457f;
+  background: #fff5f8;
+  border-color: #efbfd2;
+  transform: translateX(-2px);
+  box-shadow: 0 8px 20px rgba(214, 69, 127, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.back-button-container .back-home-btn:hover svg {
+  transform: translateX(-3px);
+}
+
+/* ---------- TABLET ---------- */
+
+@media (max-width: 1000px) {
+  .steps-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---------- SMALLER TABLET ---------- */
+
+@media (max-width: 820px) {
+  .about-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-info,
+  .contact-form {
+    padding: 26px;
+  }
+
+  .how-section {
+    padding-bottom: 70px;
+  }
+
+  .how-section .landing-heading {
+    margin-bottom: 35px;
+  }
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 560px) {
+  .landing-section {
+    padding: 60px 0;
+  }
+
+  .landing-heading {
+    margin-bottom: 34px;
+  }
+
+  .landing-heading h2 {
+    font-size: 2.2rem;
+  }
+
+  .landing-heading p {
+    font-size: 0.98rem;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-card {
+    padding: 24px 20px;
+  }
+
+  .how-section {
+    padding-bottom: 60px;
+  }
+
+  .how-section .landing-heading {
+    margin-bottom: 32px;
+  }
+
+  .how-section .landing-heading h2 {
+    font-size: 2.35rem;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .step-card {
+    min-height: auto;
+    padding: 26px 20px 24px;
+  }
+
+  .step-icon {
+    width: 54px;
+    height: 54px;
+  }
+
+  .contact-section {
+    padding-bottom: 65px;
+  }
+
+  .contact-heading {
+    margin-bottom: 36px;
+  }
+
+  .contact-heading h2 {
+    font-size: 2.35rem;
+  }
+
+  .contact-heading p {
+    font-size: 0.97rem;
+  }
+
+  .contact-info,
+  .contact-form {
+    padding: 22px;
+  }
+
+  .contact-item {
+    gap: 12px;
+  }
+
+  .contact-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .contact-item strong {
+    font-size: 0.92rem;
+  }
+
+  .contact-social-links {
+    flex-direction: column;
+  }
+
+  .contact-social-link {
+    width: 100%;
+  }
+
+  .back-button-container {
+    padding-top: 16px;
+    padding-bottom: 4px;
+  }
+
+  .back-button-container .back-home-btn {
+    padding: 9px 14px;
+    border-radius: 12px;
+    font-size: 0.84rem;
+  }
+
+  .subpage-main .landing-section {
+    padding-top: 24px;
+  }
+}
+
+/* ---------- VERY SMALL PHONES ---------- */
+
+@media (max-width: 380px) {
+  .landing-heading h2 {
+    font-size: 2rem;
+  }
+
+  .landing-tag {
+    padding: 7px 14px;
+    font-size: 0.8rem;
+  }
+
+  .contact-info,
+  .contact-form {
+    padding: 18px;
+  }
+
+  .back-button-container .back-home-btn {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ---------- DEMO VIDEO SECTION ---------- */
+
+.demo-video-section {
+  width: 100%;
+  max-width: 1000px;
+  margin: 75px auto 10px;
+  text-align: center;
+}
+
+.demo-video-heading {
+  max-width: 720px;
+  margin: 0 auto 30px;
+}
+
+.demo-video-heading h2 {
+  margin: 0 0 14px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.15;
+  font-weight: 700;
+  color: #2d160f;
+}
+
+.demo-video-heading h2 em {
+  font-style: normal;
+  color: #d6457f;
+}
+
+.demo-video-heading p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #7a5645;
+}
+
+.demo-video-container {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #2d160f;
+  border: 1px solid #f0dfcf;
+  box-shadow: 0 18px 45px rgba(72, 45, 32, 0.12);
+}
+
+.demo-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+}
+
+/* Tablet */
+@media (max-width: 820px) {
+  .demo-video-section {
+    margin-top: 60px;
+  }
+
+  .demo-video-container {
+    border-radius: 18px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 560px) {
+  .demo-video-section {
+    margin-top: 45px;
+  }
+
+  .demo-video-heading {
+    margin-bottom: 22px;
+  }
+
+  .demo-video-heading h2 {
+    font-size: 2.1rem;
+  }
+
+  .demo-video-heading p {
+    font-size: 0.95rem;
+  }
+
+  .demo-video-container {
+    border-radius: 14px;
+  }
+}

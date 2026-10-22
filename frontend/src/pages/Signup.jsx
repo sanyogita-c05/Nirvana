@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -9,6 +8,8 @@ function Signup() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
@@ -61,6 +62,9 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (loading) return;
+
     setLoading(true);
 
     try {
@@ -77,13 +81,19 @@ function Signup() {
         localStorage.setItem("user", JSON.stringify(user));
       }
 
-      // alert(res.data?.message || "Registration successful");
+      toast.success(
+        "Registration successful! Redirecting to dashboard..."
+      );
 
-      toast.success("Registration successful! Redirecting to dashboard...");
       navigate("/dashboard");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Registration failed");
-      // alert(err.response?.data?.message || "Registration failed");
+      console.error("Registration error:", err);
+
+      toast.error(
+        err.response?.data?.message || "Registration failed"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -129,6 +139,7 @@ function Signup() {
                   {f.icon}
                 </svg>
               </div>
+
               <div>
                 <p className="login-feature-title">{f.title}</p>
                 <p className="login-feature-desc">{f.desc}</p>
@@ -147,6 +158,7 @@ function Signup() {
               />
             ))}
           </div>
+
           <p className="login-trust-text">
             Trusted by 2,400+ artisan businesses across India
           </p>
@@ -157,7 +169,10 @@ function Signup() {
       <div className="login-form-panel">
         <div className="login-form-wrap">
           <div className="login-mobile-logo">
-            <div className="login-logo-badge login-logo-badge--small">🌸</div>
+            <div className="login-logo-badge login-logo-badge--small">
+              🌸
+            </div>
+
             <span className="login-mobile-wordmark">
               Artisan<span>Suite</span>
             </span>
@@ -165,13 +180,16 @@ function Signup() {
 
           <div className="login-card">
             <h2 className="login-title">Create account</h2>
+
             <p className="login-subtitle">
               Join ArtisanSuite and start managing your business beautifully.
             </p>
 
             <form className="login-form" onSubmit={handleSubmit}>
+              {/* Full Name */}
               <div>
                 <label className="login-label">FULL NAME</label>
+
                 <input
                   type="text"
                   name="fullName"
@@ -183,8 +201,10 @@ function Signup() {
                 />
               </div>
 
+              {/* Phone */}
               <div>
                 <label className="login-label">PHONE NUMBER</label>
+
                 <input
                   type="tel"
                   name="phone"
@@ -196,8 +216,10 @@ function Signup() {
                 />
               </div>
 
+              {/* Email */}
               <div>
                 <label className="login-label">EMAIL ADDRESS</label>
+
                 <input
                   type="email"
                   name="email"
@@ -209,8 +231,10 @@ function Signup() {
                 />
               </div>
 
+              {/* Password */}
               <div>
                 <label className="login-label">PASSWORD</label>
+
                 <div className="login-password-wrap">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -221,11 +245,14 @@ function Signup() {
                     className="login-input"
                     required
                   />
+
                   <button
                     type="button"
                     onClick={() => setShowPassword((s) => !s)}
                     className="login-toggle-visibility"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
                     <svg
                       viewBox="0 0 24 24"
@@ -242,23 +269,32 @@ function Signup() {
                 </div>
               </div>
 
+              {/* Terms */}
               <label className="login-checkbox-row">
                 <input type="checkbox" required />
                 I agree to the Terms & Privacy Policy
               </label>
 
-              <button type="submit" className="login-submit">
-                Create account
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 12h14M13 5l7 7-7 7" />
-                </svg>
+              {/* Submit */}
+              <button
+                type="submit"
+                className="login-submit"
+                disabled={loading}
+              >
+                {loading ? "Creating account..." : "Create account"}
+
+                {!loading && (
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12h14M13 5l7 7-7 7" />
+                  </svg>
+                )}
               </button>
             </form>
 
@@ -273,8 +309,8 @@ function Signup() {
           </div>
 
           <p className="login-fineprint">
-            By creating an account, you agree to our <a href="#">Terms</a> &{" "}
-            <a href="#">Privacy Policy</a>.
+            By creating an account, you agree to our{" "}
+            <a href="#">Terms</a> & <a href="#">Privacy Policy</a>.
           </p>
         </div>
       </div>
