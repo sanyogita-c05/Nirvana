@@ -31,8 +31,14 @@ api.interceptors.response.use(
   (response) => {
     const method = response.config?.method?.toLowerCase();
 
-    if (MUTATING_METHODS.includes(method) && response.data?.message) {
+        if (MUTATING_METHODS.includes(method) && response.data?.message) {
       toast.success(response.data.message);
+    }
+
+    // Anything that changes data (new order, stock edit...) may have created
+    // a notification on the backend, so tell the Topbar bell to re-check now.
+    if (MUTATING_METHODS.includes(method)) {
+      window.dispatchEvent(new Event("notifications-updated"));
     }
 
     return response;

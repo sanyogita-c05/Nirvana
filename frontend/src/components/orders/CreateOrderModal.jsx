@@ -14,7 +14,7 @@ function CreateOrderModal({ open, onClose, refreshOrders }) {
     return `${year}-${month}-${day}`;
   };
 
-  const [form, setForm] = useState({
+    const emptyForm = () => ({
     customerName: "",
     customerPhone: "",
     customerEmail: "",
@@ -27,11 +27,16 @@ function CreateOrderModal({ open, onClose, refreshOrders }) {
     source: "Website",
   });
 
+  const [form, setForm] = useState(emptyForm);
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+    useEffect(() => {
     if (open) {
+      // Start every new order with a blank form and today's date
+      setForm(emptyForm());
+      setError("");
       getProducts()
         .then((res) => setProducts(res.data.data))
         .catch(() => { });
