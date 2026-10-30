@@ -14,7 +14,6 @@ import {
   MapPin,
   Store,
   Pencil,
-  Moon,
   LogOut,
 } from "lucide-react";
 
@@ -25,7 +24,6 @@ import "./Profile.css";
 function ProfilePage() {
   const navigate = useNavigate();
 
-  const [darkMode, setDarkMode] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [stats, setStats] = useState({
     products: 0,
@@ -339,25 +337,6 @@ function ProfilePage() {
         <div className="section-card">
           <div className="section-card__header">
             <h3>Preferences</h3>
-          </div>
-
-          <div className="info-row">
-            <span className="info-row__label">
-              <Moon size={16} />
-              Dark mode
-            </span>
-
-            <button
-              className={`toggle-switch ${
-                darkMode ? "on" : "off"
-              }`}
-              onClick={() =>
-                setDarkMode((prev) => !prev)
-              }
-              aria-label="Toggle dark mode"
-            >
-              <span className="toggle-knob" />
-            </button>
           </div>
 
           <button

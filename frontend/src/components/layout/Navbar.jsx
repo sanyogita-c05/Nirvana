@@ -1,13 +1,29 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
 
   const closeMenu = () => {
     setMenuOpen(false);
   };
+
+  const brandContent = (
+    <>
+      <img
+        src="/nirvana_transformation_academy_logo.jpg"
+        alt="ArtisanSuite Logo"
+        className="logo"
+      />
+
+      <span className="brand-text">
+        Artisan<span>Suite</span>
+      </span>
+    </>
+  );
 
   return (
     <header className="navbar">
@@ -15,18 +31,16 @@ function Navbar() {
 
         {/* =========================
             LOGO / BRAND
+            Home page: plain div (arrow cursor, not clickable)
+            Other pages: link back to home
         ========================= */}
-        <Link to="/" className="brand" onClick={closeMenu}>
-          <img
-            src="/nirvana_transformation_academy_logo.jpg"
-            alt="ArtisanSuite Logo"
-            className="logo"
-          />
-
-          <span className="brand-text">
-            Artisan<span>Suite</span>
-          </span>
-        </Link>
+        {isHome ? (
+          <div className="brand brand--static">{brandContent}</div>
+        ) : (
+          <Link to="/" className="brand" onClick={closeMenu}>
+            {brandContent}
+          </Link>
+        )}
 
         {/* =========================
             DESKTOP NAVIGATION
