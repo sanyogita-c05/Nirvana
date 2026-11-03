@@ -8,15 +8,26 @@ import Order from "../models/Order.js";
 
 const LOW_STOCK_THRESHOLD = 5;
 
+// Used when a product is created without any image
+const DEFAULT_PRODUCT_IMAGE = {
+    url: "/defaults/product-placeholder.png",
+    originalName: "default",
+};
+
 // Creates a low-stock notification for this product, unless an unread
 // one already exists — without this check, every small stock edit under
 // the threshold would spawn a duplicate notification for the same item.
 export const maybeCreateLowStockNotification = async (product, ownerId) => {
     if (product.stockQuantity > LOW_STOCK_THRESHOLD) return;
 
+    // Out of stock gets its own notification, so it still shows up
+    // even if an unread "low stock" one already exists for this product.
+    const isOutOfStock = product.stockQuantity === 0;
+    const type = isOutOfStock ? "out_of_stock" : "low_stock";
+
     const alreadyNotified = await Notification.findOne({
         owner: ownerId,
-        type: "low_stock",
+        type,
         relatedProduct: product._id,
         isRead: false,
     });
@@ -25,12 +36,14 @@ export const maybeCreateLowStockNotification = async (product, ownerId) => {
 
     await Notification.create({
         owner: ownerId,
-        type: "low_stock",
+        type,
         icon: "AlertTriangle",
-        title: "Low stock alert",
-        tag: "Info",
+        title: isOutOfStock ? "Out of stock" : "Low stock alert",
+        tag: isOutOfStock ? "Urgent" : "Info",
         category: "Inventory",
-        message: `${product.name} has only ${product.stockQuantity} unit${product.stockQuantity === 1 ? "" : "s"
+        message: isOutOfStock
+            ? `${product.name} is out of stock. Customers can't order it until you restock.`
+            : `${product.name} has only ${product.stockQuantity} unit${product.stockQuantity === 1 ? "" : "s"
             } left. Restock soon to avoid missed orders.`,
         relatedProduct: product._id,
     });
@@ -85,14 +98,13 @@ export const createProduct = asyncHandler(async (req, res) => {
     const imageFiles = req.files?.images || [];
     const videoFiles = req.files?.video || [];
 
-    if (imageFiles.length === 0) {
-        throw new ApiError(400, "At least one product image is required.");
-    }
-
-    const images = imageFiles.map((file) => ({
-        url: `/uploads/products/${req.productId}/${file.filename}`,
-        originalName: file.originalname,
-    }));
+       // Image is optional — fall back to the default placeholder
+    const images = imageFiles.length > 0
+        ? imageFiles.map((file) => ({
+            url: `/uploads/products/${req.productId}/${file.filename}`,
+            originalName: file.originalname,
+        }))
+        : [DEFAULT_PRODUCT_IMAGE];
 
     const video = videoFiles[0]
         ? {
@@ -256,7 +268,16 @@ export const updateProduct = asyncHandler(async (req, res) => {
             originalName: file.originalname,
         }));
 
-        product.images.push(...newImages);
+                // Drop the placeholder once real images are added
+        const onlyDefault =
+            product.images.length === 1 &&
+            product.images[0].url === DEFAULT_PRODUCT_IMAGE.url;
+
+        if (onlyDefault) {
+            product.images = newImages;
+        } else {
+            product.images.push(...newImages);
+        }
     }
 
     // A newly uploaded video replaces the old one — there's only one
@@ -337,6 +358,34 @@ export const getLowStockProducts = asyncHandler(async (req, res) => {
     );
 });
 
+
+// Shared by Top Selling and Least Ordered, so Least Ordered
+// can skip whatever Top Selling already shows.
+const topSellingPipeline = (ownerId) => [
+    { $match: { owner: ownerId, isActive: true } },
+    { $unwind: "$items" },
+    {
+        $group: {
+            _id: "$items.productId",
+            name: { $first: "$items.name" },
+            totalSold: { $sum: "$items.quantity" },
+            totalRevenue: { $sum: "$items.lineTotal" },
+        },
+    },
+    // Hide products that were deleted (soft delete) after being ordered
+    {
+        $lookup: {
+            from: "products",
+            localField: "_id",
+            foreignField: "_id",
+            as: "product",
+        },
+    },
+    { $match: { "product.isActive": true } },
+    { $project: { product: 0 } },
+      { $sort: { totalSold: -1, _id: 1 } },
+    { $limit: 5 },
+];
 /*
 ----------------------------------------
 Get Top 4 Selling Products (by units sold)
@@ -345,31 +394,32 @@ Get Top 4 Selling Products (by units sold)
 
 export const getTopSellingProducts = asyncHandler(async (req, res) => {
 
-    const topProducts = await Order.aggregate([
-        { $match: { owner: req.user._id, isActive: true } },
-        { $unwind: "$items" },
-        {
-            $group: {
-                _id: "$items.productId",
-                name: { $first: "$items.name" },
-                totalSold: { $sum: "$items.quantity" },
-                totalRevenue: { $sum: "$items.lineTotal" },
-            },
-        },
-        // Hide products that were deleted (soft delete) after being ordered
-        {
-            $lookup: {
-                from: "products",
-                localField: "_id",
-                foreignField: "_id",
-                as: "product",
-            },
-        },
-        { $match: { "product.isActive": true } },
-        { $project: { product: 0 } },
-        { $sort: { totalSold: -1 } },
-        { $limit: 5 },
-    ]);
+    // const topProducts = await Order.aggregate([
+    //     { $match: { owner: req.user._id, isActive: true } },
+    //     { $unwind: "$items" },
+    //     {
+    //         $group: {
+    //             _id: "$items.productId",
+    //             name: { $first: "$items.name" },
+    //             totalSold: { $sum: "$items.quantity" },
+    //             totalRevenue: { $sum: "$items.lineTotal" },
+    //         },
+    //     },
+    //     // Hide products that were deleted (soft delete) after being ordered
+    //     {
+    //         $lookup: {
+    //             from: "products",
+    //             localField: "_id",
+    //             foreignField: "_id",
+    //             as: "product",
+    //         },
+    //     },
+    //     { $match: { "product.isActive": true } },
+    //     { $project: { product: 0 } },
+    //     { $sort: { totalSold: -1 } },
+    //     { $limit: 5 },
+    // ]);
+        const topProducts = await Order.aggregate(topSellingPipeline(req.user._id));
 
 
     return res.status(200).json(
@@ -395,8 +445,11 @@ never appear in any order's items array.
 
 export const getLeastOrderedProducts = asyncHandler(async (req, res) => {
 
+      const topSelling = await Order.aggregate(topSellingPipeline(req.user._id));
+    const topSellingIds = topSelling.map((p) => p._id);
+
     const leastOrdered = await Product.aggregate([
-        { $match: { owner: req.user._id, isActive: true } },
+        { $match: { owner: req.user._id, isActive: true, _id: { $nin: topSellingIds } } },
         {
             $lookup: {
                 from: "orders",
@@ -415,7 +468,7 @@ export const getLeastOrderedProducts = asyncHandler(async (req, res) => {
                 totalSold: { $ifNull: [{ $arrayElemAt: ["$salesData.totalSold", 0] }, 0] },
             },
         },
-        { $sort: { totalSold: 1 } },
+        { $sort: { totalSold: 1, _id: 1 } },
         { $limit: 5 },
         { $project: { name: 1, totalSold: 1 } },
     ]);

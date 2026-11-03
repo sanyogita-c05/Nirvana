@@ -6,7 +6,7 @@ function ProductCard({ product }) {
   // but this avoids a broken <img> if older data or an edge case slips through.
   const imageUrl = product.images?.[0]?.url
     ? `http://localhost:5000${product.images[0].url}`
-    : "/placeholder-product.png";
+    : "/product-placeholder.png";
 
   const outOfStock = product.stockQuantity === 0;
 

@@ -25,7 +25,7 @@ function StockAlertsCard({ products, refreshProducts }) {
                 src={
                   product.images?.[0]?.url
                     ? `http://localhost:5000${product.images[0].url}`
-                    : "/placeholder-product.png"
+                    : "/product-placeholder.png"
                 }
                 alt={product.name}
                 className="inventory-list-icon"

@@ -28,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files (for uploaded images later)
 app.use("/uploads", express.static("public/uploads"));
+app.use("/defaults", express.static("public/defaults"));
 
 // Auth and license routes stay reachable even when the trial/subscription
 // is expired — otherwise the user could never log in to see why they're

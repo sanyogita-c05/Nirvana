@@ -71,10 +71,10 @@ function ProductDetails() {
 
   const resolvedUrl = activeMedia.url
     ? `http://localhost:5000${activeMedia.url}`
-    : "/placeholder-product.png";
+    : "/product-placeholder.png";
 
   const resolveMediaUrl = (url) =>
-    url ? `http://localhost:5000${url}` : "/placeholder-product.png";
+    url ? `http://localhost:5000${url}` : "/product-placeholder.png";
 
   return (
     <div className="product-details-page">

@@ -15,7 +15,7 @@ const notificationSchema = new mongoose.Schema(
 
         type: {
             type: String,
-            enum: ["low_stock", "new_order"], // extend as more triggers are built
+            enum: ["low_stock", "out_of_stock", "new_order"],  // extend as more triggers are built
             required: true,
             index: true,
         },

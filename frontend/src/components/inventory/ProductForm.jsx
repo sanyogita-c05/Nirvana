@@ -31,10 +31,10 @@ function ProductForm({ onClose, refreshProducts }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (imageFiles.length === 0) {
-      toast.error("Please upload at least one product image.");
-      return;
-    }
+    // if (imageFiles.length === 0) {
+    //   toast.error("Please upload at least one product image.");
+    //   return;
+    // }
 
     try {
       setLoading(true);
