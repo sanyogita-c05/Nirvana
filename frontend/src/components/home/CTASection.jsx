@@ -9,7 +9,7 @@ function CTASection() {
 
       <div className="container">
         <div className="cta-card">
-          <span>JOIN NIRVANA ELEVATE</span>
+          <span>JOIN NIRVANA IMPACT PARTNERS</span>
           <h2>Start your journey with ArtisanSuite today</h2>
           <p>
             Explore opportunities, build practical skills, and grow with a

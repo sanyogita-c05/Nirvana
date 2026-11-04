@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -232,8 +233,14 @@ function Signup() {
               </div>
 
               {/* Password */}
-              <div>
-                <label className="login-label">PASSWORD</label>
+              <div className="signup-password-field">
+                <div className="login-password-label-row">
+                  <label className="login-label">
+                    PASSWORD
+                  </label>
+
+                  
+                </div>
 
                 <div className="login-password-wrap">
                   <input
@@ -266,6 +273,23 @@ function Signup() {
                       <circle cx="12" cy="12" r="3" />
                     </svg>
                   </button>
+                </div>
+
+                {/* Always visible password policy */}
+                <div className="password-policy">
+                  <p className="password-policy-title">
+                    Password must contain:
+                  </p>
+
+                  <ul>
+                    <li>At least 8 characters</li>
+                    <li>At least 1 uppercase letter (A–Z)</li>
+                    <li>At least 1 lowercase letter (a–z)</li>
+                    <li>At least 1 number (0–9)</li>
+                    <li>
+                      At least 1 special character (@, #, $, etc.)
+                    </li>
+                  </ul>
                 </div>
               </div>
 

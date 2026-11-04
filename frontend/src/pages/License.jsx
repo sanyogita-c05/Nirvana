@@ -1,11 +1,10 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLicenseStatus, activateLicense } from "../api/licenseApi";
 
-// TODO: replace with the owner's real contact details
 const CONTACT = {
-  phone: "+91 00000 00000",
-  email: "owner@example.com",
+  email: "nirvana.acad@gmail.com",
 };
 
 const STATE_INFO = {
@@ -98,16 +97,19 @@ function License() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Prefer the live status; fall back to the code that sent us here.
   let stateKey = status?.state;
+
   if (!stateKey) {
     try {
-      const block = JSON.parse(sessionStorage.getItem("licenseBlock") || "null");
+      const block = JSON.parse(
+        sessionStorage.getItem("licenseBlock") || "null"
+      );
       stateKey = CODE_TO_STATE[block?.code];
     } catch {
       /* ignore */
     }
   }
+
   const info = STATE_INFO[stateKey];
   const deviceId = status?.deviceId || "";
 
@@ -122,25 +124,32 @@ function License() {
       document.execCommand("copy");
       document.body.removeChild(el);
     }
+
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);
   };
 
   const handleActivate = async (e) => {
     e.preventDefault();
+
     const key = licenseKey.trim();
+
     if (!key) {
       setError("Please paste your license key.");
       return;
     }
+
     setError("");
     setActivating(true);
+
     try {
       await activateLicense(key);
       sessionStorage.removeItem("licenseBlock");
       navigate("/dashboard", { replace: true });
     } catch (err) {
-      setError(err.response?.data?.message || "Activation failed. Please try again.");
+      setError(
+        err.response?.data?.message || "Activation failed. Please try again."
+      );
     } finally {
       setActivating(false);
     }
@@ -160,12 +169,15 @@ function License() {
           <p className="license-muted">Checking license…</p>
         ) : (
           <>
-            {loadError && <div className="license-alert danger">{loadError}</div>}
+            {loadError && (
+              <div className="license-alert danger">{loadError}</div>
+            )}
 
             {info && (
               <div className={`license-alert ${info.tone}`}>
                 <h2>{info.title}</h2>
                 <p>{info.text}</p>
+
                 {status?.message && status.message !== info.text && (
                   <p className="license-muted">{status.message}</p>
                 )}
@@ -180,6 +192,7 @@ function License() {
                     <strong>{status.trialDaysLeft}</strong>
                   </div>
                 )}
+
                 {status.validUntil && (
                   <div>
                     <span>Valid until</span>
@@ -191,8 +204,10 @@ function License() {
 
             <div className="license-section">
               <h3>1. Send your Device ID to the owner</h3>
+
               <div className="license-device">
                 <code>{deviceId || "Unavailable"}</code>
+
                 <button
                   type="button"
                   className="license-btn-outline"
@@ -202,14 +217,18 @@ function License() {
                   {copied ? "Copied ✓" : "Copy"}
                 </button>
               </div>
+
               <p className="license-muted">
-                Call or message: <strong>{CONTACT.phone}</strong> &middot;{" "}
-                <strong>{CONTACT.email}</strong>
+                For assistance, contact us at:{" "}
+                <a href={`mailto:${CONTACT.email}`}>
+                  <strong>{CONTACT.email}</strong>
+                </a>
               </p>
             </div>
 
             <form className="license-section" onSubmit={handleActivate}>
               <h3>2. Paste your license key</h3>
+
               <textarea
                 className="license-textarea"
                 rows={5}
@@ -218,8 +237,14 @@ function License() {
                 placeholder="eyJ..."
                 spellCheck={false}
               />
+
               {error && <p className="license-error">{error}</p>}
-              <button type="submit" className="license-btn" disabled={activating}>
+
+              <button
+                type="submit"
+                className="license-btn"
+                disabled={activating}
+              >
                 {activating ? "Activating…" : "Activate"}
               </button>
             </form>
@@ -234,7 +259,12 @@ function License() {
                   Go to dashboard
                 </button>
               )}
-              <button type="button" className="license-link" onClick={handleLogout}>
+
+              <button
+                type="button"
+                className="license-link"
+                onClick={handleLogout}
+              >
                 Log out
               </button>
             </div>

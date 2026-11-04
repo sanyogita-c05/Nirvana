@@ -1,3 +1,4 @@
+
 import MandalaPattern from "./MandalaPattern";
 
 function HeroSection() {
@@ -8,7 +9,9 @@ function HeroSection() {
 
       <div className="container hero-grid">
         <div className="hero-left">
-          <div className="hero-badge">🌸 Built for Indian artisans & creators</div>
+          <div className="hero-badge">
+            🌸 Built for Indian artisans & creators
+          </div>
 
           <h1 className="hero-title">
             Your Craft. <span>Your</span>
@@ -25,15 +28,13 @@ function HeroSection() {
           </p>
 
           <div className="hero-actions">
-            <button className="btn btn-primary large">Start for Free →</button>
-            <button className="btn btn-outline large">See How It Works →</button>
-          </div>
-
-          <div className="hero-points">
-            <span>✔ Free to start, no credit card</span>
-            <span>✔ Works on mobile & desktop</span>
-            <span>✔ Supports UPI & cash</span>
-          </div>
+  <a
+    href="/how-it-works"
+    className="btn btn-outline large"
+  >
+    See How It Works →
+  </a>
+</div>
         </div>
 
         <div className="hero-right">
@@ -44,7 +45,11 @@ function HeroSection() {
                 <span></span>
                 <span></span>
               </div>
-              <div className="window-url">artisansuite.in/dashboard</div>
+
+              <div className="window-url">
+                artisansuite.in/dashboard
+              </div>
+
               <div className="window-bell">⌂</div>
             </div>
 
@@ -68,6 +73,7 @@ function HeroSection() {
                     <p>Welcome back 🌸</p>
                     <h3>Priya’s Craft Studio</h3>
                   </div>
+
                   <div className="profile-badge">PS</div>
                 </div>
 
@@ -105,6 +111,7 @@ function HeroSection() {
                       <strong>Anjali M.</strong>
                       <p>Crochet bag set ×2</p>
                     </div>
+
                     <div className="order-right">
                       <strong>₹1,200</strong>
                       <span className="tag crafting">Crafting</span>
@@ -116,6 +123,7 @@ function HeroSection() {
                       <strong>Ritu S.</strong>
                       <p>Soy candles ×4</p>
                     </div>
+
                     <div className="order-right">
                       <strong>₹800</strong>
                       <span className="tag shipped">Shipped</span>

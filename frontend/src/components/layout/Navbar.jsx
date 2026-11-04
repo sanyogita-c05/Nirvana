@@ -14,7 +14,7 @@ function Navbar() {
   const brandContent = (
     <>
       <img
-        src="/nirvana_transformation_academy_logo.jpg"
+        src="/nirvana_transformation_academy_logo.png"
         alt="ArtisanSuite Logo"
         className="logo"
       />

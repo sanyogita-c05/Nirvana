@@ -493,3 +493,73 @@
   font-size: 1.1rem;
   line-height: 1;
 }
+
+/* Password label and info icon */
+.login-password-label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.login-password-label-row .login-label {
+  margin-bottom: 0;
+}
+
+.password-info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border: 1px solid #9a745f;
+  border-radius: 50%;
+  color: #9a745f;
+  font-size: 11px;
+  font-weight: 600;
+  font-style: italic;
+  cursor: help;
+}
+
+/* Always visible password policy */
+.password-policy {
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: #fbf3ec;
+  border: 1px solid #ead9ca;
+  border-radius: 10px;
+}
+
+.password-policy-title {
+  color: #6b4a3a;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+.password-policy ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.password-policy li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 5px;
+  color: #806b5e;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.password-policy li:last-child {
+  margin-bottom: 0;
+}
+
+.password-policy li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #9a745f;
+  font-weight: 600;
+}

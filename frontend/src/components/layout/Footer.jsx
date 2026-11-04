@@ -6,13 +6,12 @@ function Footer() {
           <div className="brand">
             <div className="brand-icon">🪷</div>
             <span className="brand-text">
-              Nirvana<span>Elevate</span>
+              Nirvana<span> Impact Partners</span>
             </span>
           </div>
 
           <p>
-            Empowering growth through transformation, learning, and meaningful
-            opportunities for students and future professionals.
+            Nirvana Impact Partners™ is a Boutique Consulting Brand enabling meaningful transformation for leaders & organizations
           </p>
 
           <small>Transforming potential into progress.</small>
@@ -56,7 +55,7 @@ function Footer() {
 
       <div className="container footer-bottom">
         <p>
-          © 2026 Nirvana Elevate. All rights reserved. Built to inspire growth,
+          © 2026 Nirvana Impact Partners. All rights reserved. Built to inspire growth,
           learning, and transformation.
         </p>
 
