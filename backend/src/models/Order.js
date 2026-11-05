@@ -89,10 +89,15 @@ const orderSchema = new mongoose.Schema(
                 maxlength: 100,
             },
 
+            // Format rules (10-digit mobile, valid email) are enforced in
+            // order.controller.js, not here, so older orders saved with a
+            // different phone format can still be updated. Max length is a
+            // safe backstop that older data already satisfies.
             phone: {
                 type: String,
                 required: [true, "Customer phone number is required"],
                 trim: true,
+                maxlength: [20, "Phone number cannot exceed 20 characters"],
             },
 
             email: {
@@ -100,6 +105,7 @@ const orderSchema = new mongoose.Schema(
                 required: [true, "Customer email is required"],
                 trim: true,
                 lowercase: true,
+                maxlength: [100, "Email cannot exceed 100 characters"],
             },
             city: {
                 type: String,

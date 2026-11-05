@@ -7,6 +7,63 @@ import generateSequence from "../utils/generateSequence.js";
 
 /*
 ----------------------------------------
+Helper: Validate Customer Contact (phone + email)
+Keep these rules in sync with CreateOrderModal.jsx.
+----------------------------------------
+*/
+
+const PHONE_MAX_LENGTH = 20;
+const EMAIL_MAX_LENGTH = 100;
+
+// 10-digit Indian mobile number (starts with 6-9), optional +91 prefix.
+// Spaces and hyphens are ignored before this is checked.
+const PHONE_REGEX = /^(\+91)?[6-9]\d{9}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+const validateCustomerContact = (customer) => {
+
+    const phone = String(customer.phone ?? "").trim();
+    const email = String(customer.email ?? "").trim();
+
+    if (!phone) {
+        throw new ApiError(400, "Customer phone number is required.");
+    }
+
+    if (phone.length > PHONE_MAX_LENGTH) {
+        throw new ApiError(
+            400,
+            `Phone number cannot exceed ${PHONE_MAX_LENGTH} characters.`
+        );
+    }
+
+    if (!PHONE_REGEX.test(phone.replace(/[\s-]/g, ""))) {
+        throw new ApiError(
+            400,
+            "Enter a valid 10-digit mobile number (optionally starting with +91)."
+        );
+    }
+
+    if (!email) {
+        throw new ApiError(400, "Customer email is required.");
+    }
+
+    if (email.length > EMAIL_MAX_LENGTH) {
+        throw new ApiError(
+            400,
+            `Email cannot exceed ${EMAIL_MAX_LENGTH} characters.`
+        );
+    }
+
+    if (!EMAIL_REGEX.test(email)) {
+        throw new ApiError(
+            400,
+            "Enter a valid email address, like name@example.com."
+        );
+    }
+};
+
+/*
+----------------------------------------
 Helper: Build Order Items (fetch products, validate stock, reduce stock)
 ----------------------------------------
 */
@@ -192,6 +249,9 @@ export const createOrder = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Customer name, phone and email are required.");
     }
 
+    // Format + max-length checks, before any stock is touched
+    validateCustomerContact(customer);
+
     if (!orderDate) {
         throw new ApiError(400, "Order date is required.");
     }
@@ -347,6 +407,12 @@ export const updateOrder = asyncHandler(async (req, res) => {
             400,
             "Only tracking and status can be updated for shipped orders."
         );
+    }
+
+    // Only checked when the request actually sends customer details,
+    // and before any stock is touched.
+    if (customer) {
+        validateCustomerContact(customer);
     }
 
     const nextStatus = orderStatus || order.orderStatus;
